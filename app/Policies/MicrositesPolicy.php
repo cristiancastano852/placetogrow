@@ -14,7 +14,7 @@ class MicrositesPolicy
     }
 
  
-    public function view(User $user, Microsites $microsites): bool
+    public function view(User $user): bool
     {
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW);
     }

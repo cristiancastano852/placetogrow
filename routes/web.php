@@ -17,7 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/micrositesall',[MicrositesController::class, 'showAll'])->name('micrositesall');
+Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class RolePermissionsEditTest extends TestCase
 {
-    Use RefreshDatabase;
+    use RefreshDatabase;
 
     public function testCanViewRolePermissionsEditWhenUserIsAuth()
     {

@@ -15,14 +15,14 @@ use App\Actions\Microsites\UpdateAction;
 use App\Constants\Currency;
 use App\Constants\MicrositesTypes;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Role;
 
 class MicrositesController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
 
@@ -37,13 +37,13 @@ class MicrositesController extends Controller
         return view('microsites.index', compact('microsites'));
     }
 
-    public function showAll()
+    public function showAll(): \Inertia\Response
     {
         $microsites = Microsites::with('category')->get();
         return Inertia::render('Microsites/Index', compact('microsites'));
     }
 
-    public function create()
+    public function create(): View
     {
         $this->authorize(PolicyName::CREATE, Microsites::class);
         $categories = Category::query()->select('id', 'name')->get();
@@ -62,18 +62,18 @@ class MicrositesController extends Controller
         return redirect()->route('microsites.index')->with('success', 'Sitio creado correctamente.');
     }
 
-    public function show(microsites $microsite)
+    public function show(microsites $microsite): View | RedirectResponse
     {
 
         $this->authorize(PolicyName::VIEW, $microsite);
         $user = Auth::user();
         if ($microsite->user_id !== $user->id) {
-            abort(403, 'Unauthorized action.');
+            return redirect()->route('microsites.index')->with('error', 'No tienes permisos para ver este sitio.');
         }
         return view('microsites.show', compact('microsite'));
     }
 
-    public function showMicrosite($slug, $id)
+    public function showMicrosite($slug, $id): \Inertia\Response
     {
         $microsite = Microsites::with('category')->findOrFail($id);
         return Inertia::render('Microsites/Show', [
@@ -81,7 +81,7 @@ class MicrositesController extends Controller
         ]);
     }
 
-    public function edit(microsites $microsite, Category $category)
+    public function edit(microsites $microsite, Category $category): View
     {
 
         $this->authorize(PolicyName::UPDATE, $microsite);

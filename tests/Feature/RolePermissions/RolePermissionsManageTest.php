@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class RolePermissionsManageTest extends TestCase
 {
-    // Route::get('/role-permission', [RolePermissionController::class, 'managePermissions'])->name('rolePermission.permissions');
     public function testCanViewRolePermissionsManage()
     {
         $response = $this->get(route('rolePermission.permissions'));

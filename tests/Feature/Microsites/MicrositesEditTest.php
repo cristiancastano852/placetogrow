@@ -43,23 +43,4 @@ class MicrositesEditTest extends TestCase
         $response->assertOk();
         $response->assertSee('test-name');
     }
-
-    // public function testItCanNotEditSiteWhenUserHasNoPermission(): void
-    // {
-    //     $microsite = Microsites::factory()
-    //         ->for(Category::factory()->create())
-    //         ->create(
-    //             [
-    //                 'name' => 'test-name',
-
-    //             ]
-    //         );
-    //     $user = User::factory()->create();
-    //     $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW]);
-    //     $user->givePermissionTo($permission);
-
-    //     $response = $this->actingAs($user)
-    //         ->get(route('Microsites.edit', $microsite->id));
-    //     $response->assertForbidden();
-    // }
 }

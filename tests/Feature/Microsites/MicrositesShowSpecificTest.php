@@ -13,6 +13,7 @@ class MicrositesShowSpecificTest extends TestCase
 {
     public function testItCanSeeSiteShowWhenUserIsNotAuth(): void
     {
+
         $user = User::factory()->create();
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
@@ -23,7 +24,9 @@ class MicrositesShowSpecificTest extends TestCase
 
                 ]
             );
-        $response = $this->get(route('microsites.show', $microsite->id));
-        $response->assertStatus(302);
+        $id = $microsite->id;
+        $slug = $microsite->slug;
+        $response = $this->get(route('microsite.showMicrosite', ['slug' => $slug, 'id' => $id]));
+        $response->assertStatus(200);
     }
 }

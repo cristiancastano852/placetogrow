@@ -12,7 +12,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -22,7 +24,6 @@ class UserController extends Controller
         $users = User::all();
         $roles = Role::all();
         return view('users.index', compact('users', 'roles'));
-
     }
 
     public function create(): View
@@ -32,7 +33,7 @@ class UserController extends Controller
         return view('users.create', compact('roles'));
     }
 
-    public function store(StoreUserRequest $request, StoreAction $storeAction) : RedirectResponse
+    public function store(StoreUserRequest $request, StoreAction $storeAction): RedirectResponse
     {
         $user = $storeAction->execute($request->validated());
         $user->roles()->attach($request->role);
@@ -40,25 +41,15 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
     }
 
-
-    public function show(User $user)
-    {
-    }
-
- 
-    public function edit(User $user)
-    {
-    }
-
-    public function update(Request $request, User $user)
-    {
-    }
-
-
-    public function destroy(User $user,DeleteAction $deleteAction): RedirectResponse
+    public function destroy(User $user, DeleteAction $deleteAction): RedirectResponse
     {
         $this->authorize(PolicyName::DELETE, $user);
         $deleteAction->execute($user);
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente');
+    }
+
+    public function dashboard(): \Inertia\Response | RedirectResponse
+    {
+        return Inertia::render('Dashboard', []);
     }
 }
