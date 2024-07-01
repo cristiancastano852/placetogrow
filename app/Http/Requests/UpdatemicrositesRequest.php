@@ -35,10 +35,10 @@ class UpdatemicrositesRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'document_type' => 'required|in:' . implode(',', array_column(DocumentTypes::cases(), 'name')),
             'document_number' => 'required|string|max:20',
-            'logo' => 'required|string', 
+            'logo' => 'required|string',
             'currency' => 'required|in:' . implode(',', array_column(Currency::cases(), 'name')),
             'site_type' => 'required|in:' . implode(',', array_column(MicrositesTypes::cases(), 'name')),
-            'payment_expiration' => 'required|integer|min:1', 
+            'payment_expiration' => 'required|integer|min:1',
         ];
     }
 }
