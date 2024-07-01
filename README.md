@@ -1,66 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://soluciones.evertecinc.com/escuela-de-desarrolladores-php-evertec" target="_blank"><img src="https://soluciones.evertecinc.com/hs-fs/hubfs/logoEvertec.png?width=250&height=50&name=logoEvertec.png" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<p align="center"></p>
 </p>
 
-## About Laravel
+## Microsites | PlaceToGrow
+Autor:
+  Cristian Alexander Castaño Montoya
+  
+  [<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin">](https://www.linkedin.com/in/cristiancastano852/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Stack Tecnológico
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Separación por Capas**: Se añadieron capas diferentes a MVC, se uso [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
+- **Framework Backend**: Laravel.
+- **Framework Frontend**: Inertia.js con Vue.js 3.
+- **Estilos**: Tailwind CSS.
+- **Base de datos**: MySQL Database.
+- **Contenerización**: Docker y Docker Compose.
+- **Gestión de Versiones**: Git y GitFlow.
+- **Integración Continua**: GitHub Actions.
+- **Gestiones de roles y permisos**: Spatie
+- **Calidad de Código**: Utilización de PSR para el formato de código y herramientas de análisis estático (Sonar Cloud).
+- **Tipado**: Uso de tipado estricto en la declaración de funciones y métodos.
+- **Cache**: Implementación de caching para mejorar el rendimiento.
+- **Gestión de Logs**: Configuración para registrar y gestionar logs de la aplicación.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+###Diagrama entidad-relación
+![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
 
-## Learning Laravel
+Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Instalación en Docker
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
 
-## Laravel Sponsors
+### Pasos para la instalación
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clonar el repositorio:**
+   
+   Clona este repositorio en tu máquina local.
 
-### Premium Partners
+   ```bash
+   git clone https://github.com/cristiancastano852/placetogrow
+   cd placetogrow
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. **Construir y levantar los contenedores:**
+   
+   Desde la carpeta raíz del proyecto, ejecuta:
 
-## Contributing
+   ```bash
+   docker-compose up -d --build
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Instalar las dependencias de Composer:**
+   
+   Una vez que los contenedores estén en funcionamiento, instala las dependencias de Composer:
 
-## Code of Conduct
+   ```bash
+   docker-compose exec app composer install
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Correr las migraciones y seeders:**
+   
+   Ejecuta las migraciones y seeders para configurar la base de datos:
 
-## Security Vulnerabilities
+   ```bash
+   docker-compose exec app php artisan migrate --seed
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Acceder a la aplicación:**
+   
+   Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
 
-## License
+### Notas importantes
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Configurar variables de entorno:**
+   
+   Asegúrate de que las variables de entorno en tu archivo `.env` estén configuradas correctamente. Aquí tienes un ejemplo de la configuración de la base de datos:
+
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=mysql
+   DB_PORT=3306
+   DB_DATABASE=laravel
+   DB_USERNAME=root
+   DB_PASSWORD=root
+   ```
+
+- **Verificar el estado de los contenedores:**
+   
+   Puedes verificar el estado de los contenedores en cualquier momento usando:
+
+   ```bash
+   docker-compose ps
+   ```
+
+
+
+### Uso
+
+- **Autenticación**:
+  - Accede a `/login` para iniciar sesión como administrador.
+  - Registra nuevos usuarios desde la interzar en `/users` .
+
+- **Gestión de Micrositios**:
+  
+  Administrador y Cliente
+  - Accede a las funcionalidades CRUD para gestionar micrositios en `/microsites`.
+  - Configura detalles como nombre, logo, categoría, configuración de pagos y tipos de sitios.
+  
+  Invitado:
+  - Ver todos los micrositios en`/micrositesall`
+  - Ver el formulario de un sitio en especifico.
+    
+- **Gestión de usuarios**:
+
+  Administrador
+  - Acceder a las funcionalidades para gestionar usuarios en `/users`.
+  - Crea nuevos usuarios
+  - Ver todos los usuarios
+  - Añadir roles a los usuarios
+  - Cambiar roles a los usuarios
+  - Eliminar usuarios.
+ 
+- **Gestión de roles y permisos**:
+
+  Administrador
+  - Acceder a las funcionalidades para gestionar los roles y permisos en `/role-permission`.
+  - Ver todos los roles
+  - Cambiar los permisos de los roles
+
+
+

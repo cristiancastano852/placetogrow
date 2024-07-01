@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS microsite;
+CREATE DATABASE microsite;
