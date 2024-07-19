@@ -5,8 +5,6 @@ namespace Tests\Feature\User;
 use App\Constants\PermissionSlug;
 use App\Models\User;
 use Database\Factories\RoleFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -44,12 +42,12 @@ class UserStoreTest extends TestCase
                 'email' => 'testemail@a.com',
                 'password' => 'test-password',
                 'password_confirmation' => 'test-password',
-                'role' => $role->id
+                'role' => $role->id,
 
             ]);
         $response->assertRedirect(route('users.index'));
         $this->assertDatabaseHas('users', ['name' => 'test-name']);
-        
+
     }
 
     public function testItCanNotStoreUserIfHaveNoPermissions()
@@ -65,8 +63,8 @@ class UserStoreTest extends TestCase
                 'email' => 'test-email',
                 'password' => 'test-password',
                 'password_confirmation' => 'test-password',
-                'role' => $role->id
+                'role' => $role->id,
             ]);
         $response->assertForbidden();
-        }
+    }
 }

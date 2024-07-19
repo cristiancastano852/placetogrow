@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Microsites\DeleteAction;
-use App\Constants\DocumentTypes;
-use App\Constants\PolicyName;
-use App\Models\Microsites;
-use App\Models\Category;
-use App\Http\Requests\StoremicrositesRequest;
-use App\Http\Requests\UpdatemicrositesRequest;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Microsites\StoreAction;
 use App\Actions\Microsites\UpdateAction;
 use App\Constants\Currency;
+use App\Constants\DocumentTypes;
 use App\Constants\MicrositesTypes;
+use App\Constants\PolicyName;
+use App\Http\Requests\StoremicrositesRequest;
+use App\Http\Requests\UpdatemicrositesRequest;
+use App\Models\Category;
+use App\Models\Microsites;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class MicrositesController extends Controller
@@ -40,6 +39,7 @@ class MicrositesController extends Controller
     public function showAll(): \Inertia\Response
     {
         $microsites = Microsites::with('category')->get();
+
         return Inertia::render('Microsites/Index', compact('microsites'));
     }
 
@@ -50,6 +50,7 @@ class MicrositesController extends Controller
         $documentTypes = DocumentTypes::cases();
         $currencies = Currency::cases();
         $micrositesTypes = MicrositesTypes::cases();
+
         return view('microsites.create', compact('categories', 'documentTypes', 'currencies', 'micrositesTypes'));
     }
 
@@ -59,10 +60,11 @@ class MicrositesController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
         $storeAction->execute($data);
+
         return redirect()->route('microsites.index')->with('success', 'Sitio creado correctamente.');
     }
 
-    public function show(microsites $microsite): View | RedirectResponse
+    public function show(Microsites $microsite): View|RedirectResponse
     {
 
         $this->authorize(PolicyName::VIEW, $microsite);
@@ -70,18 +72,20 @@ class MicrositesController extends Controller
         if ($microsite->user_id !== $user->id) {
             return redirect()->route('microsites.index')->with('error', 'No tienes permisos para ver este sitio.');
         }
+
         return view('microsites.show', compact('microsite'));
     }
 
-    public function showMicrosite($slug, $id): \Inertia\Response
+    public function showMicrosite(string $slug, $id): \Inertia\Response
     {
         $microsite = Microsites::with('category')->findOrFail($id);
+
         return Inertia::render('Microsites/Show', [
             'microsite' => $microsite,
         ]);
     }
 
-    public function edit(microsites $microsite, Category $category): View
+    public function edit(Microsites $microsite, Category $category): View
     {
 
         $this->authorize(PolicyName::UPDATE, $microsite);
@@ -101,11 +105,12 @@ class MicrositesController extends Controller
         return redirect()->route('microsites.index')->with('success', 'Sitio actualizado correctamente.');
     }
 
-    public function destroy(microsites $microsite, DeleteAction $deleteAction): RedirectResponse
+    public function destroy(Microsites $microsite, DeleteAction $deleteAction): RedirectResponse
     {
         $micrositse = Microsites::find($microsite->id);
         $this->authorize(PolicyName::DELETE, $microsite);
         $deleteAction->execute($micrositse);
+
         return redirect()->route('microsites.index');
     }
 }

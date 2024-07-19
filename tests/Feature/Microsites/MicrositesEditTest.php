@@ -23,7 +23,7 @@ class MicrositesEditTest extends TestCase
     public function testItCanEditSite(): void
     {
         $this->withoutExceptionHandling();
-        
+
         $user = User::factory()->create();
         $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_UPDATE]);
         $user->givePermissionTo($permission);

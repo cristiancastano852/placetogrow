@@ -4,8 +4,6 @@ namespace App\Policies;
 
 use App\Constants\PermissionSlug;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
 
 class UserPolicy
 {
@@ -33,5 +31,4 @@ class UserPolicy
     {
         return $user->hasPermissionTo(PermissionSlug::USERS_DELETE);
     }
-
 }

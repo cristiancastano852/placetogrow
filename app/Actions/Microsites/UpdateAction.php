@@ -20,6 +20,7 @@ class UpdateAction
         $microsite->payment_expiration = $data['payment_expiration'];
         $microsite->save();
         Log::info('Microsite updated', ['microsite' => $microsite]);
+
         return $microsite;
     }
 }

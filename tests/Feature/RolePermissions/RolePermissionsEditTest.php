@@ -24,7 +24,7 @@ class RolePermissionsEditTest extends TestCase
 
         $response = $this->actingAs($user)
             ->put(route('admin.rolePermission.edit-permissions', $role), [
-                'permissions' => ['permission1', 'permission2']
+                'permissions' => ['permission1', 'permission2'],
             ]);
 
         $response->assertRedirect();
@@ -36,10 +36,9 @@ class RolePermissionsEditTest extends TestCase
         $role = ModelsRole::factory()->create();
 
         $response = $this->put(route('admin.rolePermission.edit-permissions', $role), [
-            'permissions' => ['permission1', 'permission2']
+            'permissions' => ['permission1', 'permission2'],
         ]);
 
         $response->assertRedirect(route('login'));
     }
 }
-

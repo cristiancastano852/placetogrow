@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Constants\PermissionSlug;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 

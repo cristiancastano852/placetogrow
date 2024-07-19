@@ -7,11 +7,11 @@ use App\Constants\DocumentTypes;
 use App\Constants\MicrositesTypes;
 use App\Constants\PermissionSlug;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use Tests\TestCase;
 use App\Models\Microsites;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class MicrositesUpdateTest extends TestCase
 {
@@ -26,7 +26,6 @@ class MicrositesUpdateTest extends TestCase
         $response = $this->put(route('microsites.update', $microsite, $category));
         $response->assertRedirect(route('login'));
     }
-
 
     public function testItCanUpdateSite(): void
     {

@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Constants\PermissionSlug;
-use App\Models\User;
 use App\Models\Microsites;
+use App\Models\User;
 
 class MicrositesPolicy
 {
@@ -13,25 +13,23 @@ class MicrositesPolicy
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW_ANY);
     }
 
- 
     public function view(User $user): bool
     {
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW);
     }
 
- 
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_CREATE);
     }
 
-
     public function update(User $user, Microsites $microsites): bool
     {
 
-        if ($microsites->user_id !== $user->id && !$user->hasRole('Admin')) {
+        if ($microsites->user_id !== $user->id && ! $user->hasRole('Admin')) {
             abort(403, 'Unauthorized action.');
         }
+
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_UPDATE);
     }
 
@@ -39,5 +37,4 @@ class MicrositesPolicy
     {
         return $user->hasPermissionTo(PermissionSlug::MICROSITES_DELETE);
     }
-
 }
