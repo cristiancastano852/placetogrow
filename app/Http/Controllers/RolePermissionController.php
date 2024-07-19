@@ -11,15 +11,6 @@ use Spatie\Permission\Models\Role;
 
 class RolePermissionController extends Controller
 {
-    public function index()
-    {
-        $this->authorize(PolicyName::VIEW_ANY_PERMISSIONS, User::class);
-        $users = User::all();
-        $roles = Role::all();
-
-        return view('admin.rolePermission.index', compact('users', 'roles'));
-    }
-
     public function managePermissions()
     {
         $this->authorize(PolicyName::VIEW_ANY_PERMISSIONS, User::class);
