@@ -6,7 +6,6 @@ use App\Constants\PermissionSlug;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -20,14 +19,14 @@ class UserDestroyTest extends TestCase
         $response = $this->get(route('users.show', $category));
         $response->assertStatus(302);
         $response->assertRedirect(route('login'));
-       
+
     }
 
     public function testItCanDestroyUserWhenUserIsAuthAndHavePermissions(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_DELETE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_DELETE->value]);
         $user->givePermissionTo($permission);
 
         $userToDelete = User::factory()->create();

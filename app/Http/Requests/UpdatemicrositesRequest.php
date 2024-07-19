@@ -24,7 +24,7 @@ class UpdatemicrositesRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {   
+    {
         return [
             'slug' => [
                 'required',
@@ -33,11 +33,11 @@ class UpdatemicrositesRequest extends FormRequest
             ],
             'name' => 'required|max:100',
             'category_id' => 'required|exists:categories,id',
-            'document_type' => 'required|in:' . implode(',', array_column(DocumentTypes::cases(), 'name')),
+            'document_type' => 'required|in:'.implode(',', array_column(DocumentTypes::cases(), 'name')),
             'document_number' => 'required|string|max:20',
             'logo' => 'required|string',
-            'currency' => 'required|in:' . implode(',', array_column(Currency::cases(), 'name')),
-            'site_type' => 'required|in:' . implode(',', array_column(MicrositesTypes::cases(), 'name')),
+            'currency' => 'required|in:'.implode(',', array_column(Currency::cases(), 'name')),
+            'site_type' => 'required|in:'.implode(',', array_column(MicrositesTypes::cases(), 'name')),
             'payment_expiration' => 'required|integer|min:1',
         ];
     }

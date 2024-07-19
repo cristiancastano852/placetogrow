@@ -5,8 +5,6 @@ namespace Tests\Feature\User;
 use App\Constants\PermissionSlug;
 use App\Models\User;
 use Database\Factories\RoleFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -22,7 +20,7 @@ class UserStoreTest extends TestCase
     public function testItCanSeeUsersCreateWhenUserIsAuth()
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -33,9 +31,9 @@ class UserStoreTest extends TestCase
     public function testItCanStoreUserIfHavePermissions()
     {
         $role = RoleFactory::new()->create(['name' => 'admin']);
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -44,19 +42,19 @@ class UserStoreTest extends TestCase
                 'email' => 'testemail@a.com',
                 'password' => 'test-password',
                 'password_confirmation' => 'test-password',
-                'role' => $role->id
+                'role' => $role->id,
 
             ]);
         $response->assertRedirect(route('users.index'));
         $this->assertDatabaseHas('users', ['name' => 'test-name']);
-        
+
     }
 
     public function testItCanNotStoreUserIfHaveNoPermissions()
     {
         $role = RoleFactory::new()->create(['name' => 'admin2']);
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -65,8 +63,8 @@ class UserStoreTest extends TestCase
                 'email' => 'test-email',
                 'password' => 'test-password',
                 'password_confirmation' => 'test-password',
-                'role' => $role->id
+                'role' => $role->id,
             ]);
         $response->assertForbidden();
-        }
+    }
 }

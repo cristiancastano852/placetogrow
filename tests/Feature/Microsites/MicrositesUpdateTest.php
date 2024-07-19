@@ -7,11 +7,11 @@ use App\Constants\DocumentTypes;
 use App\Constants\MicrositesTypes;
 use App\Constants\PermissionSlug;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use Tests\TestCase;
 use App\Models\Microsites;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class MicrositesUpdateTest extends TestCase
 {
@@ -27,15 +27,14 @@ class MicrositesUpdateTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-
     public function testItCanUpdateSite(): void
     {
-        $this->withoutExceptionHandling();
+
         //The slug field is required.
         $category = Category::factory()->create();
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_UPDATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_UPDATE->value]);
         $user->givePermissionTo($permission);
 
         $microsite = Microsites::factory()

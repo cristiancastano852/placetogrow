@@ -4,36 +4,31 @@ declare(strict_types=1);
 
 namespace App\Constants;
 
-final class PermissionSlug
+enum PermissionSlug: string
 {
-    public const  CATEGORIES_VIEW_ANY = 'categories.view_any';
-    public const  CATEGORIES_VIEW = 'categories.view';
-    public const  CATEGORIES_CREATE = 'categories.create';
-    public const  CATEGORIES_UPDATE = 'categories.update';
-    public const  CATEGORIES_DELETE = 'categories.delete';
-
-    public const  MICROSITES_VIEW_ANY = 'microsites.view_any';
-    public const  MICROSITES_VIEW = 'microsites.view';
-    public const  MICROSITES_CREATE = 'microsites.create';
-    public const  MICROSITES_UPDATE = 'microsites.update';
-    public const  MICROSITES_DELETE = 'microsites.delete';
-
-    public const  USERS_VIEW_ANY = 'users.view_any';
-    public const  USERS_VIEW = 'users.view';
-    public const  USERS_CREATE = 'users.create';
-    public const  USERS_UPDATE = 'users.update';
-    public const  USERS_DELETE = 'users.delete';
-
-    public const  ROLES_VIEW_ANY = 'roles.view_any';
-    public const  ROLES_VIEW = 'roles.view';
-    public const  ROLES_UPDATE = 'roles.update';
-
-    public const ROLE_PERMISSION_VIEW = 'role_permission.view';
-    public const ROLE_PERMISSION_UPDATE = 'role_permission.update';
-
+    case CATEGORIES_VIEW_ANY = 'categories.view_any';
+    case CATEGORIES_VIEW = 'categories.view';
+    case CATEGORIES_CREATE = 'categories.create';
+    case CATEGORIES_UPDATE = 'categories.update';
+    case CATEGORIES_DELETE = 'categories.delete';
+    case MICROSITES_VIEW_ANY = 'microsites.view_any';
+    case MICROSITES_VIEW = 'microsites.view';
+    case MICROSITES_CREATE = 'microsites.create';
+    case MICROSITES_UPDATE = 'microsites.update';
+    case MICROSITES_DELETE = 'microsites.delete';
+    case USERS_VIEW_ANY = 'users.view_any';
+    case USERS_VIEW = 'users.view';
+    case USERS_CREATE = 'users.create';
+    case USERS_UPDATE = 'users.update';
+    case USERS_DELETE = 'users.delete';
+    case ROLES_VIEW_ANY = 'roles.view_any';
+    case ROLES_VIEW = 'roles.view';
+    case ROLES_UPDATE = 'roles.update';
+    case ROLE_PERMISSION_VIEW = 'role_permission.view';
+    case ROLE_PERMISSION_UPDATE = 'role_permission.update';
 
     public static function toArray(): array
     {
-        return (new \ReflectionClass(self::class))->getConstants();
+        return array_column(self::cases(), 'value');
     }
 }

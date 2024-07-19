@@ -4,11 +4,11 @@ namespace Tests\Feature\Microsites;
 
 use App\Constants\PermissionSlug;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use Tests\TestCase;
 use App\Models\Microsites;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class MicrositesIndexTest extends TestCase
 {
@@ -22,10 +22,9 @@ class MicrositesIndexTest extends TestCase
 
     public function testItCanListSites(): void
     {
-        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())

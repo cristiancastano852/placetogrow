@@ -5,8 +5,6 @@ namespace Tests\Feature\User;
 use App\Constants\PermissionSlug;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -18,12 +16,12 @@ class UserIndexTest extends TestCase
     {
         $response = $this->get(route('users.index'));
         $response->assertRedirect(route('login'));
-        
+
     }
 
     public function testItCanListUsers(): void
     {
-        $this->withoutExceptionHandling();
+
         User::factory()->create(
             [
                 'name' => 'test-name',
@@ -32,7 +30,7 @@ class UserIndexTest extends TestCase
         );
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)

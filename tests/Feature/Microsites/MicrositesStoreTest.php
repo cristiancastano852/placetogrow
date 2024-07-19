@@ -4,11 +4,11 @@ namespace Tests\Feature\Microsites;
 
 use App\Constants\PermissionSlug;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use Tests\TestCase;
 use App\Models\Microsites;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class MicrositesStoreTest extends TestCase
 {
@@ -23,7 +23,7 @@ class MicrositesStoreTest extends TestCase
     public function testItCanSeeCreateFormSites(): void
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE->value]);
         $user->givePermissionTo($permission);
         $response = $this->actingAs($user)
             ->get(route('microsites.create'));
@@ -33,12 +33,12 @@ class MicrositesStoreTest extends TestCase
 
     public function testItCanStoreSite(): void
     {
-        $this->withoutExceptionHandling();
+
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
             ->make();
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -48,7 +48,7 @@ class MicrositesStoreTest extends TestCase
 
         $this->assertDatabaseHas('microsites', [
             'name' => $microsite->name,
-            
+
         ]);
     }
 }

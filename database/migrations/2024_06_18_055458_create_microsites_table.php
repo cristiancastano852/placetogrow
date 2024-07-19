@@ -6,7 +6,6 @@ use App\Constants\MicrositesTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -23,7 +22,7 @@ return new class extends Migration
             $table->enum('currency', array_column(Currency::cases(), 'name'));
             $table->enum('site_type', array_column(MicrositesTypes::cases(), 'name'));
             $table->integer('payment_expiration')->default(10); // Minutes
-            $table ->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

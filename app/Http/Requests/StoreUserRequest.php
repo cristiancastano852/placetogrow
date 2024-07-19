@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\PermissionSlug;
 use App\Constants\PolicyName;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;

@@ -4,49 +4,47 @@ namespace Database\Seeders;
 
 use App\Constants\PermissionSlug;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
 class DefaultRolesAndPermissionsSeeder extends Seeder
 {
-
     public function run(): void
     {
         $baseRolesPermission = [
             [
                 'name' => 'Admin',
                 'permissions' => [
-                    PermissionSlug::MICROSITES_VIEW_ANY,
-                    PermissionSlug::MICROSITES_VIEW,
-                    PermissionSlug::MICROSITES_CREATE,
-                    PermissionSlug::MICROSITES_UPDATE,
-                    PermissionSlug::MICROSITES_DELETE,
-                    PermissionSlug::CATEGORIES_VIEW_ANY,
-                    PermissionSlug::CATEGORIES_VIEW,
-                    PermissionSlug::CATEGORIES_CREATE,
-                    PermissionSlug::CATEGORIES_UPDATE,
-                    PermissionSlug::CATEGORIES_DELETE,
-                    PermissionSlug::USERS_VIEW_ANY,
-                    PermissionSlug::USERS_VIEW,
-                    PermissionSlug::USERS_CREATE,
-                    PermissionSlug::USERS_UPDATE,
-                    PermissionSlug::USERS_DELETE,
-                    PermissionSlug::ROLES_VIEW_ANY,
-                    PermissionSlug::ROLES_VIEW,
-                    PermissionSlug::ROLES_UPDATE,
-                    PermissionSlug::ROLE_PERMISSION_VIEW,
-                    PermissionSlug::ROLE_PERMISSION_UPDATE,
+                    PermissionSlug::MICROSITES_VIEW_ANY->value,
+                    PermissionSlug::MICROSITES_VIEW->value,
+                    PermissionSlug::MICROSITES_CREATE->value,
+                    PermissionSlug::MICROSITES_UPDATE->value,
+                    PermissionSlug::MICROSITES_DELETE->value,
+                    PermissionSlug::CATEGORIES_VIEW_ANY->value,
+                    PermissionSlug::CATEGORIES_VIEW->value,
+                    PermissionSlug::CATEGORIES_CREATE->value,
+                    PermissionSlug::CATEGORIES_UPDATE->value,
+                    PermissionSlug::CATEGORIES_DELETE->value,
+                    PermissionSlug::USERS_VIEW_ANY->value,
+                    PermissionSlug::USERS_VIEW->value,
+                    PermissionSlug::USERS_CREATE->value,
+                    PermissionSlug::USERS_UPDATE->value,
+                    PermissionSlug::USERS_DELETE->value,
+                    PermissionSlug::ROLES_VIEW_ANY->value,
+                    PermissionSlug::ROLES_VIEW->value,
+                    PermissionSlug::ROLES_UPDATE->value,
+                    PermissionSlug::ROLE_PERMISSION_VIEW->value,
+                    PermissionSlug::ROLE_PERMISSION_UPDATE->value,
                 ],
             ],
             [
                 'name' => 'Customer',
                 'permissions' => [
-                    PermissionSlug::CATEGORIES_VIEW_ANY,
-                    PermissionSlug::CATEGORIES_CREATE,
-                    PermissionSlug::CATEGORIES_UPDATE,
-                    PermissionSlug::CATEGORIES_DELETE,
-                    PermissionSlug::MICROSITES_VIEW_ANY,
+                    PermissionSlug::CATEGORIES_VIEW_ANY->value,
+                    PermissionSlug::CATEGORIES_CREATE->value,
+                    PermissionSlug::CATEGORIES_UPDATE->value,
+                    PermissionSlug::CATEGORIES_DELETE->value,
+                    PermissionSlug::MICROSITES_VIEW_ANY->value,
                 ],
             ],
             [

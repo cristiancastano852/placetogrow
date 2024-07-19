@@ -15,16 +15,15 @@ class RolePermissionsEditTest extends TestCase
 
     public function testCanViewRolePermissionsEditWhenUserIsAuth()
     {
-        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_UPDATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_UPDATE->value]);
         $user->givePermissionTo($permission);
         $role = ModelsRole::factory()->create();
 
         $response = $this->actingAs($user)
             ->put(route('admin.rolePermission.edit-permissions', $role), [
-                'permissions' => ['permission1', 'permission2']
+                'permissions' => ['permission1', 'permission2'],
             ]);
 
         $response->assertRedirect();
@@ -36,10 +35,9 @@ class RolePermissionsEditTest extends TestCase
         $role = ModelsRole::factory()->create();
 
         $response = $this->put(route('admin.rolePermission.edit-permissions', $role), [
-            'permissions' => ['permission1', 'permission2']
+            'permissions' => ['permission1', 'permission2'],
         ]);
 
         $response->assertRedirect(route('login'));
     }
 }
-

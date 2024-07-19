@@ -5,17 +5,17 @@
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-nav-link>
-            @can(\App\Constants\PermissionSlug::MICROSITES_VIEW_ANY)
+            @can(\App\Constants\PermissionSlug::MICROSITES_VIEW_ANY->value)
                 <x-nav-link :href="route('microsites.index')" :active="request()->routeIs('microsites.index')">
                     {{ __('Sitios') }}
                 </x-nav-link>
             @endcan
-            @can(\App\Constants\PermissionSlug::USERS_VIEW_ANY)
+            @can(\App\Constants\PermissionSlug::USERS_VIEW_ANY->value)
                 <x-nav-link :href="route('microsites.index')" :active="request()->routeIs('users.index')">
                     {{ __('Usuarios') }}
                 </x-nav-link>
             @endcan
-            @can(\App\Constants\PermissionSlug::ROLE_PERMISSION_VIEW)
+            @can(\App\Constants\PermissionSlug::ROLE_PERMISSION_VIEW->value)
                 <x-nav-link :href="route('rolePermission.permissions')" :active="request()->routeIs('rolePermission.permissions')">
                     {{ __('Permisos') }}
                 </x-nav-link>

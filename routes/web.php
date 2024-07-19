@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\MicrositesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\MicrositesController;
-use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -42,4 +42,4 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')
     ->resource('users', UserController::class);
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

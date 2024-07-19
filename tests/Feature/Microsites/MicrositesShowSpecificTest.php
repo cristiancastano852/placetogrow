@@ -5,8 +5,6 @@ namespace Tests\Feature\Microsites;
 use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MicrositesShowSpecificTest extends TestCase

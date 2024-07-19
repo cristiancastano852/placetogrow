@@ -4,8 +4,6 @@ namespace Tests\Feature\RolePermissions;
 
 use App\Constants\PermissionSlug;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -20,9 +18,9 @@ class RolePermissionsManageTest extends TestCase
     public function testCanViewRolePermissionsManageWhenUserIsAuth()
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_VIEW]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_VIEW->value]);
         $user->givePermissionTo($permission);
-        
+
         $response = $this->actingAs($user)
             ->get(route('rolePermission.permissions'));
         $response->assertOk();
@@ -31,7 +29,7 @@ class RolePermissionsManageTest extends TestCase
     public function testCanViewRolePermissionsManageWhenUserIsAuthButDoesNotHavePermission()
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->get(route('rolePermission.permissions'));
         $response->assertForbidden();
