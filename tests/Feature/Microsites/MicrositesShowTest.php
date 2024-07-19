@@ -22,9 +22,9 @@ class MicrositesShowTest extends TestCase
 
     public function testItCanSeeShowSite(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW->value]);
         $user->givePermissionTo($permission);
 
         $microsite = Microsites::factory()
@@ -44,9 +44,9 @@ class MicrositesShowTest extends TestCase
 
     public function testItCanNotSeeShowSiteWhenUserNotCreateMicrosite(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW->value]);
         $user->givePermissionTo($permission);
 
         $microsite = Microsites::factory()

@@ -29,12 +29,12 @@ class MicrositesDestroyTest extends TestCase
 
     public function testItCanDestroySite(): void
     {
-        $this->withoutExceptionHandling();
+
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
             ->create();
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_DELETE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_DELETE->value]);
 
         $user->givePermissionTo($permission);
 

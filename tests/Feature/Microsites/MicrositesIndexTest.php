@@ -22,10 +22,9 @@ class MicrositesIndexTest extends TestCase
 
     public function testItCanListSites(): void
     {
-        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())

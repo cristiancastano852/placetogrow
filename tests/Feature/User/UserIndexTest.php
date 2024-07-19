@@ -21,7 +21,7 @@ class UserIndexTest extends TestCase
 
     public function testItCanListUsers(): void
     {
-        $this->withoutExceptionHandling();
+
         User::factory()->create(
             [
                 'name' => 'test-name',
@@ -30,7 +30,7 @@ class UserIndexTest extends TestCase
         );
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)

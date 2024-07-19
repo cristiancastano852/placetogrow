@@ -7,7 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,7 +18,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        Log::info('Login page visited');
 
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
@@ -32,7 +30,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        Log::info('Login attempt');
         $request->authenticate();
 
         $request->session()->regenerate();

@@ -15,11 +15,11 @@ class RoleUpdateTest extends TestCase
 
     public function testAdminCanAssignRolesToUser()
     {
-        $this->withoutExceptionHandling();
+
         $admin = User::factory()->create();
         $roleAdmin = ModelsRole::create(['name' => 'Admin', 'guard_name' => 'web']);
         $admin->assignRole($roleAdmin);
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_UPDATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_UPDATE->value]);
         $admin->givePermissionTo($permission);
 
         $user = User::factory()->create();

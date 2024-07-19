@@ -24,9 +24,9 @@ class UserDestroyTest extends TestCase
 
     public function testItCanDestroyUserWhenUserIsAuthAndHavePermissions(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_DELETE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_DELETE->value]);
         $user->givePermissionTo($permission);
 
         $userToDelete = User::factory()->create();

@@ -23,7 +23,7 @@ class MicrositesStoreTest extends TestCase
     public function testItCanSeeCreateFormSites(): void
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE->value]);
         $user->givePermissionTo($permission);
         $response = $this->actingAs($user)
             ->get(route('microsites.create'));
@@ -33,12 +33,12 @@ class MicrositesStoreTest extends TestCase
 
     public function testItCanStoreSite(): void
     {
-        $this->withoutExceptionHandling();
+
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
             ->make();
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)

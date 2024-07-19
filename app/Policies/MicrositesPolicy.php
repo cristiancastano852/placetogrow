@@ -10,17 +10,17 @@ class MicrositesPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW_ANY);
+        return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW_ANY->value);
     }
 
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW);
+        return $user->hasPermissionTo(PermissionSlug::MICROSITES_VIEW->value);
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionSlug::MICROSITES_CREATE);
+        return $user->hasPermissionTo(PermissionSlug::MICROSITES_CREATE->value);
     }
 
     public function update(User $user, Microsites $microsites): bool
@@ -30,11 +30,11 @@ class MicrositesPolicy
             abort(403, 'Unauthorized action.');
         }
 
-        return $user->hasPermissionTo(PermissionSlug::MICROSITES_UPDATE);
+        return $user->hasPermissionTo(PermissionSlug::MICROSITES_UPDATE->value);
     }
 
     public function delete(User $user, Microsites $microsites): bool
     {
-        return $user->hasPermissionTo(PermissionSlug::MICROSITES_DELETE);
+        return $user->hasPermissionTo(PermissionSlug::MICROSITES_DELETE->value);
     }
 }

@@ -18,7 +18,7 @@ class RolePermissionsManageTest extends TestCase
     public function testCanViewRolePermissionsManageWhenUserIsAuth()
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_VIEW]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::ROLE_PERMISSION_VIEW->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)

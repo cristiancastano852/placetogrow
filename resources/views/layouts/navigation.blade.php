@@ -16,21 +16,21 @@
                         {{ __('Inicio') }}
                     </x-nav-link>
                 </div>
-                @can(\App\Constants\PermissionSlug::MICROSITES_VIEW_ANY)
+                @can(\App\Constants\PermissionSlug::MICROSITES_VIEW_ANY->value)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('microsites.index')" :active="request()->routeIs('microsites.index')">
                             {{ __('Sitios') }}
                         </x-nav-link>
                     </div>
                 @endcan
-                @can(\App\Constants\PermissionSlug::USERS_VIEW_ANY)
+                @can(\App\Constants\PermissionSlug::USERS_VIEW_ANY->value)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                             {{ __('Usuarios') }}
                         </x-nav-link>
                     </div>
                 @endcan
-                @can(\App\Constants\PermissionSlug::ROLE_PERMISSION_VIEW)
+                @can(\App\Constants\PermissionSlug::ROLE_PERMISSION_VIEW->value)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('rolePermission.permissions')" :active="request()->routeIs('rolePermission.permissions')">
                             {{ __('Roles') }}

@@ -5,6 +5,7 @@ namespace Tests\Feature\User;
 use App\Constants\PermissionSlug;
 use App\Models\User;
 use Database\Factories\RoleFactory;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -20,7 +21,7 @@ class UserStoreTest extends TestCase
     public function testItCanSeeUsersCreateWhenUserIsAuth()
     {
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -31,9 +32,9 @@ class UserStoreTest extends TestCase
     public function testItCanStoreUserIfHavePermissions()
     {
         $role = RoleFactory::new()->create(['name' => 'admin']);
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_CREATE->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)
@@ -54,7 +55,7 @@ class UserStoreTest extends TestCase
     {
         $role = RoleFactory::new()->create(['name' => 'admin2']);
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::USERS_VIEW_ANY->value]);
         $user->givePermissionTo($permission);
 
         $response = $this->actingAs($user)

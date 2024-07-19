@@ -29,12 +29,12 @@ class MicrositesUpdateTest extends TestCase
 
     public function testItCanUpdateSite(): void
     {
-        $this->withoutExceptionHandling();
+
         //The slug field is required.
         $category = Category::factory()->create();
 
         $user = User::factory()->create();
-        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_UPDATE]);
+        $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_UPDATE->value]);
         $user->givePermissionTo($permission);
 
         $microsite = Microsites::factory()

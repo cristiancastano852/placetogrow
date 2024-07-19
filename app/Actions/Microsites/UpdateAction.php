@@ -3,7 +3,6 @@
 namespace App\Actions\Microsites;
 
 use App\Models\Microsites;
-use Illuminate\Support\Facades\Log;
 
 class UpdateAction
 {
@@ -19,7 +18,6 @@ class UpdateAction
         $microsite->site_type = $data['site_type'];
         $microsite->payment_expiration = $data['payment_expiration'];
         $microsite->save();
-        Log::info('Microsite updated', ['microsite' => $microsite]);
 
         return $microsite;
     }

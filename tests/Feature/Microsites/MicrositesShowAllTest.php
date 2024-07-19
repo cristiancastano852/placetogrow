@@ -9,7 +9,7 @@ class MicrositesShowAllTest extends TestCase
 {
     public function testItCanSeeAllMicrosites(): void
     {
-        $this->withoutExceptionHandling();
+
         $response = $this->get(route('micrositesall'));
         $response->assertOk();
     }
