@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\DeleteAction;
 use App\Actions\User\StoreAction;
 use App\Constants\PolicyName;
 use App\Http\Requests\StoreUserRequest;
@@ -41,10 +40,10 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
     }
 
-    public function destroy(User $user, DeleteAction $deleteAction): RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
         $this->authorize(PolicyName::DELETE, $user);
-        $deleteAction->execute($user);
+        $user->delete();
 
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente');
     }

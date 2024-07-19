@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\RolePermissions\EditPermissionsAction;
-use App\Actions\RolePermissions\UpdateRolesAction;
 use App\Constants\PolicyName;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,11 +41,11 @@ class RolePermissionController extends Controller
         return back()->with('success', 'Permisos actualizados correctamente.');
     }
 
-    public function update(User $user, Request $request, UpdateRolesAction $updateRolesAction)
+    public function update(User $user, Request $request)
     {
         $this->authorize(PolicyName::UPDATE, $user);
         $roles = $request->input('role', []);
-        $updateRolesAction->execute($user, $roles);
+        $user->syncRoles($roles);
 
         return redirect()->route('users.index')->with('success', 'El rol del usuario ha sido actualizado correctamente.');
     }
