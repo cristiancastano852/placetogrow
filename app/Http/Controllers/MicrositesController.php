@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Microsites\DeleteAction;
 use App\Actions\Microsites\StoreAction;
 use App\Actions\Microsites\UpdateAction;
 use App\Constants\Currency;
@@ -105,11 +104,11 @@ class MicrositesController extends Controller
         return redirect()->route('microsites.index')->with('success', 'Sitio actualizado correctamente.');
     }
 
-    public function destroy(Microsites $microsite, DeleteAction $deleteAction): RedirectResponse
+    public function destroy(Microsites $microsite): RedirectResponse
     {
-        $micrositse = Microsites::find($microsite->id);
+        $microsites = Microsites::find($microsite->id);
         $this->authorize(PolicyName::DELETE, $microsite);
-        $deleteAction->execute($micrositse);
+        $microsites->delete();
 
         return redirect()->route('microsites.index');
     }

@@ -5,7 +5,6 @@ namespace Tests\Feature\User;
 use App\Constants\PermissionSlug;
 use App\Models\User;
 use Database\Factories\RoleFactory;
-use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
