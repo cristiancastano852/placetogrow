@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\MicrositesController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +18,14 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/welcomepagando', WelcomeController::class);
+
+Route::post('payments', [PaymentController::class, 'store'])
+    ->name('payments.store');
+
+Route::get('payments/{payment}', [PaymentController::class, 'show'])
+    ->name('payments.show');
 
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
