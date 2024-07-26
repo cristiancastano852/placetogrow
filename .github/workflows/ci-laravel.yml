@@ -55,6 +55,12 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
+      - name: Clear Caches
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan optimize:clear
+
       - name: Set up Node.js
         uses: actions/setup-node@v4.0.2
         with:
