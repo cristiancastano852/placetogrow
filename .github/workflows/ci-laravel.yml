@@ -44,7 +44,9 @@ jobs:
         run: php -v
 
       - name: Install Composer Dependencies
-        run: composer install
+        run: |
+          composer install
+          composer dump-autoload
 
       - name: Copy Environment File
         run: cp .env.example .env
@@ -63,6 +65,17 @@ jobs:
       - name: Build Assets with Vite
         run: npm run build
 
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h"127.0.0.1" --silent; then
+              echo "MySQL is up and running!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+      
       - name: Migrate Database
         run: php artisan migrate --force
 
