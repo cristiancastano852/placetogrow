@@ -25,7 +25,6 @@ class StorePaymentTest extends TestCase
     /** @test */
     public function itStoresPaymentSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
 
         $responseData = [
             'status' => [
@@ -144,7 +143,7 @@ class StorePaymentTest extends TestCase
     /** @test */
     public function itShowsPaymentDetailsSuccessfully(): void
     {
-
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
