@@ -16,5 +16,5 @@ interface PaymentGateway
 
     public function process(): PaymentResponse;
 
-    // public function get(Payment $payment): QueryPaymentResponse;
+    public function get(Payment $payment): QueryPaymentResponse;
 }

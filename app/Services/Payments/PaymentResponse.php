@@ -9,11 +9,11 @@ class PaymentResponse
         public readonly string $url,
     ) {}
 
-    // public function toArray(): array
-    // {
-    //     return [
-    //         'url' => $this->url,
-    //         'process_identifier' => $this->processIdentifier,
-    //     ];
-    // }
+    public function toArray(): array
+    {
+        return [
+            'url' => $this->url,
+            'process_identifier' => $this->processIdentifier,
+        ];
+    }
 }
