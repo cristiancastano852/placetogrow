@@ -38,15 +38,16 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.2
 
       - name: Check PHP Version
         run: php -v
 
       - name: Install Composer Dependencies
-        run: |
-          composer install
-          composer dump-autoload
+        run: composer install
+
+      - name: Dump Autoload
+        run: composer dump-autoload
 
       - name: Copy Environment File
         run: cp .env.example .env
