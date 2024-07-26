@@ -82,7 +82,10 @@ jobs:
 
       - name: Run Laravel Pint
         run: ./vendor/bin/pint
-
+      
+      - name: List Files in Directory
+        run: ls -la app/Services/Payments/Gateways
+      
       - name: Run tests with coverage
         run: |
           mkdir -p results
