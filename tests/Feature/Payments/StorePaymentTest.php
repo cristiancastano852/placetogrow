@@ -10,6 +10,8 @@ use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\User;
+use App\Services\Payments\Gateways\PlacetoPayGateway;
+use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\PaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -156,6 +158,12 @@ class StorePaymentTest extends TestCase
             'status' => PaymentStatus::PENDING->value,
         ]);
 
+        $paymentService = $this->createMock(PaymentService::class);
+        $placetopay = $this->createMock(PlacetoPayGateway::class);
+        $placetopay->method('process')
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com'));
+
+        $this->app->instance(PaymentService::class, $paymentService);
         $this->mock(PaymentService::class, function ($mock) use ($payment) {
             $mock->shouldReceive('query')->andReturn($payment);
         });
