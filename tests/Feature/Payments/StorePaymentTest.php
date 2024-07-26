@@ -39,11 +39,9 @@ class StorePaymentTest extends TestCase
         ];
 
         Http::fake(fn (Request $request) => Http::response($responseData, 200));
-        //cambiar porque se debe añadir la categoria al sitio
 
         $user = User::factory()->create();
 
-        // $microsites = Microsites::factory()->create();
         $microsites = Microsites::factory()
             ->for(Category::factory()->create())
             ->for(($user))
@@ -100,11 +98,9 @@ class StorePaymentTest extends TestCase
         ];
 
         Http::fake(fn (Request $request) => Http::response($responseData, 200));
-        //cambiar porque se debe añadir la categoria al sitio
 
         $user = User::factory()->create();
 
-        // $microsites = Microsites::factory()->create();
         $microsites = Microsites::factory()
             ->for(Category::factory()->create())
             ->for(($user))
@@ -148,7 +144,6 @@ class StorePaymentTest extends TestCase
     /** @test */
     public function itShowsPaymentDetailsSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
         $microsite = Microsites::factory()
