@@ -24,8 +24,7 @@ class StorePaymentTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /** @test */
-    public function itStoresPaymentSuccessfully(): void
+    public function TestitStoresPaymentSuccessfully(): void
     {
         $this -> withoutExceptionHandling();
         $responseData = [
@@ -83,8 +82,7 @@ class StorePaymentTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function itStoresPaymentPaypalSuccessfully(): void
+    public function testItStoresPaymentPaypalSuccessfully(): void
     {
 
         $this -> withoutExceptionHandling();
@@ -143,8 +141,7 @@ class StorePaymentTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function itShowsPaymentDetailsSuccessfully(): void
+    public function testItShowsPaymentDetailsSuccessfully(): void
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();

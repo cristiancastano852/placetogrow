@@ -20,8 +20,7 @@ class PaymentServiceTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /** @test */
-    public function itProcessPaymentSuccessfullyUsingContainerTest(): void
+    public function testItProcessPaymentSuccessfullyUsingContainerTest(): void
     {
         $payment = Payment::factory()->create();
 
@@ -45,8 +44,7 @@ class PaymentServiceTest extends TestCase
         $this->assertEquals('https://google.com', $response->url);
     }
 
-    /** @test */
-    public function itProcessPaymentSuccessfullyUsingMocksTest(): void
+    public function testItProcessPaymentSuccessfullyUsingMocksTest(): void
     {
         $payment = Payment::factory()->create();
 
@@ -81,8 +79,7 @@ class PaymentServiceTest extends TestCase
         $paymentService->create($data);
     }
 
-    /** @test */
-    public function itProcessPaymentSuccessfullyUsingStubsTest(): void
+    public function testItProcessPaymentSuccessfullyUsingStubsTest(): void
     {
         $payment = Payment::factory()->create();
 
