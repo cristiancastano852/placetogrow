@@ -27,7 +27,7 @@ class StorePaymentTest extends TestCase
     /** @test */
     public function itStoresPaymentSuccessfully(): void
     {
-
+        $this -> withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -87,6 +87,7 @@ class StorePaymentTest extends TestCase
     public function itStoresPaymentPaypalSuccessfully(): void
     {
 
+        $this -> withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',

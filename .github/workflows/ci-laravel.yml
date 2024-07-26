@@ -52,6 +52,12 @@ jobs:
       - name: Copy Environment File
         run: cp .env.example .env
 
+      - name: Set environment variables
+        run: |
+          echo "PLACETOPAY_LOGIN=${{ secrets.PLACETOPAY_LOGIN }}" >> .env
+          echo "PLACETOPAY_SECRET_KEY=${{ secrets.PLACETOPAY_SECRET_KEY }}" >> .env
+          echo "PLACETOPAY_URL=${{ secrets.PLACETOPAY_URL }}" >> .env
+
       - name: Generate Application Key
         run: php artisan key:generate
 
