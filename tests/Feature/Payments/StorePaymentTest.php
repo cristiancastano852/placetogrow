@@ -8,7 +8,9 @@ use App\Constants\PaymentGateway;
 use App\Constants\PaymentStatus;
 use App\Models\Category;
 use App\Models\Microsites;
+use App\Models\Payment;
 use App\Models\User;
+use App\Services\Payments\PaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;
@@ -141,5 +143,33 @@ class StorePaymentTest extends TestCase
             'status' => PaymentStatus::PENDING->value,
             'process_identifier' => $responseData['requestId'],
         ]);
+    }
+
+    /** @test */
+    public function itShowsPaymentDetailsSuccessfully(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $microsite = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for($user)
+            ->create();
+
+        $payment = Payment::factory()->create([
+            'user_id' => $user->id,
+            'microsite_id' => $microsite->id,
+            'status' => PaymentStatus::PENDING->value,
+        ]);
+
+        $this->mock(PaymentService::class, function ($mock) use ($payment) {
+            $mock->shouldReceive('query')->andReturn($payment);
+        });
+
+        $response = $this->get(route('payments.show', $payment));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('payments.show');
+
     }
 }

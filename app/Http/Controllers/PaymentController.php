@@ -7,6 +7,7 @@ use App\Contracts\PaymentService;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Payment;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
@@ -14,6 +15,7 @@ class PaymentController extends Controller
 {
     public function store(StorePaymentRequest $request): RedirectResponse
     {
+
         $payment = new Payment();
         $payment->reference = date('ymdHis').'-'.strtoupper(Str::random(4));
         $payment->description = $request->description;
@@ -42,5 +44,22 @@ class PaymentController extends Controller
         ]);
 
         return redirect()->away($response->url);
+    }
+
+    public function show(Payment $payment): View
+    {
+        /** @var PaymentService $paymentService */
+        $paymentService = app(PaymentService::class, [
+            'payment' => $payment,
+            'gateway' => $payment->gateway,
+        ]);
+
+        if ($payment->status === PaymentStatus::PENDING->value) {
+            $payment = $paymentService->query();
+        }
+
+        return view('payments.show', [
+            'payment' => $payment,
+        ]);
     }
 }
