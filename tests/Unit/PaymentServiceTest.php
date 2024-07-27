@@ -6,7 +6,10 @@ use App\Constants\DocumentTypes;
 use App\Constants\PaymentGateway as PaymentGateways;
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
+use App\Models\Category;
+use App\Models\Microsites;
 use App\Models\Payment;
+use App\Models\User;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
 use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\PaymentService;
@@ -20,9 +23,25 @@ class PaymentServiceTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testItProcessPaymentSuccessfullyUsingContainerTest(): void
+    /** @test */
+    public function itProcessPaymentSuccessfullyUsingContainerTest(): void
     {
-        $payment = Payment::factory()->create();
+        $this -> withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for(($user))
+            ->create(
+                [
+                    'name' => 'test-name',
+
+                ]
+            );
+
+        $payment = Payment::factory()
+        ->create();
 
         $data = [
             'name' => 'John',
@@ -44,8 +63,22 @@ class PaymentServiceTest extends TestCase
         $this->assertEquals('https://google.com', $response->url);
     }
 
-    public function testItProcessPaymentSuccessfullyUsingMocksTest(): void
+    /** @test */
+    public function itProcessPaymentSuccessfullyUsingMocksTest(): void
     {
+        $this -> withoutExceptionHandling();
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for(($user))
+            ->create(
+                [
+                    'name' => 'test-name',
+
+                ]
+            );
+
         $payment = Payment::factory()->create();
 
         $data = [
@@ -79,8 +112,23 @@ class PaymentServiceTest extends TestCase
         $paymentService->create($data);
     }
 
-    public function testItProcessPaymentSuccessfullyUsingStubsTest(): void
+    /** @test */
+    public function itProcessPaymentSuccessfullyUsingStubsTest(): void
     {
+        $this -> withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for(($user))
+            ->create(
+                [
+                    'name' => 'test-name',
+
+                ]
+            );
+
         $payment = Payment::factory()->create();
 
         $data = [

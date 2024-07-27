@@ -24,7 +24,7 @@ class StorePaymentTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function TestitStoresPaymentSuccessfully(): void
+    public function testitStoresPaymentSuccessfully(): void
     {
         $this -> withoutExceptionHandling();
         $responseData = [
