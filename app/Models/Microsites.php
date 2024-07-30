@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 class Microsites extends Model
 {
@@ -19,7 +20,17 @@ class Microsites extends Model
         'category_id',
         'currency',
         'site_type',
+        'payment_expiration',
+        'payment_fields',
+        'user_id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'payment_fields' => AsArrayObject::class,
+        ];
+    }
 
     public function category(): BelongsTo
     {
