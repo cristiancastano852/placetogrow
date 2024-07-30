@@ -1,0 +1,81 @@
+name: Microsites CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feat/user-role-management
+      - feature/*
+      - refactor/*
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravel
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Install Composer Dependencies
+        run: composer install
+
+      - name: Copy Environment File
+        run: cp .env.example .env
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '20'
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Build Assets with Vite
+        run: npm run build
+
+      - name: Migrate Database
+        run: php artisan migrate --force
+
+      - name: Run Laravel Pint
+        run: ./vendor/bin/pint
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p results
+          php artisan test --log-junit results/test-results.xml --coverage-clover results/coverage.xml
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
