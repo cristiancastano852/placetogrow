@@ -20,7 +20,7 @@ use Inertia\Inertia;
 
 class MicrositesController extends Controller
 {
-    public function index(): View
+    public function index(): \Inertia\Response
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
 
@@ -31,8 +31,10 @@ class MicrositesController extends Controller
         } else {
             $microsites = Microsites::where('user_id', $user->id)->get();
         }
-
-        return view('microsites.index', compact('microsites'));
+        return Inertia::render('Microsites/AdminPanel', [
+            'microsites' => $microsites,
+        ]);
+        // return view('microsites.AdminPanel', compact('microsites'));
     }
 
     public function showAll(): \Inertia\Response
