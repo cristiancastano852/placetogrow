@@ -6,9 +6,9 @@ use App\Actions\RolePermissions\EditPermissionsAction;
 use App\Constants\PolicyName;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Inertia\Inertia;
 
 class RolePermissionController extends Controller
 {
@@ -19,11 +19,12 @@ class RolePermissionController extends Controller
         $permissions = Permission::all();
         $rolesHasPermissions = Role::with('permissions')->get();
         $rolesWithPermissionsRelations = Role::with('permissions')->get();
+
         //inertia vue return
         return Inertia::render('Roles/RolePermission', [
             'roles' => $roles,
             'permissions' => $permissions,
-            'rolesHasPermissions' => $rolesHasPermissions
+            'rolesHasPermissions' => $rolesHasPermissions,
         ]);
 
         // return view('admin.rolePermission.permissions', compact('roles', 'permissions'));
