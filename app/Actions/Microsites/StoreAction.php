@@ -19,6 +19,7 @@ class StoreAction
         $microsite->site_type = $data['site_type'];
         $microsite->payment_expiration = $data['payment_expiration'];
         $microsite->user_id = $data['user_id'];
+        $microsite->payment_fields = $data['payment_fields'];
         $microsite->save();
 
         return $microsite;

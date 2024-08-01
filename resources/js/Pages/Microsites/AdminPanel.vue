@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
-import { SAccordion, SModalLeft, SAvatar, SDropdown, SDropdownItem, SDataTable, SBadge } from '@placetopay/spartan-vue';
-import { MenuIcon, LogoutIcon } from '@placetopay/iconsax-vue/linear';
+import { SAccordion, SModalLeft, SAvatar, SDropdown, SButton, SDataTable, SBadge } from '@placetopay/spartan-vue';
+import { MenuIcon, LogoutIcon, AddIcon  } from '@placetopay/iconsax-vue/linear';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
@@ -56,6 +56,9 @@ const editMicrosite = (id) => {
     router.visit(route('microsites.edit', id));
 }
 
+const createMicrosite = () => {
+    router.visit(route('microsites.create'));
+}
 
 </script>
 
@@ -67,6 +70,7 @@ const editMicrosite = (id) => {
             <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
                 <main class="h-full w-full py-10">
                     <div class="h-full w-full px-4 sm:px-6 lg:px-8">
+                        <SButton   :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
                         <SDataTable :cols="cols" :data="props.microsites">
                             <template #col[logo]="{ value }">
                                 <img :src="value" class="w-10 h-10 rounded-xl" />
