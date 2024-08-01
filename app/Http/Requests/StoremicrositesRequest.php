@@ -32,6 +32,6 @@ class StoremicrositesRequest extends FormRequest
             'payment_fields.*.type' => 'required|string|in:text,number,email',
             'payment_fields.*.max_length' => 'nullable|integer|max:255',
             'payment_fields.*.optional' => 'required|boolean',
-            ];
+        ];
     }
 }

@@ -23,6 +23,8 @@ const goEditProfile = () => {
 //         required: true,
 //     },
 // });
+console.log(value.value);
+
 
 const emit = defineEmits({
     'update:modelValue': (value) => true,
