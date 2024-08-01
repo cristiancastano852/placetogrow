@@ -6,7 +6,9 @@ use App\Contracts\PaymentGateway;
 use App\Models\Payment;
 use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\QueryPaymentResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class PlacetoPayGateway implements PaymentGateway
 {
@@ -29,8 +31,9 @@ class PlacetoPayGateway implements PaymentGateway
     {
         $login = $this->config['login'];
         $secretKey = $this->config['secret_key'];
-        $seed = date('c');
-        $nonce = (string) rand();
+        // $seed = date('c');
+        $seed = Carbon::now()->toIso8601String();
+        $nonce = Str::random();
 
         $tranKey = base64_encode(hash('sha256', $nonce.$seed.$secretKey, true));
         $nonce = base64_encode($nonce);

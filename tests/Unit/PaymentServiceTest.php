@@ -26,7 +26,7 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingContainerTest(): void
     {
-        $this -> withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
 
@@ -41,7 +41,7 @@ class PaymentServiceTest extends TestCase
             );
 
         $payment = Payment::factory()
-        ->create();
+            ->create();
 
         $data = [
             'name' => 'John',
@@ -66,7 +66,7 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingMocksTest(): void
     {
-        $this -> withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
 
         $microsites = Microsites::factory()
@@ -115,7 +115,7 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingStubsTest(): void
     {
-        $this -> withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
 

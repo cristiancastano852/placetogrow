@@ -30,7 +30,8 @@ Route::get('payments/{payment}', [PaymentController::class, 'show'])
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return Inertia::render('Dashboard');
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
