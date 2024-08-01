@@ -25,24 +25,18 @@ console.log(value.value);
 
 <template>
     <SSidebar class="w-60 pb-8" placetopayHeader v-model="value">
-        <SSidebarItem path="Dashboard" :icon="HomeIcon">Dashboard</SSidebarItem>
+        <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">Dashboard</SSidebarItem>
         <SSidebarItem @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">Sitios</SSidebarItem>
-        <SSidebarItem path="users" :icon="Profile2UserIcon">Users</SSidebarItem>
-        <SSidebarItem path="balance" :icon="ReceiptTextIcon">Transactions</SSidebarItem>
+        <SSidebarItem path="balance" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
 
         <SSidebarItemGroup :icon="ClipboardTickIcon">
             <template #title>Administration</template>
-
-            <SSidebarItem path="my-merchants">Merchants</SSidebarItem>
-            <SSidebarItem path="my-sites">Sites</SSidebarItem>
-            <SSidebarItem path="my-users">Users</SSidebarItem>
+            <SSidebarItem @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
+            <SSidebarItem @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
 
         <SSidebarItemGroup :icon="ShieldSecurityIcon">
             <template #title>Security</template>
-
-            <SSidebarItem path="roles">Roles</SSidebarItem>
-            <SSidebarItem path="permissions">Permissions</SSidebarItem>
             <SSidebarItem path="metrics">Logs</SSidebarItem>
         </SSidebarItemGroup>
     </SSidebar>
