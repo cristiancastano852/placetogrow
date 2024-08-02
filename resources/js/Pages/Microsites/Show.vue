@@ -1,5 +1,9 @@
-<script setup>
-import { Head } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { Head, router } from '@inertiajs/vue3';
+
+const goBack = () => {
+    router.visit('/micrositesall');
+};
 
 const props = defineProps({
     microsite: {
@@ -53,10 +57,11 @@ if (props.microsite.site_type === 'Facturas') {
                     <input v-model="formData.subscription_id" type="text" id="subscription_id" class="input" />
                 </div>
             </div>
-            <Link :href="`/micrositesall`"
+            <button type="button" @click="goBack"
                 class="inline-flex items-center px-3 py-2 mt-2 mr-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                 Cancelar
-            </Link>
+            </button>
+            
             <button type="submit"
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Consultar

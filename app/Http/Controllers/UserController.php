@@ -14,21 +14,31 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         $this->authorize(PolicyName::VIEW_ANY, User::class);
         $users = User::all();
+        $users = User::with('roles:name')->get();
         $roles = Role::all();
 
-        return view('users.index', compact('users', 'roles'));
+        return Inertia::render('Users/UsersView', [
+            'users' => $users,
+            'roles' => $roles,
+
+        ]);
+        // return view('users.index', compact('users', 'roles'));
     }
 
-    public function create(): View
+    public function create()
     {
         $this->authorize(PolicyName::CREATE, User::class);
         $roles = Role::all();
 
-        return view('users.create', compact('roles'));
+        // return view('users.create', compact('roles'));
+        return Inertia::render('Users/UsersCreate', [
+            'roles' => $roles,
+        ]);
+
     }
 
     public function store(StoreUserRequest $request, StoreAction $storeAction): RedirectResponse

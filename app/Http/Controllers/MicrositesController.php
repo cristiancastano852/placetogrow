@@ -20,7 +20,7 @@ use Inertia\Inertia;
 
 class MicrositesController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
 
@@ -32,7 +32,10 @@ class MicrositesController extends Controller
             $microsites = Microsites::where('user_id', $user->id)->get();
         }
 
-        return view('microsites.index', compact('microsites'));
+        return Inertia::render('Microsites/AdminPanel', [
+            'microsites' => $microsites,
+        ]);
+        // return view('microsites.index', compact('microsites'));
     }
 
     public function showAll(): \Inertia\Response
@@ -42,15 +45,22 @@ class MicrositesController extends Controller
         return Inertia::render('Microsites/Index', compact('microsites'));
     }
 
-    public function create(): View
+    public function create()
     {
         $this->authorize(PolicyName::CREATE, Microsites::class);
         $categories = Category::query()->select('id', 'name')->get();
-        $documentTypes = DocumentTypes::cases();
-        $currencies = Currency::cases();
-        $micrositesTypes = MicrositesTypes::cases();
+        $documentTypes = DocumentTypes::toArray();
+        $currencies = Currency::toArray();
+        $micrositesTypes = MicrositesTypes::toArray();
 
-        return view('microsites.create', compact('categories', 'documentTypes', 'currencies', 'micrositesTypes'));
+        return Inertia::render('Microsites/MicrositeCreate', [
+            'categories' => $categories,
+            'documentTypes' => $documentTypes,
+            'currencies' => $currencies,
+            'micrositesTypes' => $micrositesTypes,
+        ]);
+
+        // return view('microsites.create', compact('categories', 'documentTypes', 'currencies', 'micrositesTypes'));
     }
 
     public function store(StoremicrositesRequest $request, StoreAction $storeAction): RedirectResponse
@@ -63,16 +73,13 @@ class MicrositesController extends Controller
         return redirect()->route('microsites.index')->with('success', 'Sitio creado correctamente.');
     }
 
-    public function show(Microsites $microsite): View|RedirectResponse
+    public function show(Microsites $microsite)
     {
-
         $this->authorize(PolicyName::VIEW, $microsite);
-        $user = Auth::user();
-        if ($microsite->user_id !== $user->id) {
-            return redirect()->route('microsites.index')->with('error', 'No tienes permisos para ver este sitio.');
-        }
 
-        return view('microsites.show', compact('microsite'));
+        return Inertia::render('Microsites/MicrositesShow', [
+            'microsite' => $microsite,
+        ]);
     }
 
     public function showMicrosite(string $slug, $id): \Inertia\Response
@@ -84,14 +91,23 @@ class MicrositesController extends Controller
         ]);
     }
 
-    public function edit(Microsites $microsite, Category $category): View
+    public function edit(Microsites $microsite, Category $category)
     {
 
         $this->authorize(PolicyName::UPDATE, $microsite);
         $categories = Category::query()->select('id', 'name')->get();
         $documentTypes = DocumentTypes::cases();
+        $documentTypesArray = array_map(function ($type) {
+            return $type->name;
+        }, $documentTypes);
 
-        return view('microsites.edit', compact('microsite', 'categories', 'documentTypes'));
+        return Inertia::render('Microsites/MicrositeEdit', [
+            'microsite' => $microsite,
+            'categories' => $categories,
+            'documentTypes' => $documentTypesArray,
+
+        ]);
+        // return view('microsites.edit', compact('microsite', 'categories', 'documentTypes'));
     }
 
     public function update(UpdatemicrositesRequest $request, microsites $microsite, UpdateAction $updateAction): RedirectResponse
