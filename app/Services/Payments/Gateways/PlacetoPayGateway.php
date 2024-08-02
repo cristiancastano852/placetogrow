@@ -31,7 +31,6 @@ class PlacetoPayGateway implements PaymentGateway
     {
         $login = $this->config['login'];
         $secretKey = $this->config['secret_key'];
-        // $seed = date('c');
         $seed = Carbon::now()->toIso8601String();
         $nonce = Str::random();
 

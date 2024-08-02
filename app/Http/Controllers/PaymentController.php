@@ -2,37 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PaymentGateway;
 use App\Constants\PaymentStatus;
 use App\Contracts\PaymentService;
 use App\Http\Requests\StorePaymentRequest;
+use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
-    public function store(StorePaymentRequest $request): RedirectResponse
+    public function store(StorePaymentRequest $request)
     {
-
+        // $user = User::find(Auth::user()->id);
+        $gateway = PaymentGateway::PLACETOPAY->value;
+        $microsite_id = $request->microsite_id;
+        $microsite = Microsites::find($microsite_id);
+        $currency = $microsite->currency;
         $payment = new Payment();
         $payment->reference = date('ymdHis').'-'.strtoupper(Str::random(4));
         $payment->description = $request->description;
         $payment->amount = $request->amount;
-        $payment->currency = $request->currency;
-        $payment->gateway = $request->gateway;
+        $payment->currency = $currency;
+        $payment->gateway = $gateway;
         $payment->status = PaymentStatus::PENDING;
         // $payment->user()->associate(User::first());
+        // $payment->user()->associate($user);
         $payment->user()->associate($request->user_id);
-
         $payment->microsite()->associate($request->microsite_id);
         $payment->save();
 
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
             'payment' => $payment,
-            'gateway' => $request->gateway,
+            'gateway' => $gateway,
         ]);
 
         $response = $paymentService->create([
@@ -43,7 +50,9 @@ class PaymentController extends Controller
             'document_type' => $request->document_type,
         ]);
 
-        return redirect()->away($response->url);
+        return Inertia::location($response->url);
+
+        // return response()->json(['url' => $response->url]);
     }
 
     public function show(Payment $payment): View
