@@ -135,6 +135,7 @@ class StorePaymentTest extends TestCase
             'microsite_id' => $microsites->id,
             'description' => $data['description'],
             'amount' => 10000,
+            // 'gateway' => PaymentGateway::PAYPAL->value,
             'status' => PaymentStatus::PENDING->value,
             'process_identifier' => $responseData['requestId'],
         ]);

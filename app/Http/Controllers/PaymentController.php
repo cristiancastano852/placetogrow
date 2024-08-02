@@ -19,7 +19,8 @@ class PaymentController extends Controller
     public function store(StorePaymentRequest $request)
     {
         // $user = User::find(Auth::user()->id);
-        $gateway = PaymentGateway::PLACETOPAY->value;
+        // $gateway = PaymentGateway::PLACETOPAY->value;
+        $gateway = $request->gateway;
         $microsite_id = $request->microsite_id;
         $microsite = Microsites::find($microsite_id);
         $currency = $microsite->currency;
