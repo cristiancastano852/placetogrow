@@ -28,6 +28,15 @@ Route::post('payments', [PaymentController::class, 'store'])
 Route::get('payments/{payment}', [PaymentController::class, 'show'])
     ->name('payments.show');
 
+// Route::get('payments', function () {
+//     return Inertia::render('Dashboard');
+// });
+
+Route::get('payments', [PaymentController::class, 'transactions'])
+    ->name('payments.transactions');
+// Route::get('payments/transactions', [PaymentController::class, 'transactions'])
+//     ->name('payments.transactions');
+
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
 Route::get('/dashboard', function () {

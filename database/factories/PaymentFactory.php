@@ -31,6 +31,7 @@ class PaymentFactory extends Factory
             'gateway' => PaymentGateway::PLACETOPAY->value,
             'status' => PaymentStatus::PENDING->value,
             'user_id' => User::factory(),
+            'expiration' => now()->addMinutes(20),
         ];
     }
 }

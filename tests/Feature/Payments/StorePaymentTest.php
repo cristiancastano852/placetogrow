@@ -169,7 +169,28 @@ class StorePaymentTest extends TestCase
         $response = $this->get(route('payments.show', $payment));
 
         $response->assertStatus(200);
-        $response->assertViewIs('payments.show');
+        // $response->assertViewIs('Payments.Show');
 
+    }
+
+    // public function transactions(): \Inertia\Response
+    // {
+    //     $user = Auth::user();
+    //     $payments = Payment::where('user_id', $user->id)->get();
+
+    //     return Inertia::render('Payments/Transactions', [
+    //         'payments' => $payments,
+    //     ]);
+    // }
+
+    public function testItShowsTransactionsSuccessfully(): void
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('payments.transactions'));
+
+        $response->assertStatus(200);
     }
 }

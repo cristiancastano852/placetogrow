@@ -49,6 +49,7 @@ class PaymentServiceTest extends TestCase
             'email' => fake()->freeEmail,
             'document_number' => 12123123123,
             'document_type' => DocumentTypes::CC->name,
+            'expiration' => now()->addMinutes(20),
         ];
 
         $this->app->bind(PaymentGateway::class, fn () => new PlacetoPayGatewayMock(function () {
