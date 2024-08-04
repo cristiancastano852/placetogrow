@@ -81,6 +81,9 @@ class PlacetoPayGateway implements PaymentGateway
 
         $response = Http::post($this->config['url'], $this->data);
         $response = $response->json();
+        if (isset($response['status']['status']) && $response['status']['status'] !== 'OK') {
+            throw new \Exception($response['status']['message']);
+        }
 
         return new PaymentResponse($response['requestId'], $response['processUrl']);
     }

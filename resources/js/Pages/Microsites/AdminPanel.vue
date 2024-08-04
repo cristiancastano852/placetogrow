@@ -67,7 +67,7 @@ const createMicrosite = () => {
             <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
                 <main class="h-full w-full py-10">
                     <div class="h-full w-full px-4 sm:px-6 lg:px-8">
-                        <SButton   :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
+                        <SButton v-if="can('microsites.create')"  :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
                         <SDataTable 
                         :cols="cols" 
                         :data="props.microsites"
@@ -82,11 +82,11 @@ const createMicrosite = () => {
 
                             <template #col[actions]="{ record }">
                                 <div class="flex gap-4">
-                                    <button @click="viewMicrosite(record.id)"
+                                    <button v-if="can('microsites.view')" @click="viewMicrosite(record.id)"
                                         class="text-neutral-600 hover:text-neutral-900">Show</button>
-                                    <button @click="editMicrosite(record.id)"
+                                    <button v-if="can('microsites.update')" @click="editMicrosite(record.id)"
                                         class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                    <button @click="deleteMicrosite(record.id)"
+                                    <button v-if="can('microsites.delete')" @click="deleteMicrosite(record.id)"
                                         class="text-red-600 hover:text-red-900">Delete</button>
                                 </div>
                             </template>

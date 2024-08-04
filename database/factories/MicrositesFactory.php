@@ -40,7 +40,7 @@ class MicrositesFactory extends Factory
             'logo' => $this->faker->imageUrl(),
             'category_id' => Category::all()->random()->id,
             'currency' => $this->faker->randomElement(array_column(Currency::cases(), 'name')),
-            'payment_expiration' => $this->faker->numberBetween(1, 30),
+            'payment_expiration' => $this->faker->numberBetween(20, 30),
             'user_id' => User::factory(),
             'site_type' => $this->faker->randomElement(array_column(MicrositesTypes::cases(), 'name')),
             'payment_fields' => $paymentFields,

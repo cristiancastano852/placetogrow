@@ -15,6 +15,10 @@ const goLogout = () => {
         router.post('/logout');
 }
 
+const goDashboard = () => {
+    router.visit('/dashboard');
+}
+
 
 </script>
 
@@ -35,6 +39,8 @@ const goLogout = () => {
                     <SDropdownItem v-if="!$page.props.auth.user" :icon="LogoutIcon" @click="goLogin"> Iniciar sesión
                     </SDropdownItem>
                     <SDropdownItem v-if="$page.props.auth.user" :icon="LogoutIcon" @click="goLogout"> Cerrar sesión
+                    </SDropdownItem>
+                    <SDropdownItem v-if="$page.props.auth.user" @click="goDashboard"> Configuración y historial
                     </SDropdownItem>
                 </SDropdown>
             </nav>

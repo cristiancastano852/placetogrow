@@ -20,8 +20,9 @@ class PaymentController extends Controller
         $gateway = $request->gateway;
         $microsite_id = $request->microsite_id;
         $microsite = Microsites::find($microsite_id);
-        $payment = new PaymentRepository();
-        $payment = $payment->create($request->all(), $user, $microsite, $gateway);
+        $paymentRepository = new PaymentRepository();
+        $payment = $paymentRepository->create($request->all(), $user, $microsite, $gateway);
+        $buyerData = $paymentRepository->buyer($request)->getBuyerData();
 
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
@@ -29,16 +30,9 @@ class PaymentController extends Controller
             'gateway' => $gateway,
         ]);
 
-        $response = $paymentService->create([
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'document_number' => $request->document_number,
-            'document_type' => $request->document_type,
-        ]);
+        $response = $paymentService->create($buyerData);
 
         return Inertia::location($response->url);
-
     }
 
     public function show(Payment $payment): \Inertia\Response
@@ -61,20 +55,45 @@ class PaymentController extends Controller
     public function transactions(): \Inertia\Response
     {
         $user = Auth::user();
-        $payments = Payment::where('user_id', $user->id)->get();
+        $payments = [];
+        $userRole = $user->roles->first()->name;
+        $microsites = Microsites::all();
+
+        if ($userRole === 'Admin') {
+            $payments = Payment::with('microsite')->get();
+        }
+        if ($userRole === 'Customer') {
+            $microsites = Microsites::where('user_id', $user->id)->get();
+            $payments = Payment::where('user_id', $user->id)
+                ->orWhereIn('microsite_id', $microsites->pluck('id'))
+                ->with('microsite')
+                ->get();
+        }
+
+        if ($userRole === 'Guests') {
+            $payments = Payment::where('user_id', $user->id)
+                ->with('microsite')
+                ->get();
+        }
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,
+            'microsites' => $microsites,
         ]);
     }
 
-    public function transactionsByMicrosite($request): \Inertia\Response
+    public function transactionsByMicrosite($microsite_id): \Inertia\Response
     {
         $user = Auth::user();
-        $payments = Payment::where('user_id', $user->id)->where('microsite_id', $request->microsite_id)->get();
+        $payments = Payment::where('microsite_id', $microsite_id)
+            ->with('microsite')
+            ->get();
+
+        $microsites = Microsites::all();
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,
+            'microsites' => $microsites,
         ]);
     }
 }

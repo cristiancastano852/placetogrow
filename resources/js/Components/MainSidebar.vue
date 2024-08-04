@@ -25,13 +25,13 @@ const navigate = (path: string) => {
 <template>
     <SSidebar class="w-60 pb-8" placetopayHeader v-model="value">
         <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">Dashboard</SSidebarItem>
-        <SSidebarItem @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">Sitios</SSidebarItem>
-        <SSidebarItem @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
+        <SSidebarItem v-if="is('Admin') || can('microsites.view_any')" @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">Sitios</SSidebarItem>
+        <SSidebarItem v-if="is('Admin') || can('transactions.view_any')" @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
 
-        <SSidebarItemGroup :icon="ClipboardTickIcon">
+        <SSidebarItemGroup v-if="is('Admin')" :icon="ClipboardTickIcon">
             <template #title>Administration</template>
-            <SSidebarItem v-if="can('users.create')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
-            <SSidebarItem @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
+            <SSidebarItem v-if="is('Admin')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
+            <SSidebarItem v-if="is('Admin')" @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
 
         <SSidebarItemGroup :icon="ShieldSecurityIcon">

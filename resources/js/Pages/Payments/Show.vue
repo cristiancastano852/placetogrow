@@ -81,7 +81,6 @@ const goMicrosite = () => {
                     
                 </dl>
             </div>
-            //return to the microsite
             <div class="flex justify-center mt-6">
                 <SButton @click="goMicrosite">
                     Volver al sitio de pago
