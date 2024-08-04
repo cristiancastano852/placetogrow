@@ -49,7 +49,7 @@ const value = ref('users');
 <template>
     <Head title="Users Management" />
     <AuthenticatedMainLayout v-model="value">
-        <main class="h-full w-full overflow-hidden">
+        <main class="h-screen w-full overflow-hidden">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-4">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="p-6 sm:px-20 border-b border-gray-200">
@@ -59,7 +59,7 @@ const value = ref('users');
                         </button>
                     </div>
 
-                    <div class="p-6">
+                    <div class="p-6 max-h-[calc(100vh-200px)]">
                         <div class="grid grid-cols-1 gap-4 max-h-[calc(100vh-200px)] overflow-y-auto">
                             <div v-for="user in users" :key="user.id"
                                 class="bg-gray-50 p-6 rounded-lg border border-gray-200">

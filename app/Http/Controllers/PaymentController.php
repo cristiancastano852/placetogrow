@@ -5,34 +5,28 @@ namespace App\Http\Controllers;
 use App\Constants\PaymentStatus;
 use App\Contracts\PaymentService;
 use App\Http\Requests\StorePaymentRequest;
+use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\User;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Str;
+use App\Repositories\PaymentRepository;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
-    public function store(StorePaymentRequest $request): RedirectResponse
+    public function store(StorePaymentRequest $request)
     {
-
-        $payment = new Payment();
-        $payment->reference = date('ymdHis').'-'.strtoupper(Str::random(4));
-        $payment->description = $request->description;
-        $payment->amount = $request->amount;
-        $payment->currency = $request->currency;
-        $payment->gateway = $request->gateway;
-        $payment->status = PaymentStatus::PENDING;
-        // $payment->user()->associate(User::first());
-        $payment->user()->associate($request->user_id);
-
-        $payment->microsite()->associate($request->microsite_id);
-        $payment->save();
+        $user = User::find(Auth::user()->id);
+        $gateway = $request->gateway;
+        $microsite_id = $request->microsite_id;
+        $microsite = Microsites::find($microsite_id);
+        $payment = new PaymentRepository();
+        $payment = $payment->create($request->all(), $user, $microsite, $gateway);
 
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
             'payment' => $payment,
-            'gateway' => $request->gateway,
+            'gateway' => $gateway,
         ]);
 
         $response = $paymentService->create([
@@ -43,10 +37,11 @@ class PaymentController extends Controller
             'document_type' => $request->document_type,
         ]);
 
-        return redirect()->away($response->url);
+        return Inertia::location($response->url);
+
     }
 
-    public function show(Payment $payment): View
+    public function show(Payment $payment): \Inertia\Response
     {
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
@@ -58,7 +53,7 @@ class PaymentController extends Controller
             $payment = $paymentService->query();
         }
 
-        return view('payments.show', [
+        return Inertia::render('Payments/Show', [
             'payment' => $payment,
         ]);
     }

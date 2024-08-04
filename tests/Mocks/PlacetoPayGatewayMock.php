@@ -10,7 +10,8 @@ class PlacetoPayGatewayMock extends PlacetoPayGateway
 {
     public function __construct(protected Closure $closure)
     {
-        parent::__construct();
+        $expiration = now()->addMinutes(20);
+        parent::__construct($expiration);
     }
 
     public function process(): PaymentResponse

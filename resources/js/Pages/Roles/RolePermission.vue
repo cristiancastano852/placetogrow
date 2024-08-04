@@ -22,7 +22,6 @@ const hasPermission = (role: any, permission: any) => {
 
 const updatePermissions = (roleId: number, permissionId: number, checked: boolean) => {
   const role = rolesHasPermissions.value.find(r => r.id === roleId);
-  console.log("role",role);
   if (role) {
     if (!role.permissions) role.permissions = []; 
 
@@ -35,14 +34,12 @@ const updatePermissions = (roleId: number, permissionId: number, checked: boolea
     } else if (!checked && permissionIndex !== -1) {
       role.permissions.splice(permissionIndex, 1);
     }
-    console.log("role.permissions",role.permissions);
   }
 };
 
 const savePermissions = (roleId: number) => {
   const role = rolesHasPermissions.value.find(r => r.id === roleId);
   const permissions = role.permissions.map(p => p.name); 
-  console.log("asdasdas",permissions);
   if (role) {
     router.put(route('admin.rolePermission.edit-permissions', roleId), {
       permissions: permissions

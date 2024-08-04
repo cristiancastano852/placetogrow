@@ -5,21 +5,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WelcomeController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/welcomepagando', WelcomeController::class);
+Route::get('/', [MicrositesController::class, 'showAll'])->name('micrositesall');
 
 Route::post('payments', [PaymentController::class, 'store'])
     ->name('payments.store');
@@ -31,8 +20,13 @@ Route::middleware('auth')->group(function () {
         ->name('payments.transactions');
 });
 
+Route::get('payments', [PaymentController::class, 'transactions'])
+    ->name('payments.transactions');
+
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
-Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
+Route::middleware('auth')->group(function () {
+    Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
+});
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 

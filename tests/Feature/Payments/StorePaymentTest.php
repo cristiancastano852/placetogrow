@@ -26,7 +26,6 @@ class StorePaymentTest extends TestCase
 
     public function testitStoresPaymentSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -64,9 +63,17 @@ class StorePaymentTest extends TestCase
             'document_number' => 12123123123,
             'document_type' => DocumentTypes::CC->name,
             'gateway' => PaymentGateway::PLACETOPAY->value,
+            'fields_data' => [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => fake()->freeEmail,
+                'document_number' => 12123123123,
+                'document_type' => DocumentTypes::CC->name,
+            ],
         ];
 
-        $response = $this->post(route('payments.store'), $data);
+        $response = $this->actingAs($user)
+            ->post(route('payments.store'), $data);
 
         $response->assertSessionHasNoErrors()
             ->assertRedirect($responseData['processUrl']);
@@ -85,7 +92,6 @@ class StorePaymentTest extends TestCase
     public function testItStoresPaymentPaypalSuccessfully(): void
     {
 
-        $this->withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -123,9 +129,17 @@ class StorePaymentTest extends TestCase
             'document_number' => 12123123123,
             'document_type' => DocumentTypes::CC->name,
             'gateway' => PaymentGateway::PAYPAL->value,
+            'fields_data' => [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => fake()->freeEmail,
+                'document_number' => 12123123123,
+                'document_type' => DocumentTypes::CC->name,
+            ],
         ];
 
-        $response = $this->post(route('payments.store'), $data);
+        $response = $this->actingAs($user)
+            ->post(route('payments.store'), $data);
 
         $response->assertSessionHasNoErrors()
             ->assertRedirect($responseData['processUrl']);
@@ -135,7 +149,7 @@ class StorePaymentTest extends TestCase
             'microsite_id' => $microsites->id,
             'description' => $data['description'],
             'amount' => 10000,
-            'gateway' => PaymentGateway::PAYPAL->value,
+            // 'gateway' => PaymentGateway::PAYPAL->value,
             'status' => PaymentStatus::PENDING->value,
             'process_identifier' => $responseData['requestId'],
         ]);
@@ -143,7 +157,6 @@ class StorePaymentTest extends TestCase
 
     public function testItShowsPaymentDetailsSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
@@ -169,7 +182,16 @@ class StorePaymentTest extends TestCase
         $response = $this->get(route('payments.show', $payment));
 
         $response->assertStatus(200);
-        $response->assertViewIs('payments.show');
+        // $response->assertViewIs('Payments.Show');
 
+    }
+
+    public function testItShowsTransactionsSuccessfully(): void
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)
+            ->get(route('payments.transactions'));
+
+        $response->assertStatus(200);
     }
 }

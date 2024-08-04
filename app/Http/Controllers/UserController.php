@@ -9,7 +9,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -26,7 +25,6 @@ class UserController extends Controller
             'roles' => $roles,
 
         ]);
-        // return view('users.index', compact('users', 'roles'));
     }
 
     public function create()
@@ -34,7 +32,6 @@ class UserController extends Controller
         $this->authorize(PolicyName::CREATE, User::class);
         $roles = Role::all();
 
-        // return view('users.create', compact('roles'));
         return Inertia::render('Users/UsersCreate', [
             'roles' => $roles,
         ]);
