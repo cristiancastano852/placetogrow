@@ -10,6 +10,7 @@ window.Alpine = Alpine;
 
 Alpine.start();
 import { createApp, h } from 'vue';
+import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
@@ -34,7 +35,9 @@ createInertiaApp({
             .use(i18n)
             .use(plugin)
             .use(ZiggyVue)
+            .use(LaravelPermissionToVueJS)
             .mount(el);
+
     },
     progress: {
         color: '#4B5563',

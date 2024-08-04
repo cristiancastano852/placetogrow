@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'customer@example.com',
         ]);
 
+        User::factory()->create([
+            'name' => 'Guest',
+            'email' => 'guest@example.com',
+        ]);
+
         $this->call(CategorySeeder::class);
         $this->call(micrositesSeeder::class);
         $this->call(RolesSeeder::class);

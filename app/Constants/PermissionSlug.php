@@ -26,6 +26,8 @@ enum PermissionSlug: string
     case ROLES_UPDATE = 'roles.update';
     case ROLE_PERMISSION_VIEW = 'role_permission.view';
     case ROLE_PERMISSION_UPDATE = 'role_permission.update';
+    case TRANSACTIONS_VIEW_ANY = 'transactions.view_any';
+    case TRANSACTIONS_VIEW = 'transactions.view';
 
     public static function toArray(): array
     {

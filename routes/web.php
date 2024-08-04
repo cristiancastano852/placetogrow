@@ -15,9 +15,19 @@ Route::post('payments', [PaymentController::class, 'store'])
 
 Route::get('payments/{payment}', [PaymentController::class, 'show'])
     ->name('payments.show');
+Route::middleware('auth')->group(function () {
+    Route::get('payments', [PaymentController::class, 'transactions'])
+        ->name('payments.transactions');
 
-Route::get('payments', [PaymentController::class, 'transactions'])
-    ->name('payments.transactions');
+    //transactions by microsite
+    Route::get('payments/microsite/{microsite}', [PaymentController::class, 'transactionsByMicrosite'])
+        ->name('payments.transactionsByMicrosite');
+});
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('payments', [PaymentController::class, 'transactions'])
+//         ->name('payments.transactions');
+// });
 
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::middleware('auth')->group(function () {

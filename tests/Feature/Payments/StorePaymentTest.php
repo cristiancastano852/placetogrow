@@ -9,6 +9,7 @@ use App\Constants\PaymentStatus;
 use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\Payment;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
 use App\Services\Payments\PaymentResponse;
@@ -149,7 +150,6 @@ class StorePaymentTest extends TestCase
             'microsite_id' => $microsites->id,
             'description' => $data['description'],
             'amount' => 10000,
-            // 'gateway' => PaymentGateway::PAYPAL->value,
             'status' => PaymentStatus::PENDING->value,
             'process_identifier' => $responseData['requestId'],
         ]);
@@ -182,16 +182,45 @@ class StorePaymentTest extends TestCase
         $response = $this->get(route('payments.show', $payment));
 
         $response->assertStatus(200);
-        // $response->assertViewIs('Payments.Show');
 
     }
 
     public function testItShowsTransactionsSuccessfully(): void
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => 'Admin']);
+        $user->roles()->attach($role);
         $response = $this->actingAs($user)
             ->get(route('payments.transactions'));
 
         $response->assertStatus(200);
+
+        $userCustomer = User::factory()->create();
+        $role = Role::factory()->create(['name' => 'Customer']);
+        $userCustomer->roles()->attach($role);
+        $response = $this->actingAs($userCustomer)
+            ->get(route('payments.transactions'));
+        $response->assertStatus(200);
+
+        $userGuest = User::factory()->create();
+
+        $role = Role::factory()->create(['name' => 'Guests']);
+        $userGuest->roles()->attach($role);
+        $response = $this->actingAs($userGuest)
+            ->get(route('payments.transactions'));
+        $response->assertStatus(200);
+    }
+
+    public function testItShowsTransactionsByMicrositeSuccessfully(): void
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => 'Admin']);
+        $user->roles()->attach($role);
+        $response = $this->actingAs($user)
+            ->get(route('payments.transactionsByMicrosite', 1));
+        $response->assertStatus(200);
+
     }
 }
