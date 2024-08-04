@@ -8,6 +8,7 @@ use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\QueryPaymentResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PlacetoPayGateway implements PaymentGateway
@@ -78,15 +79,53 @@ class PlacetoPayGateway implements PaymentGateway
 
     public function process(): PaymentResponse
     {
-
-        $response = Http::post($this->config['url'], $this->data);
-        $response = $response->json();
-        if (isset($response['status']['status']) && $response['status']['status'] !== 'OK') {
-            throw new \Exception($response['status']['message']);
+        try {
+            $response = Http::post($this->config['url'], $this->data);
+            if ($response->successful()) {
+                Log::info('PlacetoPay response succesful', $response->json());
+                $data = $response->json();
+                return new PaymentResponse(
+                    $data['requestId'],
+                    $data['processUrl'],
+                    'success'
+                );
+            } elseif ($response->clientError()) {
+                Log::error('PlacetoPay client error', $response->json());
+                return new PaymentResponse(
+                    0,
+                    '',
+                    'client_error',
+                    $response->json('message', 'Client error occurred')
+                );
+            } elseif ($response->serverError()) {
+                Log::error('PlacetoPay server error', $response->json());
+                return new PaymentResponse(
+                    0,
+                    '',
+                    'server_error',
+                    $response->json('message', 'Server error occurred')
+                );
+            } else {
+                Log::error('PlacetoPay unknown error', $response->json());
+                return new PaymentResponse(
+                    0,
+                    '',
+                    'unknown_error',
+                    'An unknown error occurred'
+                );
+            }
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            Log::error('PlacetoPay exception', ['message' => $message]);
+            return new PaymentResponse(
+                0,
+                '',
+                'exception',
+                $message
+            );
         }
-
-        return new PaymentResponse($response['requestId'], $response['processUrl']);
     }
+
 
     public function get(Payment $payment): QueryPaymentResponse
     {

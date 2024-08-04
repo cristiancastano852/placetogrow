@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Actions\Payments\CreateNewPaymentAction;
+use App\Actions\Payments\ProcessNewPaymentAction;
 
 class PaymentController extends Controller
 {
