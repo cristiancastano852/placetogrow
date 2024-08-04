@@ -6,14 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    use LaravelPermissionToVueJS;
     use HasRoles;
+    use LaravelPermissionToVueJS;
 
     /**
      * The attributes that are mass assignable.
