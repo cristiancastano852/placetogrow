@@ -20,14 +20,12 @@ class RolePermissionController extends Controller
         $rolesHasPermissions = Role::with('permissions')->get();
         $rolesWithPermissionsRelations = Role::with('permissions')->get();
 
-        //inertia vue return
         return Inertia::render('Roles/RolePermission', [
             'roles' => $roles,
             'permissions' => $permissions,
             'rolesHasPermissions' => $rolesHasPermissions,
         ]);
 
-        // return view('admin.rolePermission.permissions', compact('roles', 'permissions'));
     }
 
     public function editPermissions(Role $role, Request $request, EditPermissionsAction $editPermissionsAction)

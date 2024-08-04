@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { SAccordion, SModalLeft, SAvatar, SDropdown, SDropdownItem, SDataTable, SBadge } from '@placetopay/spartan-vue';
-import { MenuIcon, LogoutIcon, HomeIcon, ReceiptTextIcon, DocumentCodeIcon } from '@placetopay/iconsax-vue/linear';
+import { MenuIcon, LogoutIcon, UserEditIcon , ReceiptTextIcon, DocumentCodeIcon } from '@placetopay/iconsax-vue/linear';
 import { router } from '@inertiajs/vue3'
 import MainSidebar from '../Components/MainSidebar.vue';
 import { computed } from 'vue';
@@ -10,6 +10,10 @@ const open = ref(true);
 
 const goBack = () => {
     router.visit('/');
+};
+
+const goLogout = () => {
+    router.post('/logout');
 };
 
 const goEditProfile = () => {
@@ -54,8 +58,8 @@ const emit = defineEmits({
                         <SAvatar name="John Doe" />
                     </template>
 
-                    <SDropdownItem :icon="LogoutIcon" @click="goBack"> Logout </SDropdownItem>
-                    <SDropdownItem :icon="LogoutIcon" @click="goEditProfile"> Profile </SDropdownItem>
+                    <SDropdownItem :icon="UserEditIcon" @click="goEditProfile"> Profile </SDropdownItem>
+                    <SDropdownItem :icon="LogoutIcon" @click="goLogout"> Logout </SDropdownItem>
                 </SDropdown>
             </nav>
             

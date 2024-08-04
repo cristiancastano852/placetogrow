@@ -16,10 +16,10 @@ class PlacetoPayGateway implements PaymentGateway
 
     private array $config;
 
-    public function __construct()
+    public function __construct($expiration)
     {
         $this->data = [
-            'expiration' => now()->addHour()->format('c'),
+            'expiration' => Carbon::parse($expiration)->format('c'),
             'ipAddress' => request()->ip(),
             'userAgent' => request()->userAgent(),
         ];
@@ -31,7 +31,6 @@ class PlacetoPayGateway implements PaymentGateway
     {
         $login = $this->config['login'];
         $secretKey = $this->config['secret_key'];
-        // $seed = date('c');
         $seed = Carbon::now()->toIso8601String();
         $nonce = Str::random();
 
@@ -79,7 +78,7 @@ class PlacetoPayGateway implements PaymentGateway
 
     public function process(): PaymentResponse
     {
-        //implementar aca validando si algo falla, evaluar las respuestas
+
         $response = Http::post($this->config['url'], $this->data);
         $response = $response->json();
 

@@ -20,17 +20,16 @@ const value = computed({
 const navigate = (path: string) => {
     router.visit(path);
 };
-console.log(value.value);
 </script>
 
 <template>
     <SSidebar class="w-60 pb-8" placetopayHeader v-model="value">
         <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">Dashboard</SSidebarItem>
         <SSidebarItem @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">Sitios</SSidebarItem>
-        <SSidebarItem path="balance" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
+        <SSidebarItem @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
 
         <SSidebarItemGroup :icon="ClipboardTickIcon">
-            <template #title>Administration</template>
+            <template #title>Administración</template>
             <SSidebarItem @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
             <SSidebarItem @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
