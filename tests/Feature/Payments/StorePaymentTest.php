@@ -92,7 +92,7 @@ class StorePaymentTest extends TestCase
 
     public function testItStoresPaymentPaypalSuccessfully(): void
     {
-
+        $this->withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -172,7 +172,7 @@ class StorePaymentTest extends TestCase
         $paymentService = $this->createMock(PaymentService::class);
         $placetopay = $this->createMock(PlacetoPayGateway::class);
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1, 'https://placetopay.com'));
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com','success'));
 
         $this->app->instance(PaymentService::class, $paymentService);
         $this->mock(PaymentService::class, function ($mock) use ($payment) {
@@ -180,7 +180,6 @@ class StorePaymentTest extends TestCase
         });
 
         $response = $this->get(route('payments.show', $payment));
-
         $response->assertStatus(200);
 
     }

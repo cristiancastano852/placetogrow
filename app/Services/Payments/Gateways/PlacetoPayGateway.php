@@ -84,6 +84,7 @@ class PlacetoPayGateway implements PaymentGateway
             if ($response->successful()) {
                 Log::info('PlacetoPay response succesful', $response->json());
                 $data = $response->json();
+
                 return new PaymentResponse(
                     $data['requestId'],
                     $data['processUrl'],
@@ -91,6 +92,7 @@ class PlacetoPayGateway implements PaymentGateway
                 );
             } elseif ($response->clientError()) {
                 Log::error('PlacetoPay client error', $response->json());
+
                 return new PaymentResponse(
                     0,
                     '',
@@ -99,6 +101,7 @@ class PlacetoPayGateway implements PaymentGateway
                 );
             } elseif ($response->serverError()) {
                 Log::error('PlacetoPay server error', $response->json());
+
                 return new PaymentResponse(
                     0,
                     '',
@@ -107,6 +110,7 @@ class PlacetoPayGateway implements PaymentGateway
                 );
             } else {
                 Log::error('PlacetoPay unknown error', $response->json());
+
                 return new PaymentResponse(
                     0,
                     '',
@@ -117,6 +121,7 @@ class PlacetoPayGateway implements PaymentGateway
         } catch (\Exception $e) {
             $message = $e->getMessage();
             Log::error('PlacetoPay exception', ['message' => $message]);
+
             return new PaymentResponse(
                 0,
                 '',
@@ -125,7 +130,6 @@ class PlacetoPayGateway implements PaymentGateway
             );
         }
     }
-
 
     public function get(Payment $payment): QueryPaymentResponse
     {

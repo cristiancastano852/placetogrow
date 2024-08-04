@@ -12,8 +12,7 @@ class PaymentService implements PaymentServiceContract
     public function __construct(
         protected Payment $payment,
         protected PaymentGateway $gateway,
-    ) {
-    }
+    ) {}
 
     public function create(array $buyer): PaymentResponse
     {

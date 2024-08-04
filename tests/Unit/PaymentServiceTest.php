@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Constants\DocumentTypes;
 use App\Constants\PaymentGateway as PaymentGateways;
+use App\Constants\PaymentStatus;
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
 use App\Models\Category;
@@ -51,7 +52,7 @@ class PaymentServiceTest extends TestCase
         ];
 
         $this->app->bind(PaymentGateway::class, fn () => new PlacetoPayGatewayMock(function () {
-            return new PaymentResponse(1, 'https://google.com');
+            return new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, "Create");
         }));
 
         /** @var PaymentService $paymentService */
@@ -102,7 +103,7 @@ class PaymentServiceTest extends TestCase
             ->willReturnSelf();
 
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1, 'https://placetopay.com'));
+            ->willReturn(new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, "Create"));
 
         $paymentService = new PaymentService($payment, $placetopay);
         $paymentService->create($data);
@@ -145,12 +146,12 @@ class PaymentServiceTest extends TestCase
             ->willReturnSelf();
 
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1111, 'https://placetopay.com'));
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', PaymentStatus::APPROVED->value, "Create"));
 
         $paymentService = new PaymentService($payment, $placetopay);
         $response = $paymentService->create($data);
 
-        $this->assertEquals(1111, $response->processIdentifier);
+        $this->assertEquals(1, $response->processIdentifier);
         $this->assertEquals('https://placetopay.com', $response->url);
     }
 }

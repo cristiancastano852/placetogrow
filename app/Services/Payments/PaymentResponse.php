@@ -26,4 +26,3 @@ class PaymentResponse
         return json_encode($this->toArray());
     }
 }
-

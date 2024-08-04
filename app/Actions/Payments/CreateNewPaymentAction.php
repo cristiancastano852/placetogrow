@@ -2,8 +2,8 @@
 
 namespace App\Actions\Payments;
 
-use App\Models\Payment;
 use App\Models\Microsites;
+use App\Models\Payment;
 use App\Models\User;
 use App\Repositories\PaymentRepository;
 
