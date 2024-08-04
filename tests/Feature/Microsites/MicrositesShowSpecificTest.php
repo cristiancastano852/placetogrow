@@ -24,7 +24,7 @@ class MicrositesShowSpecificTest extends TestCase
             );
         $id = $microsite->id;
         $slug = $microsite->slug;
-        $response = $this->get(route('microsite.showMicrosite', ['slug' => $slug, 'id' => $id]));
+        $response = $this->actingAs($user)->get(route('microsite.showMicrosite', ['slug' => $slug, 'id' => $id]));
         $response->assertStatus(200);
     }
 }

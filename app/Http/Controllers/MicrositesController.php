@@ -13,7 +13,6 @@ use App\Http\Requests\UpdatemicrositesRequest;
 use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\User;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -35,7 +34,6 @@ class MicrositesController extends Controller
         return Inertia::render('Microsites/AdminPanel', [
             'microsites' => $microsites,
         ]);
-        // return view('microsites.index', compact('microsites'));
     }
 
     public function showAll(): \Inertia\Response
@@ -60,7 +58,6 @@ class MicrositesController extends Controller
             'micrositesTypes' => $micrositesTypes,
         ]);
 
-        // return view('microsites.create', compact('categories', 'documentTypes', 'currencies', 'micrositesTypes'));
     }
 
     public function store(StoremicrositesRequest $request, StoreAction $storeAction): RedirectResponse
@@ -107,7 +104,6 @@ class MicrositesController extends Controller
             'documentTypes' => $documentTypesArray,
 
         ]);
-        // return view('microsites.edit', compact('microsite', 'categories', 'documentTypes'));
     }
 
     public function update(UpdatemicrositesRequest $request, microsites $microsite, UpdateAction $updateAction): RedirectResponse

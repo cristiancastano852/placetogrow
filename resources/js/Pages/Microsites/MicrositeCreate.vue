@@ -105,17 +105,18 @@ const submitForm = () => {
     },
   });
 };
+const value = ref('Sitios');
 </script>
 
 <template>
 
   <Head title="Crear micrositio" />
-  <AuthenticatedMainLayout>
-    <div class="container mx-auto p-4">
-      <h1 class="text-2xl font-bold mb-4">Crear sitio de pago</h1>
+  <AuthenticatedMainLayout v-model="value">
+    <div class="container mx-auto p-4 flex flex-col flex-center">
+      <h1 class="text-2xl font-bold mb-4 text-center">Crear sitio de pago</h1>
       
       <form @submit.prevent="submitForm"
-        class="border border-gray-300 max-w-lg mx-auto space-y-4 bg-black/5 p-4 rounded-lg shadow">
+        class="border border-gray-300 max-w-lg mx-auto space-y-4 bg-black/5 p-4 rounded-lg shadow h-96 overflow-y-auto">
         <SLabel class="bg-black/5 -mx-4 -mt-4 rounded-t-lg p-2 !font-bold text-center !text-lg shadow">Configuración
           básica</SLabel>
   
@@ -165,7 +166,7 @@ const submitForm = () => {
           <div>
             <SLabel for="payment_expiration" class="text-gray-700">Expiración del pago</SLabel>
             <SInputBlock v-model="form.payment_expiration" id="payment_expiration" type="number"
-              placeholder="10 minutos" />
+              placeholder="15 minutos" />
           </div>
         </div>
         <div class="flex gap-4">

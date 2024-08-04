@@ -26,8 +26,6 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingContainerTest(): void
     {
-        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
 
         $microsites = Microsites::factory()
@@ -67,9 +65,7 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingMocksTest(): void
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
-
         $microsites = Microsites::factory()
             ->for(Category::factory()->create())
             ->for(($user))
@@ -90,7 +86,6 @@ class PaymentServiceTest extends TestCase
             'document_type' => DocumentTypes::CC->name,
         ];
 
-        // Mocks: Used to verify interactions between objects.
         $placetopay = $this->createMock(PlacetoPayGateway::class);
         $placetopay->expects($this->once())
             ->method('prepare')
@@ -116,8 +111,6 @@ class PaymentServiceTest extends TestCase
     /** @test */
     public function itProcessPaymentSuccessfullyUsingStubsTest(): void
     {
-        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
 
         $microsites = Microsites::factory()

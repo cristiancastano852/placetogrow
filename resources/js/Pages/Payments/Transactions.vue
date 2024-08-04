@@ -2,11 +2,11 @@
 import { Head, Link, router } from '@inertiajs/vue3';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { ref } from 'vue';
-import {SDataTable} from '@placetopay/spartan-vue';
+import {SDataTable, SBadge} from '@placetopay/spartan-vue';
 
 const colorByType = {
-    Facturas: 'green',
-    Donaciones: 'blue',
+    APPROVED: 'green',
+    REJECTED: 'red',
     PENDING: 'yellow',
 };
 
@@ -19,13 +19,13 @@ const props = defineProps({
 
 const cols = [
     { id: 'id', header: 'ID' },
+    { id: 'reference', header: 'Referencia' },
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
+    { id: 'currency', header: 'Moneda' },
     { id: 'amount', header: 'Monto' },
-    { id: 'actions', header: 'Actions' }
 ];
 
-console.log(props.payments);
 const value = ref('payments');
 
 </script>
@@ -46,17 +46,9 @@ const value = ref('payments');
                             <template #col[status]="{ value }">
                                 <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
                             </template>
-
-                            <!-- <template #col[actions]="{ record }">
-                                <div class="flex gap-4">
-                                    <button @click="viewMicrosite(record.id)"
-                                        class="text-neutral-600 hover:text-neutral-900">Show</button>
-                                    <button @click="editMicrosite(record.id)"
-                                        class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                    <button @click="deleteMicrosite(record.id)"
-                                        class="text-red-600 hover:text-red-900">Delete</button>
-                                </div>
-                            </template> -->
+                            <template #col[currency]="{ value }">
+                                <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                            </template>
                         </SDataTable>
         </div>
         <div v-else>

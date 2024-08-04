@@ -29,6 +29,9 @@ if (props.microsite.site_type === 'Facturas') {
 
 const submitForm = () => {
     formData.microsite_id = props.microsite.id;
+    formData.fields_data = JSON.stringify(formData);
+    formData.gateway = 'placetopay';
+
     const response = router.post(route('payments.store'), formData, {
         onError: (errors) => {
             console.error(errors);
@@ -55,10 +58,6 @@ const submitForm = () => {
                 </div>
             </div>
             <div v-if="microsite.site_type === 'Donaciones'">
-                <div>
-                    <label for="description">Descripción </label>
-                    <input v-model="formData.description" type="text" id="description" class="input" />
-                </div>
                 <div v-for="(field, index) in microsite.payment_fields" :key="index">
 
                     <div v-if="field.type === 'input'">

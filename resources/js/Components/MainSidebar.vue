@@ -20,7 +20,6 @@ const value = computed({
 const navigate = (path: string) => {
     router.visit(path);
 };
-console.log(value.value);
 </script>
 
 <template>

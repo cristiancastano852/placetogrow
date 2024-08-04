@@ -22,9 +22,6 @@ const props = defineProps({
     },
 });
 
-console.log(props.microsites);
-
-
 const open = ref(true);
 const value = ref('Sitios');
 
@@ -71,7 +68,10 @@ const createMicrosite = () => {
                 <main class="h-full w-full py-10">
                     <div class="h-full w-full px-4 sm:px-6 lg:px-8">
                         <SButton   :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
-                        <SDataTable :cols="cols" :data="props.microsites">
+                        <SDataTable 
+                        :cols="cols" 
+                        :data="props.microsites"
+                        >
                             <template #col[logo]="{ value }">
                                 <img :src="value" class="w-10 h-10 rounded-xl" />
                             </template>

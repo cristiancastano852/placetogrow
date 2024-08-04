@@ -2,40 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PaymentGateway;
 use App\Constants\PaymentStatus;
 use App\Contracts\PaymentService;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\User;
+use App\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
     public function store(StorePaymentRequest $request)
     {
-        // $user = User::find(Auth::user()->id);
-        // $gateway = PaymentGateway::PLACETOPAY->value;
+        $user = User::find(Auth::user()->id);
         $gateway = $request->gateway;
         $microsite_id = $request->microsite_id;
         $microsite = Microsites::find($microsite_id);
-        $currency = $microsite->currency;
-        $payment = new Payment();
-        $payment->reference = date('ymdHis').'-'.strtoupper(Str::random(4));
-        $payment->description = $request->description;
-        $payment->amount = $request->amount;
-        $payment->currency = $currency;
-        $payment->gateway = $gateway;
-        $payment->expiration = now()->addMinutes($microsite->payment_expiration);
-        $payment->status = PaymentStatus::PENDING;
-        // $payment->user()->associate(User::first());
-        // $payment->user()->associate($user);
-        $payment->user()->associate($request->user_id);
-        $payment->microsite()->associate($request->microsite_id);
-        $payment->save();
+        $payment = new PaymentRepository();
+        $payment = $payment->create($request->all(), $user, $microsite, $gateway);
+
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
             'payment' => $payment,
@@ -52,7 +39,6 @@ class PaymentController extends Controller
 
         return Inertia::location($response->url);
 
-        // return response()->json(['url' => $response->url]);
     }
 
     public function show(Payment $payment): \Inertia\Response
@@ -72,7 +58,6 @@ class PaymentController extends Controller
         ]);
     }
 
-    //transactions
     public function transactions(): \Inertia\Response
     {
         $user = Auth::user();
