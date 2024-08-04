@@ -62,4 +62,24 @@ class PaymentController extends Controller
             'payment' => $payment,
         ]);
     }
+
+    public function transactions(): \Inertia\Response
+    {
+        $user = Auth::user();
+        $payments = Payment::where('user_id', $user->id)->get();
+
+        return Inertia::render('Payments/Transactions', [
+            'payments' => $payments,
+        ]);
+    }
+
+    public function transactionsByMicrosite($request ): \Inertia\Response
+    {
+        $user = Auth::user();        
+        $payments = Payment::where('user_id', $user->id)->where('microsite_id', $request->microsite_id)->get();
+
+        return Inertia::render('Payments/Transactions', [
+            'payments' => $payments,
+        ]);
+    }
 }

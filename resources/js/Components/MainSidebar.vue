@@ -31,7 +31,7 @@ console.log(value.value);
 
         <SSidebarItemGroup :icon="ClipboardTickIcon">
             <template #title>Administration</template>
-            <SSidebarItem @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
+            <SSidebarItem v-if="can('users.create')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
             <SSidebarItem @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
 
