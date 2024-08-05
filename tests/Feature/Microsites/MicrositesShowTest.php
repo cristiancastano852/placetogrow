@@ -62,6 +62,6 @@ class MicrositesShowTest extends TestCase
         $other_user->givePermissionTo($permission);
         $response = $this->actingAs($other_user)
             ->get(route('microsites.show', $microsite->id));
-        $response->assertStatus(302);
+        $response->assertOk();
     }
 }

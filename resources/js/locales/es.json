@@ -1,0 +1,85 @@
+{
+    "welcome": "Bienvenido",
+    "hello": "Hola",
+    "goodbye": "Adiós",
+    "auth": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "logout": "Cerrar sesión"
+    },
+    "home": {
+        "title": "Inicio",
+        "subtitle": "Bienvenido a la página de inicio",
+        "selectOptions": "Selecciona la opción deseada"
+    },
+    "about": {
+        "title": "Acerca de",
+        "subtitle": "Bienvenido a la página de acerca de"
+    }, 
+    "microsite": {
+        "show": "Mostrar",
+        "title": "Micrositios",
+        "subtitle": "Bienvenido a la página de micrositio",
+        "create": "Crear",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "back": "Regresar",
+        "create_success": "Registro creado exitosamente",
+        "update_success": "Registro actualizado exitosamente",
+        "delete_success": "Registro eliminado exitosamente",
+        "create_error": "Error al crear el registro",
+        "update_error": "Error al actualizar el registro",
+        "delete_error": "Error al eliminar el registro",
+        "confirm_delete": "¿Estás seguro de que deseas eliminar este registro?",
+        "confirm_cancel": "¿Estás seguro de que deseas cancelar la operación?",
+        "confirm_back": "¿Estás seguro de que deseas regresar sin guardar los cambios?",
+        "actions": "Acciones"
+
+    },
+    "pagination": {
+        "previous": "Anterior",
+        "next": "Siguiente"
+    },
+    "categories":{
+        "view_any": "Ver cualquier categoría",
+        "view": "Ver categoría",
+        "create": "Crear categoría",
+        "update": "Actualizar categoría",
+        "delete": "Eliminar categoría"
+    },
+    "microsites":{
+        "view_any": "Ver cualquier micrositio",
+        "view": "Ver micrositio",
+        "create": "Crear micrositio",
+        "update": "Actualizar micrositio",
+        "delete": "Eliminar micrositio"
+    },
+    "users":{
+        "view_any": "Ver cualquier usuario",
+        "view": "Ver usuario",
+        "create": "Crear usuario",
+        "update": "Actualizar usuario",
+        "delete": "Eliminar usuario"
+    },
+    "roles":{
+        "view_any": "Ver cualquier rol",
+        "view": "Ver rol",
+        "update": "Actualizar rol"
+    },
+    "role_permission":{
+        "view": "Ver permisos de rol",
+        "update": "Actualizar permisos de rol"
+    },
+    "transactions":{
+        "view_any": "Ver cualquier transacción",
+        "view": "Ver transacción",
+        "create": "Crear transacción"
+    },
+    "Admin":"Administrador",
+    "Customer":"Cliente",
+    "Guests":"Invitado",
+    "savePermissions":"Guardar Permisos",
+    "PermissionsDescription":"Seleccione los permisos que desea asignar al rol"
+}

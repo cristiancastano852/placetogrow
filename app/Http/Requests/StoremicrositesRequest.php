@@ -16,7 +16,6 @@ class StoremicrositesRequest extends FormRequest
 
     public function rules(): array
     {
-
         return [
             'slug' => 'required|max:50|unique:microsites,slug',
             'name' => 'required|max:100',
@@ -27,6 +26,13 @@ class StoremicrositesRequest extends FormRequest
             'currency' => 'required|in:'.implode(',', array_column(Currency::cases(), 'name')),
             'site_type' => 'required|in:'.implode(',', array_column(MicrositesTypes::cases(), 'name')),
             'payment_expiration' => 'required|integer|min:1',
+            'payment_fields' => 'nullable|array',
+            'payment_fields.*.label' => 'required|string|max:255',
+            'payment_fields.*.name' => 'required|string|max:255',
+            'payment_fields.*.type' => 'required|string|in:select,input',
+            'payment_fields.*.optional' => 'required|boolean',
+            'payment_fields.*.validation' => 'nullable|string|in:text,number,email',
+            'payment_fields.*.placeholder' => 'nullable|string|max:255',
         ];
     }
 }

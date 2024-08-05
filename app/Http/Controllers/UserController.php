@@ -9,26 +9,33 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         $this->authorize(PolicyName::VIEW_ANY, User::class);
         $users = User::all();
+        $users = User::with('roles:name')->get();
         $roles = Role::all();
 
-        return view('users.index', compact('users', 'roles'));
+        return Inertia::render('Users/UsersView', [
+            'users' => $users,
+            'roles' => $roles,
+
+        ]);
     }
 
-    public function create(): View
+    public function create()
     {
         $this->authorize(PolicyName::CREATE, User::class);
         $roles = Role::all();
 
-        return view('users.create', compact('roles'));
+        return Inertia::render('Users/UsersCreate', [
+            'roles' => $roles,
+        ]);
+
     }
 
     public function store(StoreUserRequest $request, StoreAction $storeAction): RedirectResponse

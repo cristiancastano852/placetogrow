@@ -103,8 +103,50 @@
                         <div class="alert alert-danger text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="mb-4">
+                    <label for="custom_fields" class="block text-gray-700">Campos personalizados</label>
+                    <div id="custom-fields-container" class="space-y-2">
+                    </div>
+                    <button type="button" id="add-custom-field" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Añadir campo</button>
+                </div>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
             </form>
         </div>
     </div>
+    <script>
+        document.getElementById('add-custom-field').addEventListener('click', function() {
+            const container = document.getElementById('custom-fields-container');
+            const index = container.children.length;
+
+            const fieldHtml = `
+                <div class="custom-field mb-2 border p-2 rounded">
+                    <label class="block text-gray-700">Etiqueta</label>
+                    <input type="text" name="payment_fields[${index}][label]" class="w-full border-gray-300 rounded" required>
+                    
+                    <label class="block text-gray-700">Tipo</label>
+                    <select name="payment_fields[${index}][type]" class="w-full border-gray-300 rounded" required>
+                        <option value="text">Texto</option>
+                        <option value="number">Número</option>
+                        <option value="email">Correo</option>
+                        <!-- Otros tipos de campos -->
+                    </select>
+                    
+                    <label class="block text-gray-700">Longitud máxima</label>
+                    <input type="number" name="payment_fields[${index}][max_length]" class="w-full border-gray-300 rounded" required>
+                    
+                    <label class="block text-gray-700">Opcional</label>
+                    <input type="checkbox" name="payment_fields[${index}][optional]" class="rounded">
+                    
+                    <button type="button" class="remove-custom-field bg-red-500 text-white px-4 py-2 rounded mt-2">Eliminar campo</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', fieldHtml);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-custom-field')) {
+                e.target.closest('.custom-field').remove();
+            }
+        });
+    </script>
 </x-app-layout>

@@ -1,6 +1,8 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 
+import { SButton } from '@placetopay/spartan-vue'
+
 defineProps({
     canLogin: {
         type: Boolean,
@@ -73,6 +75,7 @@ function handleImageError() {
                     >
                         Ver sitios de pago
                     </Link>
+                    <SButton :left-icon="AddCircleIcon">Create</SButton>
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black dark:text-white/70">

@@ -1,22 +1,21 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+const value = ref('Dashboard');
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-        </template>
-
+    <Head title="Home" />
+    <AuthenticatedMainLayout v-model="value">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+                <div class="p-6 text-gray-900">
+                    <h4 class="text-2xl font-semibold mb-4">Bienvenido</h4>
+                    <p class="text-lg">{{$t('home.subtitle')}}</p>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AuthenticatedMainLayout>
 </template>
