@@ -63,16 +63,16 @@ class LoginRequest extends FormRequest
             return;
         }
 
-        event(new Lockout($this));
+        // event(new Lockout($this));
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+        // $seconds = RateLimiter::availableIn($this->throttleKey());
 
-        throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
+        // throw ValidationException::withMessages([
+        //     'email' => trans('auth.throttle', [
+        //         'seconds' => $seconds,
+        //         'minutes' => ceil($seconds / 60),
+        //     ]),
+        // ]);
     }
 
     /**

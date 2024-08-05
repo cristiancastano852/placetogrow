@@ -36,7 +36,7 @@ const goDashboard = () => {
                         <SButton :leftIcon="UserAddIcon" size="md" rounded="full" />
                     </template>
 
-                    <SDropdownItem v-if="!$page.props.auth.user" :icon="LogoutIcon" @click="goLogin"> Iniciar sesión
+                    <SDropdownItem v-if="!$page.props.auth.user" :icon="LogoutIcon" @click="goLogin">{{$t('auth.login')}}
                     </SDropdownItem>
                     <SDropdownItem v-if="$page.props.auth.user" :icon="LogoutIcon" @click="goLogout"> Cerrar sesión
                     </SDropdownItem>

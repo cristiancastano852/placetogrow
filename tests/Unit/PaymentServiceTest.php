@@ -52,7 +52,7 @@ class PaymentServiceTest extends TestCase
         ];
 
         $this->app->bind(PaymentGateway::class, fn () => new PlacetoPayGatewayMock(function () {
-            return new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, "Create");
+            return new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, 'Create');
         }));
 
         /** @var PaymentService $paymentService */
@@ -103,7 +103,7 @@ class PaymentServiceTest extends TestCase
             ->willReturnSelf();
 
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, "Create"));
+            ->willReturn(new PaymentResponse(1, 'https://google.com', PaymentStatus::APPROVED->value, 'Create'));
 
         $paymentService = new PaymentService($payment, $placetopay);
         $paymentService->create($data);
@@ -146,7 +146,51 @@ class PaymentServiceTest extends TestCase
             ->willReturnSelf();
 
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', PaymentStatus::APPROVED->value, "Create"));
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', PaymentStatus::APPROVED->value, 'Create'));
+
+        $paymentService = new PaymentService($payment, $placetopay);
+        $response = $paymentService->create($data);
+
+        $this->assertEquals(1, $response->processIdentifier);
+        $this->assertEquals('https://placetopay.com', $response->url);
+    }
+
+    /** @test */
+    public function itProcessPaymentFailUsingStubsTest(): void
+    {
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for(($user))
+            ->create(
+                [
+                    'name' => 'test-name',
+
+                ]
+            );
+
+        $payment = Payment::factory()->create();
+
+        $data = [
+            'name' => 'John',
+            'last_name' => 'Doe',
+            'document_number' => 12123123123,
+            'document_type' => DocumentTypes::CC->name,
+        ];
+
+        $placetopay = $this->createStub(PlacetoPayGateway::class);
+        $placetopay->method('prepare')
+            ->willReturnSelf();
+
+        $placetopay->method('buyer')
+            ->willReturnSelf();
+
+        $placetopay->method('payment')
+            ->willReturnSelf();
+
+        $placetopay->method('process')
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', PaymentStatus::REJECTED->value, 'Create'));
 
         $paymentService = new PaymentService($payment, $placetopay);
         $response = $paymentService->create($data);

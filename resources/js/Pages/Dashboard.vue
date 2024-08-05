@@ -13,7 +13,7 @@ const value = ref('Dashboard');
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="p-6 text-gray-900">
                     <h4 class="text-2xl font-semibold mb-4">Bienvenido</h4>
-                    <p class="text-lg">En las opciones de navegación puedes encontrar las opciones para gestionar todo lo que necesites.</p>
+                    <p class="text-lg">{{$t('home.subtitle')}}</p>
                 </div>
             </div>
         </div>

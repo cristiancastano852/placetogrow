@@ -99,35 +99,11 @@ class PlacetoPayGateway implements PaymentGateway
                     'client_error',
                     $response->json('message', 'Client error occurred')
                 );
-            } elseif ($response->serverError()) {
-                Log::error('PlacetoPay server error', $response->json());
-
-                return new PaymentResponse(
-                    0,
-                    '',
-                    'server_error',
-                    $response->json('message', 'Server error occurred')
-                );
-            } else {
-                Log::error('PlacetoPay unknown error', $response->json());
-
-                return new PaymentResponse(
-                    0,
-                    '',
-                    'unknown_error',
-                    'An unknown error occurred'
-                );
             }
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            Log::error('PlacetoPay exception', ['message' => $message]);
+            Log::error('PlacetoPay exception', ['message' => $e->getMessage()]);
 
-            return new PaymentResponse(
-                0,
-                '',
-                'exception',
-                $message
-            );
+            return new PaymentResponse(0, '', 'exception', $message);
         }
     }
 
