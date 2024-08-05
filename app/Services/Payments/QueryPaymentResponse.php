@@ -18,9 +18,6 @@ class QueryPaymentResponse implements Arrayable
 
     public function toArray(): array
     {
-        return [
-            'reason' => $this->reason,
-            'status' => $this->status->value,
-        ];
+        return ['reason' => $this->reason, 'status' => $this->status->value];
     }
 }

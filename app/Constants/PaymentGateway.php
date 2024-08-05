@@ -14,15 +14,8 @@ enum PaymentGateway: string
 
     public static function toOptions(): array
     {
-        return [
-            [
-                'value' => self::PLACETOPAY->value,
-                'text' => 'PlacetoPay',
-            ],
-            [
-                'value' => self::PAYPAL->value,
-                'text' => 'PayPal',
-            ],
+        return [['value' => self::PLACETOPAY->value, 'text' => 'PlacetoPay'],
+            ['value' => self::PAYPAL->value, 'text' => 'PayPal'],
         ];
     }
 }
