@@ -27,11 +27,11 @@ const value = ref('Sitios');
 
 
 const cols = [
-    { id: 'id', header: 'ID' },
-    { id: 'name', header: 'Site' },
+    { id: 'id', header: 'Número' },
+    { id: 'name', header: 'Sitio' },
     { id: 'logo', header: 'Logo' },
     { id: 'site_type', header: 'Tipo' },
-    { id: 'actions', header: 'Actions' }];
+    { id: 'actions', header: 'Acciones' }];
 
 const colorByType = {
     Facturas: 'green',
@@ -83,11 +83,11 @@ const createMicrosite = () => {
                             <template #col[actions]="{ record }">
                                 <div class="flex gap-4">
                                     <button v-if="can('microsites.view')" @click="viewMicrosite(record.id)"
-                                        class="text-neutral-600 hover:text-neutral-900">Show</button>
+                                        class="text-neutral-600 hover:text-neutral-900">{{$t('microsite.show')}}</button>
                                     <button v-if="can('microsites.update')" @click="editMicrosite(record.id)"
-                                        class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                                        class="text-indigo-600 hover:text-indigo-900">{{$t('microsite.edit')}}</button>
                                     <button v-if="can('microsites.delete')" @click="deleteMicrosite(record.id)"
-                                        class="text-red-600 hover:text-red-900">Delete</button>
+                                        class="text-red-600 hover:text-red-900">{{$t('microsite.delete')}}</button>
                                 </div>
                             </template>
                         </SDataTable>

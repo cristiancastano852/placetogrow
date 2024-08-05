@@ -24,8 +24,8 @@ const navigate = (path: string) => {
 
 <template>
     <SSidebar class="w-60 pb-8" placetopayHeader v-model="value">
-        <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">Dashboard</SSidebarItem>
-        <SSidebarItem v-if="is('Admin') || can('microsites.view_any')" @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">Sitios</SSidebarItem>
+        <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">{{$t('home.title')}}</SSidebarItem>
+        <SSidebarItem v-if="is('Admin') || can('microsites.view_any')" @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">{{$t('microsite.title')}}</SSidebarItem>
         <SSidebarItem v-if="is('Admin') || can('transactions.view_any')" @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
 
         <SSidebarItemGroup v-if="is('Admin')" :icon="ClipboardTickIcon">

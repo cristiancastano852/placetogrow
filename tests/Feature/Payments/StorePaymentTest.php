@@ -90,9 +90,100 @@ class StorePaymentTest extends TestCase
         ]);
     }
 
+    public function testItHandlesClientError(): void
+    {
+        $responseData = [
+            'message' => 'Client error occurred',
+        ];
+
+        Http::fake(fn (Request $request) => Http::response($responseData, 400));
+
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for($user)
+            ->create([
+                'name' => 'test-name',
+            ]);
+
+        $data = [
+            'description' => fake()->sentence(),
+            'amount' => 10000,
+            'microsite_id' => $microsites->id,
+            'user_id' => $user->id,
+            'currency' => Currency::USD->name,
+            'name' => 'John',
+            'last_name' => 'Doe',
+            'email' => fake()->freeEmail,
+            'document_number' => 12123123123,
+            'document_type' => DocumentTypes::CC->name,
+            'gateway' => PaymentGateway::PLACETOPAY->value,
+            'fields_data' => [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => fake()->freeEmail,
+                'document_number' => 12123123123,
+                'document_type' => DocumentTypes::CC->name,
+            ],
+        ];
+
+        $response = $this->actingAs($user)
+            ->post(route('payments.store'), $data);
+        //estatus 500
+        //validate status 500
+        $response->assertStatus(500);
+        // $response->assertSessionHasErrors(['message' => 'Client error occurred']);
+        // $response->assertRedirect();
+    }
+
+    public function testItHandlesUnknownError(): void
+    {
+        $responseData = [
+            'message' => 'An unknown error occurred',
+        ];
+
+        Http::fake(fn (Request $request) => Http::response($responseData, 418)); // 418 I'm a teapot
+
+        $user = User::factory()->create();
+
+        $microsites = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for($user)
+            ->create([
+                'name' => 'test-name',
+            ]);
+
+        $data = [
+            'description' => fake()->sentence(),
+            'amount' => 10000,
+            'microsite_id' => $microsites->id,
+            'user_id' => $user->id,
+            'currency' => Currency::USD->name,
+            'name' => 'John',
+            'last_name' => 'Doe',
+            'email' => fake()->freeEmail,
+            'document_number' => 12123123123,
+            'document_type' => DocumentTypes::CC->name,
+            'gateway' => PaymentGateway::PLACETOPAY->value,
+            'fields_data' => [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => fake()->freeEmail,
+                'document_number' => 12123123123,
+                'document_type' => DocumentTypes::CC->name,
+            ],
+        ];
+
+        $response = $this->actingAs($user)
+            ->post(route('payments.store'), $data);
+        $response->assertStatus(500);
+        // $response->assertSessionHasErrors(['message' => 'An unknown error occurred']);
+    }
+
     public function testItStoresPaymentPaypalSuccessfully(): void
     {
-
+        $this->withoutExceptionHandling();
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -172,7 +263,7 @@ class StorePaymentTest extends TestCase
         $paymentService = $this->createMock(PaymentService::class);
         $placetopay = $this->createMock(PlacetoPayGateway::class);
         $placetopay->method('process')
-            ->willReturn(new PaymentResponse(1, 'https://placetopay.com'));
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', 'success'));
 
         $this->app->instance(PaymentService::class, $paymentService);
         $this->mock(PaymentService::class, function ($mock) use ($payment) {
@@ -180,9 +271,7 @@ class StorePaymentTest extends TestCase
         });
 
         $response = $this->get(route('payments.show', $payment));
-
         $response->assertStatus(200);
-
     }
 
     public function testItShowsTransactionsSuccessfully(): void
@@ -221,6 +310,5 @@ class StorePaymentTest extends TestCase
         $response = $this->actingAs($user)
             ->get(route('payments.transactionsByMicrosite', 1));
         $response->assertStatus(200);
-
     }
 }

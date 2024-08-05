@@ -59,7 +59,7 @@ const searchByMicrosite = () => {
     <Head title="Pago" />
     <AuthenticatedMainLayout v-model="value">
         <div class="m-8">
-            <div v-if="is('Guests')" >
+            <div v-if="!is('Guests')" >
                 <SLabel>Filtra por sitio de pago</SLabel>
                 <div class="flex mb-8">
                     <SSelect v-model="selectedMicrosite" rounded="left">

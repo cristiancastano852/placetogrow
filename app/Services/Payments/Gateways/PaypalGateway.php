@@ -81,18 +81,18 @@ class PaypalGateway implements PaymentGateway
         $response = Http::post($this->config['url'], $this->data);
         $response = $response->json();
 
-        return new PaymentResponse($response['requestId'], $response['processUrl']);
+        return new PaymentResponse($response['requestId'], $response['processUrl'], 'success');
     }
 
     public function get(Payment $payment): QueryPaymentResponse
     {
-        $url = $this->config['url'].'/'.$payment->process_identifier;
+        // $url = $this->config['url'].'/'.$payment->process_identifier;
 
-        $response = Http::post($url, $this->data);
-        $response = $response->json();
+        // $response = Http::post($url, $this->data);
+        // $response = $response->json();
 
-        $status = $response['status'];
+        // $status = $response['status'];
 
-        return new QueryPaymentResponse($status['reason'], $status['status']);
+        return new QueryPaymentResponse('asdas', 'asdas');
     }
 }

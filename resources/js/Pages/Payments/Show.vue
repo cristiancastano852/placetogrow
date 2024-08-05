@@ -35,7 +35,7 @@ const goMicrosite = () => {
             <SLabel v-else class="flex items-center justify-center  -mx-6 -mt-1 p-2 !font-bold text-center !text-lg shadow">
                 <div class="w-96 flex items-center justify-center bg-red-100 text-red-500 rounded-full p-2 text-sm ">
                     <DangerIcon class="w-6 h-6" />
-                    <p class="pl-1"> ¡Ups! Hubo un problema con tu pago</p>
+                    <p class="pl-1"> ¡Ups! No se pudo completar tu pago</p>
                 </div>
             </SLabel>
             <div class="mt-6">

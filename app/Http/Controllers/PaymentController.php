@@ -31,6 +31,9 @@ class PaymentController extends Controller
         ]);
 
         $response = $paymentService->create($buyerData);
+        if ($response->status === 'exception') {
+            return back()->withErrors(['message' => $response->message]);
+        }
 
         return Inertia::location($response->url);
     }
@@ -56,25 +59,9 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
         $payments = [];
-        $userRole = $user->roles->first()->name;
         $microsites = Microsites::all();
 
-        if ($userRole === 'Admin') {
-            $payments = Payment::with('microsite')->get();
-        }
-        if ($userRole === 'Customer') {
-            $microsites = Microsites::where('user_id', $user->id)->get();
-            $payments = Payment::where('user_id', $user->id)
-                ->orWhereIn('microsite_id', $microsites->pluck('id'))
-                ->with('microsite')
-                ->get();
-        }
-
-        if ($userRole === 'Guests') {
-            $payments = Payment::where('user_id', $user->id)
-                ->with('microsite')
-                ->get();
-        }
+        $payments = Payment::transactionsByRole($user)->get();
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,

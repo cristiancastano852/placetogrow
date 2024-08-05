@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const goBack = () => {
     router.visit('/micrositesall');
@@ -15,6 +16,8 @@ const props = defineProps({
 let formData = {
     // Define fields common to all site types or default fields
 };
+
+const errors = ref<string[]>([]);
 
 if (props.microsite.site_type === 'Facturas') {
     formData.invoice_number = '';
@@ -32,25 +35,34 @@ const submitForm = () => {
     formData.fields_data = JSON.stringify(formData);
     formData.gateway = 'placetopay';
 
-    const response = router.post(route('payments.store'), formData, {
-        onError: (errors) => {
-            console.error(errors);
+    errors.value = [];
+
+    router.post(route('payments.store'), formData, {
+        onError: (errorResponse) => {
+            console.log("-----------------",errorResponse);
+            errors.value.push("Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo o contacta al soporte.");
         },
         onSuccess: (page) => {
             console.log(page);
         },
     });
 };
-
 </script>
 
 <template>
-
     <Head title="Micrositio - {{ microsite.name }}" />
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-4">Micrositio - {{ microsite.name }}</h1>
-        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">Unos datos más y podras hacer tu pago.</p>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">Unos datos más y podrás hacer tu pago.</p>
+
         <form @submit.prevent="submitForm">
+            <!-- Display errors -->
+            <div v-if="errors.length" class="mb-4">
+                <div v-for="error in errors" :key="error" class="text-red-600">
+                    {{ error }}
+                </div>
+            </div>
+
             <div v-if="microsite.site_type === 'Facturas'">
                 <div>
                     <label for="invoice_number">Número de Factura</label>
@@ -59,7 +71,6 @@ const submitForm = () => {
             </div>
             <div v-if="microsite.site_type === 'Donaciones'">
                 <div v-for="(field, index) in microsite.payment_fields" :key="index">
-
                     <div v-if="field.type === 'input'">
                         <label :for="field.name">{{ field.label }}</label>
                         <input v-model="formData[field.name]" :type="field.validation" :id="field.name"
@@ -74,11 +85,9 @@ const submitForm = () => {
                             <option value="CE">Cédula de Extranjería</option>
                             <option value="NIT">NIT</option>
                             <option value="PPT">Pasaporte</option>
-
                         </select>
                     </div>
                 </div>
-
                 <div>
                     <label for="amount">Monto en {{ microsite.currency }}</label>
                     <input v-model="formData.amount" type="text" id="amount" class="input" />
@@ -86,7 +95,7 @@ const submitForm = () => {
             </div>
             <div v-if="microsite.site_type === 'Subscripciones'">
                 <div>
-                    <label for="subscription_id"> Número de Suscripción</label>
+                    <label for="subscription_id">Número de Suscripción</label>
                     <input v-model="formData.subscription_id" type="text" id="subscription_id" class="input" />
                 </div>
             </div>
