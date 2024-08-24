@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
@@ -32,6 +33,11 @@ class PaymentController extends Controller
 
         $response = $paymentService->create($buyerData);
         if ($response->status === 'exception') {
+            Log::error('Payment creation exception', [
+                'buyer' => $buyerData,
+                'payment' => $payment,
+                'message' => $response->message,
+            ]);
             return back()->withErrors(['message' => $response->message]);
         }
 

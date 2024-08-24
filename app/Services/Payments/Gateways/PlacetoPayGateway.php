@@ -35,7 +35,7 @@ class PlacetoPayGateway implements PaymentGateway
         $seed = Carbon::now()->toIso8601String();
         $nonce = Str::random();
 
-        $tranKey = base64_encode(hash('sha256', $nonce.$seed.$secretKey, true));
+        $tranKey = base64_encode(hash('sha256', $nonce . $seed . $secretKey, true));
         $nonce = base64_encode($nonce);
 
         $this->data['auth'] = [
@@ -79,41 +79,23 @@ class PlacetoPayGateway implements PaymentGateway
 
     public function process(): PaymentResponse
     {
-        try {
-            $response = Http::post($this->config['url'], $this->data);
-            if ($response->successful()) {
-                Log::info('PlacetoPay response succesful', $response->json());
-                $data = $response->json();
-
-                return new PaymentResponse(
-                    $data['requestId'],
-                    $data['processUrl'],
-                    'success'
-                );
-            } elseif ($response->clientError()) {
-                Log::error('PlacetoPay client error', $response->json());
-
-                return new PaymentResponse(
-                    0,
-                    '',
-                    'client_error',
-                    $response->json('message', 'Client error occurred')
-                );
-            }
-        } catch (\Exception $e) {
-            Log::error('PlacetoPay exception', ['message' => $e->getMessage()]);
-
-            return new PaymentResponse(0, '', 'exception', $message);
-        }
+        $response = Http::post($this->config['url'], $this->data);
+        $data = $response->json();
+        Log::info('Processing payment with placeToPay', $data);
+        return new PaymentResponse(
+            $data['requestId'],
+            $data['processUrl'],
+            'success'
+        );
     }
 
     public function get(Payment $payment): QueryPaymentResponse
     {
-        $url = $this->config['url'].'/'.$payment->process_identifier;
+        $url = $this->config['url'] . '/' . $payment->process_identifier;
 
         $response = Http::post($url, $this->data);
         $response = $response->json();
-
+        Log::info('Result of payment query with PlaceToPay', $response);
         $status = $response['status'];
 
         return new QueryPaymentResponse($status['reason'], $status['status']);

@@ -34,7 +34,7 @@ WORKDIR /var/www
 USER $user
 
 # copy .env
-# COPY .env .env
+COPY .env .env
 # COPY ./phpEntrypoint.sh /usr/local/bin/
 
 # Give execution permissions

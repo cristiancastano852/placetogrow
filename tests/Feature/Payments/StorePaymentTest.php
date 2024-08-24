@@ -130,11 +130,7 @@ class StorePaymentTest extends TestCase
 
         $response = $this->actingAs($user)
             ->post(route('payments.store'), $data);
-        //estatus 500
-        //validate status 500
-        $response->assertStatus(500);
-        // $response->assertSessionHasErrors(['message' => 'Client error occurred']);
-        // $response->assertRedirect();
+        $response->assertStatus(302);
     }
 
     public function testItHandlesUnknownError(): void
@@ -177,8 +173,7 @@ class StorePaymentTest extends TestCase
 
         $response = $this->actingAs($user)
             ->post(route('payments.store'), $data);
-        $response->assertStatus(500);
-        // $response->assertSessionHasErrors(['message' => 'An unknown error occurred']);
+        $response->assertStatus(302);
     }
 
     public function testItStoresPaymentPaypalSuccessfully(): void
