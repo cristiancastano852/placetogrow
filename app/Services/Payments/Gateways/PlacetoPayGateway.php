@@ -35,7 +35,7 @@ class PlacetoPayGateway implements PaymentGateway
         $seed = Carbon::now()->toIso8601String();
         $nonce = Str::random();
 
-        $tranKey = base64_encode(hash('sha256', $nonce . $seed . $secretKey, true));
+        $tranKey = base64_encode(hash('sha256', $nonce.$seed.$secretKey, true));
         $nonce = base64_encode($nonce);
 
         $this->data['auth'] = [
@@ -82,6 +82,7 @@ class PlacetoPayGateway implements PaymentGateway
         $response = Http::post($this->config['url'], $this->data);
         $data = $response->json();
         Log::info('Processing payment with placeToPay', $data);
+
         return new PaymentResponse(
             $data['requestId'],
             $data['processUrl'],
@@ -91,7 +92,7 @@ class PlacetoPayGateway implements PaymentGateway
 
     public function get(Payment $payment): QueryPaymentResponse
     {
-        $url = $this->config['url'] . '/' . $payment->process_identifier;
+        $url = $this->config['url'].'/'.$payment->process_identifier;
 
         $response = Http::post($url, $this->data);
         $response = $response->json();
