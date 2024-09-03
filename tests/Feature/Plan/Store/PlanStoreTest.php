@@ -5,14 +5,11 @@ namespace Tests\Feature\Feature\Plan\Store;
 use App\Constants\PermissionSlug;
 use App\Models\Microsites;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class PlanStoreTest extends TestCase
 {
-
     public function test_create_plan_no_auth(): void
     {
         $microsite = Microsites::factory()->create();
@@ -51,8 +48,8 @@ class PlanStoreTest extends TestCase
                     'duration_unit' => 'month',
                     'billing_frequency' => 1,
                     'duration_period' => 12,
-                ]
-            ]
+                ],
+            ],
         ];
 
         $response = $this->actingAs($user)

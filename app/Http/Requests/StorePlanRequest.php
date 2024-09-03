@@ -12,7 +12,7 @@ class StorePlanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     public function rules(): array
@@ -21,7 +21,7 @@ class StorePlanRequest extends FormRequest
             'plans.*.name' => 'required|string|max:255',
             'plans.*.price' => 'required|numeric|min:1',
             'plans.*.description' => 'nullable|string|max:1000',
-            'plans.*.duration_unit' => 'required|string|in:' . implode(',', TimeUnitSubscription::toArray()),
+            'plans.*.duration_unit' => 'required|string|in:'.implode(',', TimeUnitSubscription::toArray()),
             'plans.*.billing_frequency' => 'required|integer|min:1',
             'plans.*.duration_period' => 'required|integer|min:1',
         ];

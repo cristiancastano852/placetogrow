@@ -6,15 +6,12 @@ use App\Constants\TimeUnitSubscription;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Microsites;
 use App\Models\Plan;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PlanController extends Controller
 {
     public function index(Microsites $microsite)
-   
     {
         return Inertia::render('Microsites/Plans/create');
     }
@@ -35,23 +32,15 @@ class PlanController extends Controller
             $plan['microsite_id'] = $microsite->id;
             Plan::create($plan);
         }
+
         return redirect()->route('microsites.show', $microsite->id)->with('success', 'Planes creados correctamente');
     }
 
-    public function show(string $id)
-    {
-    }
+    public function show(string $id) {}
 
-    public function edit(string $id)
-    {
-    }
+    public function edit(string $id) {}
 
- 
-    public function update(Request $request, string $id)
-    {
-    }
+    public function update(Request $request, string $id) {}
 
-    public function destroy(string $id)
-    {
-    }
+    public function destroy(string $id) {}
 }

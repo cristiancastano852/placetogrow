@@ -1,9 +1,9 @@
 <?php
 
+use App\Constants\PaymentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Constants\PaymentStatus;
 
 return new class extends Migration
 {
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('subtoken', 50)->nullable();
             $table->integer('price');
             $table->date('expiration_date');
-            $table->integer('billing_frequency'); 
+            $table->integer('billing_frequency');
             $table->timestamps();
         });
     }

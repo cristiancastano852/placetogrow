@@ -5,7 +5,6 @@ namespace App\Services\Payments;
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Log;
 
 class PaymentService implements PaymentServiceContract
 {

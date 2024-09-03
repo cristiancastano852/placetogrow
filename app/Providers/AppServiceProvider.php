@@ -5,12 +5,12 @@ namespace App\Providers;
 use App\Constants\PaymentGateway;
 use App\Contracts\PaymentGateway as PaymentGatewayContract;
 use App\Contracts\PaymentService as PaymentServiceContract;
+use App\Factories\PaymentDataProviderFactory;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
 use App\Services\Payments\PaymentService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
-use App\Factories\PaymentDataProviderFactory;
 
 class AppServiceProvider extends ServiceProvider
 {

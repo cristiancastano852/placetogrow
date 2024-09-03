@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Constants\DocumentTypes;
 use App\Constants\PaymentStatus;
 use App\Models\Microsites;
 use App\Models\Plan;
@@ -23,6 +22,7 @@ class SubscriptionFactory extends Factory
     public function definition(): array
     {
         $plan = Plan::factory()->create();
+
         return [
             'user_id' => User::factory(),
             'microsite_id' => Microsites::factory(),

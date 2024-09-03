@@ -56,9 +56,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::prefix('microsites/{microsite}')->group(function () {
-        
+
         Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
 
         Route::get('plans/create', [PlanController::class, 'create'])->name('plans.create');
