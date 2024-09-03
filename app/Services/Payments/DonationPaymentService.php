@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
+use App\Jobs\SendConfirmationToClient;
 use App\Models\Microsites;
 use App\Models\Payment;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
@@ -24,6 +25,8 @@ class DonationPaymentService implements PaymentServiceContract
     {
         // Lógica específica para pagos de donaciones
         try {
+            SendConfirmationToClient::dispatch($buyer);
+
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->payment($this->payment)

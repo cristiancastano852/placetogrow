@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
+use App\Jobs\SendConfirmationToClient;
 use App\Models\Payment;
 
 class PaymentService implements PaymentServiceContract
@@ -15,6 +16,7 @@ class PaymentService implements PaymentServiceContract
 
     public function create(array $buyer): PaymentResponse
     {
+        SendConfirmationToClient::dispatch($buyer);
         $response = $this->gateway->prepare()
             ->buyer($buyer)
             ->payment($this->payment)
