@@ -28,6 +28,11 @@ class Payment extends Model
         return $this->belongsTo(Microsites::class);
     }
 
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(Subscription::class);
+    }
+
     public function scopeTransactionsByRole($query, User $user): void
     {
         $userRole = $user->roles->first()->name;

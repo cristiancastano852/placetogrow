@@ -147,7 +147,7 @@ const previousStep = () => {
             <SLabel class="bg-black/5 -mx-4 -mt-4 rounded-t-lg p-2 !font-bold text-center !text-lg shadow">Configuración
               básica</SLabel>
 
-            <div class="flex gap-4">
+            <div class="flex gap-4 mb-4">
               <div class="w-full">
                 <SLabel for="name" class="block text-gray-700">Nombre</SLabel>
                 <SInput v-model="form.name" id="name" placeholder="Nombre del micrositio" />
@@ -157,7 +157,7 @@ const previousStep = () => {
                 <SInput v-model="form.slug" id="slug" placeholder="Slug del micrositio" />
               </div>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 mb-4">
               <div class="w-full">
                 <SLabel for="category_id" class="block text-gray-700">Categorías</SLabel>
                 <SSelect v-model="form.category_id" id="category_id" class="w-full">
@@ -247,7 +247,7 @@ const previousStep = () => {
             <SButton  type="submit" class="bg-blue-500 text-white">Enviar</SButton>
           </div>
           <div class="mt-4 flex justify-end">
-            <SButton v-if="currentStep === 1" @click="nextStep" class="mt-4">Siguiente</SButton>
+            <SButton v-if="currentStep === 1" @click="nextStep" class="mt-4 ">Siguiente</SButton>
           </div>
         </form>
       </div>

@@ -16,32 +16,16 @@ class PaymentService implements PaymentServiceContract
 
     public function create(array $buyer): PaymentResponse
     {
-        try {
-            $response = $this->gateway->prepare()
-                ->buyer($buyer)
-                ->payment($this->payment)
-                ->process();
+        $response = $this->gateway->prepare()
+            ->buyer($buyer)
+            ->payment($this->payment)
+            ->process();
 
-            $this->payment->update([
-                'process_identifier' => $response->processIdentifier,
-            ]);
+        $this->payment->update([
+            'process_identifier' => $response->processIdentifier,
+        ]);
 
-            return $response;
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-            Log::error('Payment creation exception', [
-                'buyer' => $buyer,
-                'payment' => $this->payment,
-                'message' => $message,
-            ]);
-
-            return new PaymentResponse(
-                0,
-                '',
-                'exception',
-                $message
-            );
-        }
+        return $response;
     }
 
     public function query(): Payment

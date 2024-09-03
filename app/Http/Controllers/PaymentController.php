@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\PaymentStatus;
 use App\Contracts\PaymentService;
+use App\Factories\PaymentDataProviderFactory;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Microsites;
 use App\Models\Payment;
@@ -15,22 +16,18 @@ use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
-    public function store(StorePaymentRequest $request)
+    public function store(StorePaymentRequest $request, PaymentDataProviderFactory $factory)
     {
         $user = User::find(Auth::user()->id);
-        $gateway = $request->gateway;
         $microsite_id = $request->microsite_id;
         $microsite = Microsites::find($microsite_id);
+
         $paymentRepository = new PaymentRepository();
-        $payment = $paymentRepository->create($request->all(), $user, $microsite, $gateway);
+        $payment = $paymentRepository->create($request->all(), $user, $microsite);
+
         $buyerData = $paymentRepository->buyer($request)->getBuyerData();
 
-        /** @var PaymentService $paymentService */
-        $paymentService = app(PaymentService::class, [
-            'payment' => $payment,
-            'gateway' => $gateway,
-        ]);
-
+        $paymentService = $factory->make($payment, $microsite);
         $response = $paymentService->create($buyerData);
         if ($response->status === 'exception') {
             Log::error('Payment creation exception', [
@@ -38,6 +35,7 @@ class PaymentController extends Controller
                 'payment' => $payment,
                 'message' => $response->message,
             ]);
+
             return back()->withErrors(['message' => $response->message]);
         }
 

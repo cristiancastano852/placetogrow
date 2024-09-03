@@ -71,6 +71,11 @@ class PlacetoPayGateway implements PaymentGateway
                 'total' => $payment->amount,
             ],
         ];
+        // if ($payment->suscription) {
+        //     $this->data['payment']['subscription'] = [
+        //         'reference' => $payment->suscription->reference,
+        //     ];
+        // }
 
         $this->data['returnUrl'] = route('payments.show', $payment);
 

@@ -11,8 +11,17 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    errors: {
+        type: Array,
+        required: true,
+    },
+    successMessage: {
+        type: String,
+        required: false,
+    },
 });
 
+console.log("ssssssssssffffffffffff", props.successMessage);
 let formData = {
     // Define fields common to all site types or default fields
 };
