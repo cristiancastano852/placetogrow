@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -63,6 +64,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('plans/create', [PlanController::class, 'create'])->name('plans.create');
 
+        Route::get('plans/show', [PlanController::class, 'show'])->name('plans.show');
+
         Route::post('plans', [PlanController::class, 'store'])->name('plans.store');
 
         Route::get('plans/{plan}/edit', [PlanController::class, 'edit'])->name('plans.edit');
@@ -70,6 +73,17 @@ Route::middleware('auth')->group(function () {
         Route::put('plans/{plan}', [PlanController::class, 'update'])->name('plans.update');
 
         Route::delete('plans/{plan}', [PlanController::class, 'destroy'])->name('plans.destroy');
+    });
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::prefix('microsites/{microsite}')->group(function () {
+
+        Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+
+        Route::get('subscriptions/{subscription}', [SubscriptionController::class, 'show'])->name('subscriptions.show');
+        Route::get('subscriptions/{subscription}/return', [SubscriptionController::class, 'return'])->name('subscriptions.return');
     });
 });
 

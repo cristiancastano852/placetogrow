@@ -13,12 +13,12 @@ class PlanController extends Controller
 {
     public function index(Microsites $microsite)
     {
-        return Inertia::render('Microsites/Plans/create');
+        return Inertia::render('Microsites/Plans/Create');
     }
 
     public function create(Microsites $microsite)
     {
-        return Inertia::render('Microsites/Plans/create', [
+        return Inertia::render('Microsites/Plans/Create', [
             'microsite_id' => $microsite->id,
             'duration_units' => TimeUnitSubscription::toArray(),
             'microsite_name' => $microsite->name,
@@ -36,7 +36,16 @@ class PlanController extends Controller
         return redirect()->route('microsites.show', $microsite->id)->with('success', 'Planes creados correctamente');
     }
 
-    public function show(string $id) {}
+    public function show(Microsites $microsite)
+    {
+        $plans = Plan::where('microsite_id', $microsite->id)->get();
+
+        return Inertia::render('Microsites/Plans/Show', [
+            'plans' => $plans,
+            'microsite_name' => $microsite->name,
+            'micrsote_id' => $microsite->id,
+        ]);
+    }
 
     public function edit(string $id) {}
 
