@@ -8,7 +8,11 @@ const colorByType = {
     Donaciones: 'yellow',
 };
 const goToMicrositesPayment = (microsite) => {
-    router.visit(`/microsite/pay/${microsite.slug}_${microsite.id}`);
+    if (microsite.site_type == "Subscripciones") {
+        router.visit(`/microsites/${microsite.id}/plans/show`);
+    }else{
+        router.visit(`/microsite/pay/${microsite.slug}_${microsite.id}`);
+    }
 };
 
 const props = defineProps({

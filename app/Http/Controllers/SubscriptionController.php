@@ -11,18 +11,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class SubscriptionController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
 
     public function store(Request $request, Microsites $microsite)
     {
@@ -103,6 +95,7 @@ class SubscriptionController extends Controller
             'request_id' => $response['requestId'],
             'status_message' => $response['status']['message'],
         ]);
+        return Inertia::location($response['processUrl']);
 
     }
 
@@ -126,13 +119,31 @@ class SubscriptionController extends Controller
         $sssionInformationResponse = Http::post($URL, [
             'auth' => $auth,
         ]);
-
+        if ($sssionInformationResponse['status']['status'] !== 'APPROVED') {
+            Log::error('Error getting session information', [
+                'response' => $sssionInformationResponse,
+            ]);
+            return Inertia::render('Subscription/Show', [
+                'subscription' => $subscription,
+                'microsite' => $microsite,
+            ]);
+        }
         $subscription->update([
             'status' => $sssionInformationResponse['status']['status'],
             'token' => $sssionInformationResponse['subscription']['instrument'][0]['value'],
             'subtoken' => $sssionInformationResponse['subscription']['instrument'][1]['value'],
         ]);
+        return Inertia::render('Subscription/Show', [
+            'subscription' => $subscription,
+            'microsite' => $microsite,
+        ]);
+    }
 
-        return redirect()->route('microsites.show', $microsite);
+    public function show(Microsites $microsite, Subscription $subscription)
+    {
+        return Inertia::render('Subscriptions/Show', [
+            'subscription' => $subscription,
+            'microsite' => $microsite,
+        ]);
     }
 }

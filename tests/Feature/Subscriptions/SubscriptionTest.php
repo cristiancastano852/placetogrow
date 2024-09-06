@@ -38,6 +38,6 @@ class SubscriptionTest extends TestCase
         $response = $this->actingAs($user)
             ->post(route('subscriptions.store', $microsite->id), $data);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

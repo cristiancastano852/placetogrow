@@ -33,7 +33,7 @@ class SubscriptionReturnTest extends TestCase
                 'subscription' => $suscription->id,
                 'microsite' => $microsite->id,
             ]));
-        $response->assertStatus(302);
+        $response->assertStatus(200);
 
     }
 
