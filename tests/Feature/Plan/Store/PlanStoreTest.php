@@ -45,7 +45,7 @@ class PlanStoreTest extends TestCase
                     'name' => 'Basic Plan',
                     'price' => 10,
                     'description' => 'This is a basic plan.',
-                    'duration_unit' => 'month',
+                    'duration_unit' => 'Months',
                     'billing_frequency' => 1,
                     'duration_period' => 12,
                 ],
@@ -64,7 +64,7 @@ class PlanStoreTest extends TestCase
             'name' => 'Basic Plan',
             'price' => 10,
             'description' => 'This is a basic plan.',
-            'duration_unit' => 'month',
+            'duration_unit' => 'Months',
             'billing_frequency' => 1,
             'duration_period' => 12,
         ]);

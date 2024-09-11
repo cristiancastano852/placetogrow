@@ -6,7 +6,11 @@ import { router } from '@inertiajs/vue3';
 
 const props = defineProps<{
     modelValue: string;
+    permissions: string[];
+    roles : string[];
 }>();
+
+console.log(props);
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void

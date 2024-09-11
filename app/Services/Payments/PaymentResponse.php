@@ -6,7 +6,7 @@ class PaymentResponse
 {
     public function __construct(
         public readonly int $processIdentifier,
-        public readonly string $url,
+        public readonly ?string $url,
         public readonly string $status,
         public readonly ?string $message = null
     ) {}

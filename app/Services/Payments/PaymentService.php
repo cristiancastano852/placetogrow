@@ -6,6 +6,7 @@ use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
 use App\Jobs\SendConfirmationToClient;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Log;
 
 class PaymentService implements PaymentServiceContract
 {
@@ -31,11 +32,21 @@ class PaymentService implements PaymentServiceContract
 
     public function query(): Payment
     {
+        $process_identifier = $this->payment->process_identifier;
+        if (empty($process_identifier)) {
+            Log::error('Payment process identifier is empty', [
+                'payment' => $this->payment,
+            ]);
+
+            return $this->payment;
+        }
         $response = $this->gateway->prepare()
-            ->get($this->payment);
+            ->get($this->payment->process_identifier);
 
         return tap($this->payment)->update([
             'status' => $response->status,
         ]);
     }
+
+    public function collect($buyer, $subscription) {}
 }

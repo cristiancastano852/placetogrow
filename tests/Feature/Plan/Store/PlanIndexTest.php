@@ -3,6 +3,7 @@
 namespace Tests\Feature\Feature\Plan\Store;
 
 use App\Constants\PermissionSlug;
+use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
@@ -17,7 +18,9 @@ class PlanIndexTest extends TestCase
 
         $user->givePermissionTo($permission);
 
-        $microsite = Microsites::factory()->create();
+        $microsite = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->create();
 
         $response = $this->actingAs($user)
             ->get(route('plans.index', $microsite->id));

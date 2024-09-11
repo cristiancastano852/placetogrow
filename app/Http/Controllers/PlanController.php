@@ -47,7 +47,14 @@ class PlanController extends Controller
         ]);
     }
 
-    public function edit(string $id) {}
+    public function edit(Microsites $microsite, Plan $plan)
+    {
+        return Inertia::render('Microsites/Plans/Edit', [
+            'plan' => $plan,
+            'microsite_name' => $microsite->name,
+            'microsite_id' => $microsite->id,
+        ]);
+    }
 
     public function update(Request $request, string $id) {}
 

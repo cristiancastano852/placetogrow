@@ -5,15 +5,15 @@ import { Head } from '@inertiajs/vue3';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { ClipboardTickIcon } from '@placetopay/iconsax-vue/linear';
 import { SInput, SSelect, SButton, SLabel, SInputBlock, SSteps, SStepsItem } from '@placetopay/spartan-vue';
-import CreatePlans from '@/Components/Plans/CreatePlans.vue';
+import EditPlans from '@/Components/Plans/EditPlans.vue';
 
 const props = defineProps({
     microsite_id: {
         type: Number,
         required: true
     },
-    duration_units: {
-        type: Array,
+    plan: {
+        type: Object,
         required: true
     },
     microsite_name: {
@@ -35,9 +35,9 @@ const props = defineProps({
     <AuthenticatedMainLayout v-model="value">
         <div class="container mx-auto p-4">
             <div>
-                <CreatePlans :microsite_id="microsite_id"
-                :duration_units="duration_units"
+                <EditPlans :microsite_id="microsite_id"
                 :microsite_name="microsite_name"
+                :plan="plan"
                 :errors="errors"
                 
                 />

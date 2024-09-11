@@ -6,9 +6,9 @@ namespace App\Constants;
 
 enum TimeUnitSubscription: string
 {
-    case DAY = 'day';
-    case MONTH = 'month';
-    case YEAR = 'year';
+    case DAY = 'Days';
+    case MONTH = 'Months';
+    case YEAR = 'Years';
 
     public static function toArray(): array
     {

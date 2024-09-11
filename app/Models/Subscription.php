@@ -23,8 +23,16 @@ class Subscription extends Model
         'token',
         'subtoken',
         'price',
+        'next_billing_date',
         'expiration_date',
         'billing_frequency',
+        'payer',
+    ];
+
+    protected $casts = [
+        'next_billing_date' => 'datetime',
+        'expiration_date' => 'datetime',
+        'payer' => 'array',
     ];
 
     public function user(): BelongsTo

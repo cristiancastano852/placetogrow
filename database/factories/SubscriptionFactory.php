@@ -21,6 +21,15 @@ class SubscriptionFactory extends Factory
      */
     public function definition(): array
     {
+        $payer = [
+            'name' => $this->faker->name,
+            'surname' => $this->faker->lastName,
+            'email' => $this->faker->email,
+            'mobile' => $this->faker->phoneNumber,
+            'documentType' => $this->faker->randomElement(['CC']),
+            'document' => $this->faker->numerify('###########'),
+        ];
+
         $plan = Plan::factory()->create();
 
         return [
@@ -28,16 +37,18 @@ class SubscriptionFactory extends Factory
             'microsite_id' => Microsites::factory(),
             'plan_id' => $plan->id,
             'reference' => $this->faker->unique()->word,
-            'description' => $this->faker->text,
-            'status' => $this->faker->randomElement(PaymentStatus::toArray()),
+            'description' => $this->faker->word,
+            'status' => PaymentStatus::APPROVED->value,
             'status_message' => $this->faker->sentence,
             'request_id' => $this->faker->word,
             'name' => $this->faker->word,
             'token' => $this->faker->optional()->word,
             'subtoken' => $this->faker->optional()->word,
             'price' => $this->faker->numberBetween(1000, 10000),
-            'expiration_date' => Carbon::now()->addMonths($plan->duration_period),
+            'expiration_date' => Carbon::now()->addMonths(12),
             'billing_frequency' => $plan->billing_frequency,
+            'next_billing_date' => Carbon::now()->addMonth($plan->billing_frequency),
+            'payer' => $payer,
         ];
     }
 }

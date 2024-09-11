@@ -27,7 +27,6 @@ class SubscriptionReturnTest extends TestCase
         $suscription = Subscription::factory()->create([
             'request_id' => '1',
         ]);
-
         $response = $this->actingAs($user)
             ->get(route('subscriptions.return', [
                 'subscription' => $suscription->id,
@@ -46,6 +45,18 @@ class SubscriptionReturnTest extends TestCase
                 'reason' => '00',
                 'message' => 'La petición ha sido aprobada exitosamente',
                 'date' => '2022-07-27T14:51:27-05:00',
+            ],
+            'request' => [
+                'locale' => 'es_CO',
+                'payer' => [
+                    'document' => '1122334455',
+                    'documentType' => 'CC',
+                    'name' => 'John',
+                    'surname' => 'Doe',
+                    'company' => 'Evertec',
+                    'email' => 'johndoe@app.com',
+                    'mobile' => '+5731111111111',
+                ],
             ],
             'subscription' => [
                 'status' => [

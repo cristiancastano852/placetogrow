@@ -34,7 +34,6 @@ class DonationPaymentService implements PaymentServiceContract
 
             $this->payment->update([
                 'process_identifier' => $response->processIdentifier,
-                // 'microsite_type' => 'donation',
             ]);
 
             return $response;
@@ -51,10 +50,12 @@ class DonationPaymentService implements PaymentServiceContract
 
     public function query(): Payment
     {
-        $response = $this->gateway->prepare()->get($this->payment);
+        $response = $this->gateway->prepare()->get($this->payment->process_identifier);
 
         return tap($this->payment)->update([
             'status' => $response->status,
         ]);
     }
+
+    public function collect($payer, $subscription) {}
 }
