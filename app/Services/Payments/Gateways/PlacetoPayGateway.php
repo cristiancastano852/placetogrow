@@ -151,6 +151,7 @@ class PlacetoPayGateway implements PaymentGateway
         $response = Http::post($url, $this->data);
         $data = $response->json();
         Log::info('Processing payment with PlaceToPay', $data);
+
         return new PaymentResponse(
             $data['requestId'],
             $data['processUrl'],
@@ -179,5 +180,22 @@ class PlacetoPayGateway implements PaymentGateway
         $status = $response['status'];
 
         return new QueryPaymentResponse($status['reason'], $status['status']);
+    }
+
+    public function invalidateTokenSubtoken(string $token, string $subtoken): Response
+    {
+        $url = $this->config['url'].'/api/instrument/invalidate';
+        $this->data['instrument'] = [
+            'token' => [
+                'token' => $token,
+            ],
+            'subtoken' => [
+                'subtoken' => $subtoken,
+            ],
+        ];
+        $response = Http::post($url, $this->data);
+        Log::info('Invalidating token and subtoken with PlaceToPay', $response->json());
+
+        return $response;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Subscription\StoreSubscriptionAction;
+use App\Constants\SubscriptionStatus;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Microsites;
 use App\Models\Plan;
@@ -15,6 +16,20 @@ use Inertia\Inertia;
 
 class SubscriptionController extends Controller
 {
+    public function index(): \Inertia\Response
+    {
+
+        $user = Auth::user();
+        $subscriptions = [];
+        $microsites = Microsites::where('site_type', 'Subscripciones')->get();
+        $subscriptions = Subscription::SubscriptionsByRole($user)->get();
+
+        return Inertia::render('Subscription/Index', [
+            'subscriptions' => $subscriptions,
+            'microsites' => $microsites,
+        ]);
+    }
+
     public function store(StoreSubscriptionRequest $request, StoreSubscriptionAction $storeAction, Microsites $microsite)
     {
 
@@ -52,11 +67,23 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function show(Microsites $microsite, Subscription $subscription)
+    public function cancel(Subscription $subscription)
     {
-        return Inertia::render('Subscriptions/Show', [
-            'subscription' => $subscription,
-            'microsite' => $microsite,
+        $microsite = Microsites::find($subscription->microsite_id);
+        $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
+        $response = $subscriptionService->cancel();
+
+        if ($response['status']['status'] !== 'OK') {
+            Log::error('Error canceling subscription', [
+                'response' => $response,
+            ]);
+        }
+
+        $subscription->update([
+            'status' => SubscriptionStatus::CANCELED->value,
+            'status_message' => $response['status']['message'],
         ]);
+
+        return redirect()->route('subscriptions.index');
     }
 }

@@ -123,7 +123,7 @@ const previousStep = () => {
   <Head title="Crear micrositio" />
   <AuthenticatedMainLayout v-model="value">
     <div class="container mx-auto p-4 flex flex-col flex-center">
-      <h1 class="text-2xl font-bold mb-4 text-center mb-8">Crear sitio de pago</h1>
+      <h1 class="text-2xl font-bold mb-4 text-center mb-8 text-orange-700">Crear sitio de pago</h1>
       <div class=" flex">
         <div class="mr-8">
           <SSteps class="flex mb-4 justify-between">

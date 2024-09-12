@@ -18,7 +18,10 @@ class PlanController extends Controller
 
     public function create(Microsites $microsite)
     {
+        $plans = Plan::where('microsite_id', $microsite->id)->get();
+
         return Inertia::render('Microsites/Plans/Create', [
+            'plans' => $plans,
             'microsite_id' => $microsite->id,
             'duration_units' => TimeUnitSubscription::toArray(),
             'microsite_name' => $microsite->name,
@@ -42,8 +45,7 @@ class PlanController extends Controller
 
         return Inertia::render('Microsites/Plans/Show', [
             'plans' => $plans,
-            'microsite_name' => $microsite->name,
-            'micrsote_id' => $microsite->id,
+            'microsite' => $microsite,
         ]);
     }
 

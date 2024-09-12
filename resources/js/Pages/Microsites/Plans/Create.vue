@@ -20,6 +20,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    plans: {
+        type: Object,
+        required: true
+    },
     errors: {
         type: Object,
         required: true
@@ -39,6 +43,7 @@ const props = defineProps({
                 :duration_units="duration_units"
                 :microsite_name="microsite_name"
                 :errors="errors"
+                :plans="plans"
                 
                 />
             </div>

@@ -26,11 +26,6 @@ Route::middleware('auth')->group(function () {
         ->name('payments.transactionsByMicrosite');
 });
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('payments', [PaymentController::class, 'transactions'])
-//         ->name('payments.transactions');
-// });
-
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
 Route::middleware('auth')->group(function () {
     Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
@@ -82,9 +77,11 @@ Route::middleware('auth')->group(function () {
 
         Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
 
-        Route::get('subscriptions/{subscription}', [SubscriptionController::class, 'show'])->name('subscriptions.show');
         Route::get('subscriptions/{subscription}/return', [SubscriptionController::class, 'return'])->name('subscriptions.return');
     });
+
+    Route::get('subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+    Route::get('subscriptions/{subscription}', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
 });
 
 Route::middleware('auth')

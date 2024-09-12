@@ -76,11 +76,16 @@ const props = defineProps({
       type: String,
       required: true
   },
+  plans:{
+      type: Object,
+      required: true
+  },
   errors:{
       type: Object,
       required: true
   }
 })
+
 const plans = ref([
   {
     name: '',
@@ -91,6 +96,10 @@ const plans = ref([
     duration_period: 1
   }
 ])
+
+if (props.plans.length > 0) {
+  plans.value = props.plans
+}
 
 const addPlan = () => {
   if (plans.value.length < 3) {

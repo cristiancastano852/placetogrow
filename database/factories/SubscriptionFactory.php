@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\User;
@@ -38,7 +38,7 @@ class SubscriptionFactory extends Factory
             'plan_id' => $plan->id,
             'reference' => $this->faker->unique()->word,
             'description' => $this->faker->word,
-            'status' => PaymentStatus::APPROVED->value,
+            'status' => SubscriptionStatus::ACTIVE->value,
             'status_message' => $this->faker->sentence,
             'request_id' => $this->faker->word,
             'name' => $this->faker->word,

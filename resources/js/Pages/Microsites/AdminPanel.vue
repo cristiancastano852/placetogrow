@@ -93,7 +93,7 @@ const createPlans = (id) => {
                                     <button v-if="can('microsites.delete')" @click="deleteMicrosite(record.id)"
                                         class="text-red-600 hover:text-red-900">{{$t('microsite.delete')}}</button>
                                     <button v-if="record.site_type === 'Subscripciones'" @click="createPlans(record.id)"
-                                        class="text-red-600 hover:text-red-900">{{$t('microsite.Plans')}}</button>
+                                        class="text-green-600 hover:text-green-900">{{$t('microsite.Plans')}}</button>
                                 </div>
                             </template>
                         </SDataTable>

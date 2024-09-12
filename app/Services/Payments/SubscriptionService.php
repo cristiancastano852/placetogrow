@@ -2,6 +2,8 @@
 
 namespace App\Services\Payments;
 
+use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Contracts\PaymentGateway;
 use App\Jobs\SendConfirmationToClient;
 use App\Models\Microsites;
@@ -58,23 +60,35 @@ class SubscriptionService
         $response = $this->gateway->prepare()
             ->checkSubscription($this->subscription->request_id);
         $this->UpdateSubscription($response);
-        $this->SavePayer($response['request']['payer']);
+        $payer = $response['request']['payer'] ?? [];
+        if (! empty($payer)) {
+            $this->SavePayer($payer);
+        }
 
         return $this->subscription;
     }
 
     public function UpdateSubscription(ClientResponse $response)
     {
+        $status = SubscriptionStatus::INACTIVE->value;
+        if ($response['status']['status'] === PaymentStatus::APPROVED->value) {
+            $status = SubscriptionStatus::ACTIVE->value;
+            $token = $response['subscription']['instrument'][0]['value'];
+            $subtoken = $response['subscription']['instrument'][1]['value'];
+        }
         $this->subscription->update([
-            'status' => $response['status']['status'],
-            'token' => $response['subscription']['instrument'][0]['value'],
-            'subtoken' => $response['subscription']['instrument'][1]['value'],
+            'status' => $status,
+            'token' => $token ?? null,
+            'subtoken' => $subtoken ?? null,
         ]);
 
     }
 
     public function SavePayer(array $payer)
     {
+        if (empty($payer)) {
+            return;
+        }
         $this->subscription->payer = $payer;
         $this->subscription->save();
     }
@@ -91,7 +105,7 @@ class SubscriptionService
         ];
         $microsite = Microsites::find($this->subscription->microsite_id);
         $payment = $paymentRepository->create($data, $user, $microsite);
-
+        $payment->subscription_id = $this->subscription->id;
         $microsite = $this->subscription->microsite;
         $payer = $this->subscription->payer;
 
@@ -103,6 +117,17 @@ class SubscriptionService
         $payment->update([
             'process_identifier' => $response['requestId'],
             'status' => $response['status']['status'],
+        ]);
+
+        return $response;
+    }
+
+    public function cancel(): ClientResponse
+    {
+        $response = $this->gateway->prepare()
+            ->invalidateTokenSubtoken($this->subscription->token, $this->subscription->subtoken);
+        $this->subscription->update([
+            'status' => SubscriptionStatus::CANCELED->value,
         ]);
 
         return $response;

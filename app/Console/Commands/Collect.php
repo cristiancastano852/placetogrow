@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -34,7 +35,7 @@ class Collect extends Command
     {
         $this->info('---Collecting payment for subscription');
         Log::info('Collecting payment for subscription');
-        $subscriptions = Subscription::where('status', PaymentStatus::APPROVED->value)
+        $subscriptions = Subscription::where('status', SubscriptionStatus::ACTIVE->value)
             ->where('next_billing_date', '<=', now()->addDays(3))
             ->where('expiration_date', '>=', now())
             ->get();
@@ -55,6 +56,7 @@ class Collect extends Command
     private function processPayment(Subscription $subscription)
     {
         Log::info('Processing payment for subscription '.$subscription->id);
+
         $microsite = Microsites::find($subscription->microsite_id);
         $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
         $response = $subscriptionService->ProcessPaymentCollect();
@@ -65,7 +67,7 @@ class Collect extends Command
             $new_next_billing_date = $subscription->next_billing_date->add($duration_unit, $billing_frequency);
 
             if ($new_next_billing_date->greaterThan($subscription->expiration_date)) {
-                $subscription->status = PaymentStatus::REJECTED->value;
+                $subscription->status = SubscriptionStatus::EXPIRED->value;
             }
             $subscription->next_billing_date = $new_next_billing_date;
             $subscription->save();
@@ -76,7 +78,7 @@ class Collect extends Command
         if ($response['status']['status'] === PaymentStatus::REJECTED->value) {
             if (now()->equalTo($subscription->next_billing_date)) {
                 Log::info('Payment rejected and subscription suspended'.$subscription->id);
-                $subscription->status = PaymentStatus::REJECTED->value;
+                $subscription->status = SubscriptionStatus::SUSPENDED->value;
                 $subscription->save();
 
                 //Send Email to user that subscription is suspended

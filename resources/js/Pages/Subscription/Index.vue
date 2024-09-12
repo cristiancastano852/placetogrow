@@ -6,13 +6,14 @@ import { SDataTable, SBadge, SSelect, SLabel, SButton } from '@placetopay/sparta
 import { format } from 'date-fns';
 
 const colorByType = {
-    APPROVED: 'green',
-    REJECTED: 'red',
-    PENDING: 'yellow',
+    ACTIVE: 'green',
+    INACTIVE: 'blue',
+    SUSPENDED: 'yellow',
+    CANCELED: 'red',
 };
 
 const props = defineProps({
-    payments: {
+    subscriptions: {
         type: Object,
         required: true,
     },
@@ -29,17 +30,16 @@ function formatDate(dateString: string): string {
 }
 
 const cols = [
-    { id: 'id', header: 'ID' },
-    { id: 'reference', header: 'Referencia' },
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
-    { id: 'currency', header: 'Moneda' },
-    { id: 'amount', header: 'Monto' },
+    { id: 'microsite.currency', header: 'Moneda' },
+    { id: 'price', header: 'Precio' },
     { id: 'microsite.name', header: 'Sitio de pago' },
-    { id: 'updated_at', header: 'Fecha de pago' },
+    { id: 'created_at', header: 'Fecha de pago' },
+    { id: 'actions', header: 'Acciones' },
 ];
 
-const value = ref('payments');
+const value = ref('subscriptions');
 
 const selectedMicrosite = ref(0);
 
@@ -50,6 +50,11 @@ const searchByMicrosite = () => {
     router.get(route('payments.transactionsByMicrosite', { microsite: selectedMicrosite.value }));
   }
 };
+
+const cancelSubscription = (id) => {
+    console.log(",,,,,,,,,,,,,,,,,,,,,,,",id);
+    router.visit(route('subscriptions.cancel', id));
+}
 
 </script>
 
@@ -69,8 +74,8 @@ const searchByMicrosite = () => {
                 </div>
             </div>
             <h1>Transacciones</h1>
-            <div  v-if="props.payments.length > 0">
-                <SDataTable :cols="cols" :data="props.payments">
+            <div  v-if="props.subscriptions.length > 0">
+                <SDataTable :cols="cols" :data="props.subscriptions">
                     <template #col[description]="{ value }">
                         <div class="flex items center">
                             <span class="ml-2">{{ value }}</span>
@@ -83,9 +88,14 @@ const searchByMicrosite = () => {
                     <template #col[currency]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
                     </template>
-                    <template #col[updated_at]="{ value }">
+                    <template #col[created_at]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
                     </template>
+                    <template #col[actions]="{ record }">
+                        <button @click="cancelSubscription(record.id)"
+                                        class="text-red-600 hover:text-red-900">Cancelar</button>
+                    </template>
+                    
                 </SDataTable>
             </div>
             <div v-else>

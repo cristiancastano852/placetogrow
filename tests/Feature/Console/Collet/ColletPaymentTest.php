@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Collet;
 
-use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Models\Category;
 use App\Models\Microsites;
 use App\Models\Plan;
@@ -19,6 +19,7 @@ class ColletPaymentTest extends TestCase
      */
     public function test_collect_no_subscription(): void
     {
+        $this->withoutExceptionHandling();
         $this->artisan('app:collect')
             ->assertExitCode(0);
     }
@@ -46,7 +47,7 @@ class ColletPaymentTest extends TestCase
                 'user_id' => $user->id,
                 'microsite_id' => $microsite->id,
                 'plan_id' => $plan->id,
-                'status' => PaymentStatus::APPROVED->value,
+                'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now()->addDay(),
                 'expiration_date' => Carbon::now()->addMonths(12),
             ]
@@ -78,7 +79,7 @@ class ColletPaymentTest extends TestCase
                 'user_id' => $user->id,
                 'microsite_id' => $microsite->id,
                 'plan_id' => $plan->id,
-                'status' => PaymentStatus::APPROVED->value,
+                'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
             ]

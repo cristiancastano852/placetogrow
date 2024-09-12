@@ -2,7 +2,7 @@
 
 namespace App\Actions\Subscription;
 
-use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -17,7 +17,7 @@ class StoreSubscriptionAction
         $price = $plan->price;
         $user_id = $user->id;
         $microsite_id = $microsite->id;
-        $status = PaymentStatus::PENDING;
+        $status = SubscriptionStatus::INACTIVE->value;
         $billing_frequency = $plan->billing_frequency;
         $expiration_date = now()->addMonths($plan->duration_period);
         $name = $plan->name;

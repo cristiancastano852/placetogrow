@@ -31,4 +31,6 @@ interface PaymentGateway
     public function get(string $process_identifier): QueryPaymentResponse;
 
     public function paymentCollect(Payment $payment, Subscription $subscription): self;
+
+    public function invalidateTokenSubtoken(string $token, string $subtoken): ClientResponse;
 }
