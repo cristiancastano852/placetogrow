@@ -41,7 +41,7 @@ class ImportController extends Controller
         $import->save();
         Excel::import(new InvoiceImport($import), $import->path, Import::DISK, Reader::CSV);
 
-        return Inertia::render('imports.show', [
+        return Inertia::render('Imports/Show', [
             'import' => $import,
         ]);
     }
