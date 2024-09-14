@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
-import { SAccordion, SModalLeft, SAvatar, SDropdown, SButton, SDataTable, SBadge } from '@placetopay/spartan-vue';
-import { MenuIcon, LogoutIcon, AddIcon  } from '@placetopay/iconsax-vue/linear';
+import {SButton, SDataTable, SBadge } from '@placetopay/spartan-vue';
+import { MenuIcon, ArrowDownIcon , AddIcon  } from '@placetopay/iconsax-vue/linear';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
@@ -61,7 +61,7 @@ const createPlans = (id) => {
     router.visit(route('plans.create', id));
 }
 const importInvoices = (id) => {
-    router.visit(route('import.create', id));
+    router.visit(route('invoice.index', id));
 }
 
 </script>
@@ -88,6 +88,7 @@ const importInvoices = (id) => {
                             </template>
 
                             <template #col[actions]="{ record }">
+
                                 <div class="flex gap-4">
                                     <button v-if="can('microsites.view')" @click="viewMicrosite(record.id)"
                                         class="text-neutral-600 hover:text-neutral-900">{{$t('microsite.show')}}</button>
@@ -100,8 +101,10 @@ const importInvoices = (id) => {
                                     <button v-if="record.site_type === 'Facturas'" @click="importInvoices(record.id)"
                                         class="text-green-600 hover:text-green-900">{{$t('microsite.Invoices')}}</button>
                                 </div>
+                                
                             </template>
                         </SDataTable>
+
                     </div>
                 </main>
             </div>

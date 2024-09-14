@@ -46,7 +46,7 @@ class ImportInvoicesTest extends TestCase
         $response = $this->post(route('import.store', $microsite), [
             'file' => $file,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
 
     }
 }

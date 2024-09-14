@@ -20,13 +20,15 @@ class ImportController extends Controller
         if ($microsite->site_type !== MicrositesTypes::Facturas->name) {
             abort(404);
         }
+        $imports = Import::where('microsite_id', $microsite->id)->latest()->paginate(10);
 
         return Inertia::render('Imports/Create', [
             'microsite' => $microsite,
+            'imports' => $imports,
         ]);
     }
 
-    public function store(Request $request, Microsites $microsite): \Inertia\Response
+    public function store(Request $request, Microsites $microsite): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('file');
 
@@ -41,9 +43,7 @@ class ImportController extends Controller
         $import->save();
         Excel::import(new InvoiceImport($import), $import->path, Import::DISK, Reader::CSV);
 
-        return Inertia::render('Imports/Show', [
-            'import' => $import,
-        ]);
+        return Inertia::location(route('import.create', $microsite));
     }
 
     public function show(Import $import): View

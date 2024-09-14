@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
+import { SDataTable, SBadge, SButton } from '@placetopay/spartan-vue';
+import { DocumentUploadIcon, BackSquareIcon } from '@placetopay/iconsax-vue/linear';
 import { ref } from 'vue';
 
-const value = ref('microsites');
+const value = ref('Sitios');
 const form = useForm({
-    file: null, 
+    file: null,
 });
 
 const props = defineProps({
@@ -13,15 +15,37 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    imports: {
+        type: Array,
+        required: true,
+    }
 });
 
 const submit = () => {
-    form.post(route('import.store', {microsite: props.microsite.id}), {
+    form.post(route('import.store', { microsite: props.microsite.id }), {
         onSuccess: () => {
             form.reset();
         },
     });
 };
+
+const cols = [
+    { id: 'status', header: 'Estado' },
+    { id: 'file_name', header: 'Archivo' },
+    { id: 'document_number', header: 'Número de documento' },
+    { id: 'created_at', header: 'Fecha de creación' },
+
+];
+
+const colorByType = {
+    PAID: 'green',
+    PENDING: 'blue',
+    FAILED: 'yellow',
+};
+
+const returnPage = () => {
+    router.visit(route('microsites.index'));
+}
 
 </script>
 
@@ -29,13 +53,13 @@ const submit = () => {
 
     <Head title="Importar Facturas" />
     <AuthenticatedMainLayout v-model="value">
-        <div class="flex justify-between w-full">
+        <div class="mx-8">
+        <div class="flex justify-between w-full px-16">
             <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                Import invoices
+                Importar facturas
             </h1>
-            <Link href="{{ route('admin.imports.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">
-                <em class="fa-solid fa-arrow-left"></em> Back
-            </Link>
+            <SButton :leftIcon="BackSquareIcon" size="sm" rounded="full" variant="outline"
+                                    @click="returnPage">Regresar</SButton>
         </div>
 
         <div class="flex w-full justify-center my-4">
@@ -43,22 +67,23 @@ const submit = () => {
                 <form @submit.prevent="submit" enctype="multipart/form-data">
                     <div class="mb-4">
                         <label for="file" class="block text-gray-700">File</label>
-                        <input 
-                            type="file" 
-                            name="file" 
-                            id="file" 
-                            class="w-full border-gray-300 rounded"
-                            @change="(e) => form.file = e.target.files[0]"
-                            required
-                        />
+                        <input type="file" name="file" id="file" class="w-full border-gray-300 rounded"
+                            @change="(e) => form.file = e.target.files[0]" required />
                         <div v-if="form.errors.file" class="text-red-500">{{ form.errors.file }}</div>
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                        {{ $t('sites.save') }}
-                    </button>
+                    <SButton :icon="DocumentUploadIcon" type="submit" class="">
+                        Importar
+                    </SButton>
                 </form>
             </div>
+
         </div>
+        <div class="flex flex-col justify-center my-4 mx-8">
+            <h2>Ultimas importaciones realizadas</h2>
+            <SDataTable :cols="cols" :data="props.imports.data">
+            </SDataTable>
+        </div>
+    </div>
     </AuthenticatedMainLayout>
-    
+
 </template>
