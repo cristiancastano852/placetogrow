@@ -60,6 +60,9 @@ const createMicrosite = () => {
 const createPlans = (id) => {
     router.visit(route('plans.create', id));
 }
+const importInvoices = (id) => {
+    router.visit(route('import.create', id));
+}
 
 </script>
 
@@ -94,6 +97,8 @@ const createPlans = (id) => {
                                         class="text-red-600 hover:text-red-900">{{$t('microsite.delete')}}</button>
                                     <button v-if="record.site_type === 'Subscripciones'" @click="createPlans(record.id)"
                                         class="text-green-600 hover:text-green-900">{{$t('microsite.Plans')}}</button>
+                                    <button v-if="record.site_type === 'Facturas'" @click="importInvoices(record.id)"
+                                        class="text-green-600 hover:text-green-900">{{$t('microsite.Invoices')}}</button>
                                 </div>
                             </template>
                         </SDataTable>

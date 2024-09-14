@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MicrositesController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
@@ -78,6 +79,10 @@ Route::middleware('auth')->group(function () {
         Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
 
         Route::get('subscriptions/{subscription}/return', [SubscriptionController::class, 'return'])->name('subscriptions.return');
+
+        Route::get('invoices/import', [ImportController::class, 'create'])->name('import.create');
+        Route::post('invoices/import', [ImportController::class, 'store'])->name('import.store');
+        Route::get('invoices/import/asd', [ImportController::class, 'show'])->name('imports.show');
     });
 
     Route::get('subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
