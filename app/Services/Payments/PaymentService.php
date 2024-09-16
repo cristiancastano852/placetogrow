@@ -2,6 +2,8 @@
 
 namespace App\Services\Payments;
 
+use App\Constants\InvoiceStatus;
+use App\Constants\PaymentStatus;
 use App\Contracts\PaymentGateway;
 use App\Contracts\PaymentService as PaymentServiceContract;
 use App\Jobs\SendConfirmationToClient;
@@ -43,10 +45,19 @@ class PaymentService implements PaymentServiceContract
         $response = $this->gateway->prepare()
             ->get($this->payment->process_identifier);
 
+        $invoice_id = $this->payment->invoice_id ?? null;
+        if ($response->status->name === PaymentStatus::APPROVED->value && ! empty($invoice_id)) {
+            Log::info('Invoice approved', [
+                'payment' => $this->payment,
+            ]);
+            $this->payment->invoice()->update([
+                'status' => InvoiceStatus::PAID,
+            ]);
+        }
+
         return tap($this->payment)->update([
             'status' => $response->status,
         ]);
-    }
 
-    public function collect($buyer, $subscription) {}
+    }
 }

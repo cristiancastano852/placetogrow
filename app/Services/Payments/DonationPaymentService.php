@@ -23,15 +23,12 @@ class DonationPaymentService implements PaymentServiceContract
 
     public function create(array $buyer): PaymentResponse
     {
-        // Lógica específica para pagos de donaciones
         try {
             SendConfirmationToClient::dispatch($buyer);
-
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->payment($this->payment)
                 ->process();
-
             $this->payment->update([
                 'process_identifier' => $response->processIdentifier,
             ]);
@@ -50,12 +47,7 @@ class DonationPaymentService implements PaymentServiceContract
 
     public function query(): Payment
     {
-        $response = $this->gateway->prepare()->get($this->payment->process_identifier);
 
-        return tap($this->payment)->update([
-            'status' => $response->status,
-        ]);
+        return $this->payment;
     }
-
-    public function collect($payer, $subscription) {}
 }

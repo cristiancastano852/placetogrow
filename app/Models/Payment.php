@@ -33,6 +33,11 @@ class Payment extends Model
         return $this->belongsTo(Subscription::class);
     }
 
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
     public function scopeTransactionsByRole($query, User $user): void
     {
         $userRole = $user->roles->first()->name;

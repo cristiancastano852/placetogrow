@@ -1,107 +1,59 @@
 <script setup lang="ts">
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
-import { SDataTable, SBadge, SButton } from '@placetopay/spartan-vue';
-import { DocumentUploadIcon, BackSquareIcon } from '@placetopay/iconsax-vue/linear';
-
-import { format } from 'date-fns';
 import { ref } from 'vue';
-
-const value = ref('Sitios');
-const form = useForm({
-    file: null,
-});
-
-function formatDate(dateString: string): string {
-    return format(new Date(dateString), 'dd/MM/yyyy');
-}
+import { Head, Link, router } from '@inertiajs/vue3';
+import GuestMicrositesLayout from '@/Layouts/GuestMicrositesLayout.vue';
+import { SBadge, SButton, SInputBlock, SSelectBlock } from '@placetopay/spartan-vue';
+const colorByType = {
+    Subscripciones: 'green',
+    Facturas: 'red',
+    Donaciones: 'yellow',
+};
 
 const props = defineProps({
-    invoices: {
+    microsite: {
         type: Array,
         required: true,
     },
-    microsite: {
-        type: Object,
-        required: true,
-    },
 });
 
-const cols = [
-    { id: 'reference', header: 'Referencia' },
-    { id: 'status', header: 'Estado' },
-    { id: 'document_type', header: 'Tipo de documento' },
-    { id: 'document_number', header: 'Número de documento' },
-    { id: 'name', header: 'Nombre' },
-    { id: 'email', header: 'Email' },
-    { id: 'currency', header: 'Moneda' },
-    { id: 'amount', header: 'Valor' },
-    { id: 'expiration_date', header: 'Fecha de expiración' },
-    { id: 'created_at', header: 'Fecha de creación' },
-];
+const document_number = ref('');
 
-const colorByType = {
-    PAID: 'green',
-    PENDING: 'blue',
-    FAILED: 'yellow',
-};
-
-const submit = () => {
-    form.post(route('import.store', { microsite: props.microsite.id }), {
-        onSuccess: () => {
-            form.reset();
-        },
+const submitForm = () => {
+    router.post(route('invoice.invoicesByDocument', { microsite: props.microsite.id}), {
+        document_number: document_number.value,
     });
 };
-
-const importInvoices = (id) => {
-    router.visit(route('import.create', id));
-}
-
-const returnPage = () => {
-    router.visit(route('microsites.index'));
-}
-
-
 
 </script>
 
 <template>
 
-    <Head title="Facturas" />
-    <AuthenticatedMainLayout v-model="value">
-        <div class="flex h-screen">
-            <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
-                <main class="h-full w-full">
-                    <div class="flex w-full justify-center m-8">
-                        <div class="w-full flex justify-between mx-8">
-                            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                                Facturas de {{ props.microsite.name }}
-                            </h1>
-                            <div>
-                                <SButton class="mr-4" :leftIcon="DocumentUploadIcon" size="sm" rounded="full"
-                                    variant="outline" @click="importInvoices(props.microsite.id)">Importar</SButton>
-                                <SButton :leftIcon="BackSquareIcon" size="sm" rounded="full" variant="outline"
-                                    @click="returnPage">Regresar</SButton>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex w-full justify-center m-8">
-                        <SDataTable :cols="cols" :data="props.invoices.data">
-                            <template #col[status]="{ value }">
-                                <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
-                            </template>
-                            <template #col[expiration_date]="{ value }">
-                                <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
-                            </template>
-                            <template #col[created_at]="{ value }">
-                                <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
-                            </template>
-                        </SDataTable>
-                    </div>
-                </main>
-            </div>
-        </div>
-    </AuthenticatedMainLayout>
+    <Head title="Micrositios" />
+    <GuestMicrositesLayout>
+        <div class="container mx-auto py-8 w-1/2">
+                <div class="bg-gray-50 p-8 shadow-md">
+                    <header class="mb-4">
+                        <h1 class="text-base font-semibold text-gray-900">
+                            Encuentra tus facturas
+                        </h1>
+                        <p class="mt-1 text-sm text-gray-600">
+                            Utilice el número de documento para encontrar sus facturas pendientes.
+                        </p>
+                    </header>
 
+                    <form @submit.prevent="submitForm" class="rounded-xl border border-gray-100 bg-white p-8 shadow-sm">
+                        <section class="grid grid-cols-6 gap-6">
+                            <div class="col-span-3">
+                                <SInputBlock id="document_number" v-model="document_number" label="Número de documento" />
+                            </div>
+                        </section>
+                        <hr class="my-8" />
+                        <section class="flex justify-end gap-2">
+                            <SButton variant="secondary" >Cancelar</SButton>
+                            <SButton variant="primary" type="submit">Buscar</SButton>
+                        </section>
+                    </form>
+                </div>
+        </div>
+    </GuestMicrositesLayout>
 </template>

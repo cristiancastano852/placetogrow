@@ -19,7 +19,7 @@ class ColletPaymentTest extends TestCase
      */
     public function test_collect_no_subscription(): void
     {
-        $this->withoutExceptionHandling();
+
         $this->artisan('app:collect')
             ->assertExitCode(0);
     }

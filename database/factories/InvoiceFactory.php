@@ -33,7 +33,7 @@ class InvoiceFactory extends Factory
             'description' => $this->faker->sentence,
             'currency' => $this->faker->randomElement(array_column(Currency::cases(), 'name')),
             'amount' => 10000,
-            'expired_at' => Carbon::now()->addMonth()->toDateTimeString(),
+            'expiration_date' => Carbon::now()->addMonth()->toDateTimeString(),
             'microsite_id' => Microsites::factory(),
         ];
     }

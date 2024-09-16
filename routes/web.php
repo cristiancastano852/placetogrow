@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     //transactions by microsite
     Route::get('payments/microsite/{microsite}', [PaymentController::class, 'transactionsByMicrosite'])
         ->name('payments.transactionsByMicrosite');
+
+    Route::get('invoices', [InvoiceController::class, 'invoicesByUser'])->name('invoice.invoicesByUser');
+
 });
 
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
@@ -81,7 +84,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('subscriptions/{subscription}/return', [SubscriptionController::class, 'return'])->name('subscriptions.return');
 
-        Route::get('invoices', [InvoiceController::class, 'index'])->name('invoice.index');
+        Route::get('invoices', [InvoiceController::class, 'invoicesByMicrosite'])->name('invoice.invoicesByMicrosite');
+        Route::get('invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+        Route::post('invoice', [InvoiceController::class, 'invoicesByDocument'])->name('invoice.invoicesByDocument');
+        Route::post('invoice/pay', [InvoiceController::class, 'invoicesPayment'])->name('invoice.invoicesPayment');
         Route::get('invoices/import', [ImportController::class, 'create'])->name('import.create');
         Route::post('invoices/import', [ImportController::class, 'store'])->name('import.store');
         Route::get('invoices/import/asd', [ImportController::class, 'show'])->name('imports.show');

@@ -6,14 +6,13 @@ import { SDataTable, SBadge, SSelect, SLabel, SButton } from '@placetopay/sparta
 import { format } from 'date-fns';
 
 const colorByType = {
-    ACTIVE: 'green',
-    INACTIVE: 'blue',
-    SUSPENDED: 'yellow',
-    CANCELED: 'red',
+    PAID: 'green',
+    REJECTED: 'red',
+    PENDING: 'yellow',
 };
 
 const props = defineProps({
-    subscriptions: {
+    invoices: {
         type: Object,
         required: true,
     },
@@ -30,16 +29,19 @@ function formatDate(dateString: string): string {
 }
 
 const cols = [
+    { id: 'id', header: 'ID' },
+    { id: 'reference', header: 'Referencia' },
+    { id: 'document_number', header: 'Número de documento' },
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
-    { id: 'microsite.currency', header: 'Moneda' },
-    { id: 'price', header: 'Precio' },
+    { id: 'currency', header: 'Moneda' },
+    { id: 'amount', header: 'Monto' },
     { id: 'microsite.name', header: 'Sitio de pago' },
-    { id: 'created_at', header: 'Fecha de pago' },
+    { id: 'expiration_date', header: 'Expira' },
     { id: 'actions', header: 'Acciones' },
 ];
 
-const value = ref('subscriptions');
+const value = ref('invoices');
 
 const selectedMicrosite = ref(0);
 
@@ -51,9 +53,14 @@ const searchByMicrosite = () => {
   }
 };
 
-const cancelSubscription = (id) => {
-    router.visit(route('subscriptions.cancel', id));
-}
+const paymentInvoice = (invoice) => {
+    const id = invoice.id;
+    const microsite = invoice.microsite_id;
+    router.post(route('invoice.invoicesPayment', { microsite: microsite}), {
+        invoice_id: id,
+    });
+};
+
 
 </script>
 
@@ -61,20 +68,11 @@ const cancelSubscription = (id) => {
 
     <Head title="Pago" />
     <AuthenticatedMainLayout v-model="value">
+        
         <div class="m-8">
-            <div v-if="!is('Guests')" >
-                <SLabel>Filtra por sitio de pago</SLabel>
-                <div class="flex mb-8">
-                    <SSelect v-model="selectedMicrosite" rounded="left">
-                        <option value="0">Todos</option>
-                        <option v-for="microsite in props.microsites" :value="microsite.id">{{ microsite.name }}</option>
-                    </SSelect>
-                    <SButton color="primary" rounded="right" @click="searchByMicrosite">Buscar</SButton>
-                </div>
-            </div>
-            <h1>Transacciones</h1>
-            <div  v-if="props.subscriptions.length > 0">
-                <SDataTable :cols="cols" :data="props.subscriptions">
+            <h1 class="mb-8">Facturas</h1>
+            <div  v-if="props.invoices.data.length > 0">
+                <SDataTable :cols="cols" :data="props.invoices.data">
                     <template #col[description]="{ value }">
                         <div class="flex items center">
                             <span class="ml-2">{{ value }}</span>
@@ -87,18 +85,18 @@ const cancelSubscription = (id) => {
                     <template #col[currency]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
                     </template>
-                    <template #col[created_at]="{ value }">
+                    <template #col[expiration_date]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
                     </template>
                     <template #col[actions]="{ record }">
-                        <button @click="cancelSubscription(record.id)"
-                                        class="text-red-600 hover:text-red-900">Cancelar</button>
+
+                        <button v-if="record.status!=='PAID'" @click="paymentInvoice(record)"
+                                class="text-green-600 hover:text-green-900">Pagar</button>
                     </template>
-                    
                 </SDataTable>
             </div>
             <div v-else>
-                <p>No hay transacciones</p>
+                <p>No hay facturas</p>
             </div>
         </div>
         

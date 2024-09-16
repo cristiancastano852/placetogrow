@@ -11,7 +11,7 @@ const goToMicrositesPayment = (microsite) => {
     if (microsite.site_type == "Subscripciones") {
         router.visit(`/microsites/${microsite.id}/plans/show`);
     }else{
-        router.visit(`/microsite/pay/${microsite.slug}_${microsite.id}`);
+        router.visit(`/microsites/${microsite.id}/invoice`);
     }
 };
 

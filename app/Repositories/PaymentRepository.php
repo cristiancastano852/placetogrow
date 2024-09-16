@@ -15,7 +15,7 @@ class PaymentRepository
     public function create(array $data, User $user, $microsite): Payment
     {
         $payment = new Payment();
-        $payment->reference = date('ymdHis').'-'.strtoupper(Str::random(4));
+        $payment->reference = $data['reference'] ?? date('ymdHis').'-'.strtoupper(Str::random(4));
         $payment->description = $data['description'];
         $payment->amount = $data['amount'];
         $payment->currency = $microsite->currency;
@@ -24,7 +24,8 @@ class PaymentRepository
         $payment->status = PaymentStatus::PENDING;
         $payment->user()->associate($user);
         $payment->microsite()->associate($microsite);
-        $payment->fields_data = $data['fields_data'];
+        $payment->fields_data = $data['fields_data'] ?? null;
+        $payment->invoice_id = $data['invoice_id'] ?? null;
         $payment->save();
 
         return $payment;

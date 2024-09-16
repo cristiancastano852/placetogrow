@@ -181,7 +181,7 @@ class StorePaymentTest extends TestCase
 
     public function testItStoresPaymentPaypalSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
+
         $responseData = [
             'status' => [
                 'status' => 'OK',
@@ -274,7 +274,7 @@ class StorePaymentTest extends TestCase
 
     public function testItShowsTransactionsSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $role = Role::factory()->create(['name' => 'Admin']);
         $user->roles()->attach($role);
@@ -301,7 +301,7 @@ class StorePaymentTest extends TestCase
 
     public function testItShowsTransactionsByMicrositeSuccessfully(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $role = Role::factory()->create(['name' => 'Admin']);
         $user->roles()->attach($role);
@@ -312,7 +312,7 @@ class StorePaymentTest extends TestCase
 
     public function testApayerIsNotifiedWhenPaymentStarted(): void
     {
-        $this->withoutExceptionHandling();
+
         Queue::fake();
         Mail::fake();
         $responseData = [

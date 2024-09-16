@@ -1,31 +1,39 @@
 <script setup lang="ts">
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
-import { SDataTable, SBadge, SButton } from '@placetopay/spartan-vue';
+import { ref } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import GuestMicrositesLayout from '@/Layouts/GuestMicrositesLayout.vue';
+import { SBadge, SButton, SDataTable, SSelectBlock } from '@placetopay/spartan-vue';
 import { DocumentUploadIcon, BackSquareIcon } from '@placetopay/iconsax-vue/linear';
 
 import { format } from 'date-fns';
-import { ref } from 'vue';
 
-const value = ref('Sitios');
-const form = useForm({
-    file: null,
-});
-
-function formatDate(dateString: string): string {
-    return format(new Date(dateString), 'dd/MM/yyyy');
-}
 
 const props = defineProps({
+    microsite: {
+        type: Array,
+        required: true,
+    },
     invoices: {
         type: Array,
         required: true,
     },
-    microsite: {
-        type: Object,
-        required: true,
+    document_number: {
+        type: String,
+        required: false,
     },
 });
+
+const document_number = ref('');
+
+const paymentInvoice = (id) => {
+    router.post(route('invoice.invoicesPayment', { microsite: props.microsite.id}), {
+        invoice_id: id,
+    });
+};
+
+function formatDate(dateString: string): string {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+}
 
 const cols = [
     { id: 'reference', header: 'Referencia' },
@@ -38,6 +46,7 @@ const cols = [
     { id: 'amount', header: 'Valor' },
     { id: 'expiration_date', header: 'Fecha de expiración' },
     { id: 'created_at', header: 'Fecha de creación' },
+    { id: 'actions', header: 'Acciones' },
 ];
 
 const colorByType = {
@@ -45,11 +54,6 @@ const colorByType = {
     PENDING: 'blue',
     FAILED: 'yellow',
 };
-
-
-const importInvoices = (id) => {
-    router.visit(route('import.create', id));
-}
 
 const returnPage = () => {
     router.visit(route('microsites.index'));
@@ -61,8 +65,8 @@ const returnPage = () => {
 
 <template>
 
-    <Head title="Facturas" />
-    <AuthenticatedMainLayout v-model="value">
+    <Head title="Micrositios" />
+    <GuestMicrositesLayout>
         <div class="flex h-screen">
             <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
                 <main class="h-full w-full">
@@ -72,8 +76,6 @@ const returnPage = () => {
                                 Facturas de {{ props.microsite.name }}
                             </h1>
                             <div>
-                                <SButton class="mr-4" :leftIcon="DocumentUploadIcon" size="sm" rounded="full"
-                                    variant="outline" @click="importInvoices(props.microsite.id)">Importar</SButton>
                                 <SButton :leftIcon="BackSquareIcon" size="sm" rounded="full" variant="outline"
                                     @click="returnPage">Regresar</SButton>
                             </div>
@@ -90,11 +92,14 @@ const returnPage = () => {
                             <template #col[created_at]="{ value }">
                                 <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
                             </template>
+                            <template #col[actions]="{ record }">
+                                <button @click="paymentInvoice(record.id)"
+                                        class="text-green-600 hover:text-green-900">Pagar</button>
+                            </template>
                         </SDataTable>
                     </div>
                 </main>
             </div>
         </div>
-    </AuthenticatedMainLayout>
-
+    </GuestMicrositesLayout>
 </template>

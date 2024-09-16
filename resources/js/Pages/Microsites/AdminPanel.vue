@@ -61,7 +61,7 @@ const createPlans = (id) => {
     router.visit(route('plans.create', id));
 }
 const importInvoices = (id) => {
-    router.visit(route('invoice.index', id));
+    router.visit(route('invoice.invoicesByMicrosite', id));
 }
 
 </script>

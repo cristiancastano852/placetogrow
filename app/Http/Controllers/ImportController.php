@@ -7,7 +7,6 @@ use App\Constants\MicrositesTypes;
 use App\Imports\InvoiceImport;
 use App\Models\Import;
 use App\Models\Microsites;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Excel as Reader;
@@ -28,7 +27,7 @@ class ImportController extends Controller
         ]);
     }
 
-    public function store(Request $request, Microsites $microsite): \Illuminate\Http\RedirectResponse
+    public function store(Request $request, Microsites $microsite)
     {
         $file = $request->file('file');
 
@@ -44,14 +43,5 @@ class ImportController extends Controller
         Excel::import(new InvoiceImport($import), $import->path, Import::DISK, Reader::CSV);
 
         return Inertia::location(route('import.create', $microsite));
-    }
-
-    public function show(Import $import): View
-    {
-        $this->authorize('view', $import);
-
-        return view('imports.show', [
-            'import' => $import,
-        ]);
     }
 }

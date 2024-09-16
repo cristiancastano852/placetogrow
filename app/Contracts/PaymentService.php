@@ -10,6 +10,4 @@ interface PaymentService
     public function create(array $buyer): PaymentResponse;
 
     public function query(): Payment;
-
-    public function collect(array $buyer, array $subscription);
 }

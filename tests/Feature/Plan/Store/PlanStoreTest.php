@@ -31,7 +31,7 @@ class PlanStoreTest extends TestCase
 
     public function test_store_plan_successfully(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $permission = Permission::firstOrCreate(['name' => PermissionSlug::MICROSITES_CREATE->value]);
         $user->givePermissionTo($permission);

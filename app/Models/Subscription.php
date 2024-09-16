@@ -61,7 +61,8 @@ class Subscription extends Model
             $query->with('microsite')
                 ->whereHas('microsite', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
-                });
+                })
+                ->orWhere('user_id', $user->id);
         }
 
         if ($userRole === 'Guests') {

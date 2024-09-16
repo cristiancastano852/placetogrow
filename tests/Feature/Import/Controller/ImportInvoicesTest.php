@@ -15,7 +15,7 @@ class ImportInvoicesTest extends TestCase
 {
     public function test_create_import_invoices_success(): void
     {
-        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -31,7 +31,7 @@ class ImportInvoicesTest extends TestCase
 
     public function test_store_import_invoices_success(): void
     {
-        $this->withoutExceptionHandling();
+
         Storage::fake('local');
         Excel::fake();
         Queue::fake();
