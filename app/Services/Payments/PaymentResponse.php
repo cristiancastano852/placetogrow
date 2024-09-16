@@ -14,10 +14,8 @@ class PaymentResponse
     public function toArray(): array
     {
         return [
-            'process_identifier' => $this->processIdentifier,
-            'url' => $this->url,
-            'status' => $this->status,
-            'message' => $this->message,
+            'process_identifier' => $this->processIdentifier, 'url' => $this->url,
+            'status' => $this->status, 'message' => $this->message,
         ];
     }
 
