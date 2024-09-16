@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
         $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
         $response = $subscriptionService->cancel();
 
-        if ($response['status']['status'] !== 'OK') {
+        if ($response == null || $response['status']['status'] !== 'OK') {
             Log::error('Error canceling subscription', [
                 'response' => $response,
             ]);
@@ -81,7 +81,7 @@ class SubscriptionController extends Controller
 
         $subscription->update([
             'status' => SubscriptionStatus::CANCELED->value,
-            'status_message' => $response['status']['message'],
+            'status_message' => $response['status']['message'] ?? null,
         ]);
 
         return redirect()->route('subscriptions.index');

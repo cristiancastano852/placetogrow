@@ -93,7 +93,7 @@ const returnPage = () => {
                                 <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
                             </template>
                             <template #col[actions]="{ record }">
-                                <button @click="paymentInvoice(record.id)"
+                                <button v-if="record.status!=='PAID'" @click="paymentInvoice(record.id)"
                                         class="text-green-600 hover:text-green-900">Pagar</button>
                             </template>
                         </SDataTable>

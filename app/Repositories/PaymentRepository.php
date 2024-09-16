@@ -15,7 +15,7 @@ class PaymentRepository
     public function create(array $data, User $user, $microsite): Payment
     {
         $payment = new Payment();
-        $payment->reference = $data['reference'] ?? date('ymdHis').'-'.strtoupper(Str::random(4));
+        $payment->reference = $data['reference'].'-'.strtoupper(Str::random(4)) ?? date('ymdHis').'-'.strtoupper(Str::random(4));
         $payment->description = $data['description'];
         $payment->amount = $data['amount'];
         $payment->currency = $microsite->currency;

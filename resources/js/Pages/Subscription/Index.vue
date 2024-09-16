@@ -91,7 +91,7 @@ const cancelSubscription = (id) => {
                         <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
                     </template>
                     <template #col[actions]="{ record }">
-                        <button @click="cancelSubscription(record.id)"
+                        <button v-if="record.status =='ACTIVE'" @click="cancelSubscription(record.id)"
                                         class="text-red-600 hover:text-red-900">Cancelar</button>
                     </template>
                     
