@@ -76,7 +76,7 @@ class Collect extends Command
         }
 
         if ($response['status']['status'] === PaymentStatus::REJECTED->value) {
-            if (now()->equalTo($subscription->next_billing_date)) {
+            if (now()->toDateString() === $subscription->next_billing_date->toDateString()) {
                 Log::info('Payment rejected and subscription suspended'.$subscription->id);
                 $subscription->status = SubscriptionStatus::SUSPENDED->value;
                 $subscription->save();
