@@ -40,11 +40,7 @@ class SubscriptionController extends Controller
         $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
         $response = $subscriptionService->create($user);
         if ($response['status']['status'] !== 'OK') {
-
-            Log::error('Error creating session', [
-                'response' => $response,
-            ]);
-
+            Log::error('Error creating session', ['response' => $response,]);
         }
 
         $subscription->update([
@@ -53,7 +49,6 @@ class SubscriptionController extends Controller
         ]);
 
         return Inertia::location($response['processUrl']);
-
     }
 
     public function return(Microsites $microsite, Subscription $subscription)
