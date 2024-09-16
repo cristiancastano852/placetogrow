@@ -17,7 +17,7 @@ class SubscriptionStoreTest extends TestCase
     {
 
         Http::fake([
-            'https://checkout-co.placetopay.dev/api/session' => Http::response([
+            'https://checkout-co.placetopay.dev/api/session/' => Http::response([
                 'status' => [
                     'status' => 'OK',
                     'reason' => 'PC',
