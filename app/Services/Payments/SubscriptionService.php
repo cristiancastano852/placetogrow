@@ -122,14 +122,14 @@ class SubscriptionService
         return $response;
     }
 
-    public function cancel(): ClientResponse | null
+    public function cancel(): ?ClientResponse
     {
         $response = null;
         if ($this->subscription->token !== null and $this->subscription->subtoken !== null) {
             $response = $this->gateway->prepare()
                 ->invalidateTokenSubtoken($this->subscription->token, $this->subscription->subtoken);
         }
-        
+
         $this->subscription->update([
             'status' => SubscriptionStatus::CANCELED->value,
         ]);
