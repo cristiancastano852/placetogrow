@@ -47,10 +47,7 @@ class SubscriptionService
 
             return $response;
         } catch (\Exception $e) {
-            Log::error('Payment creation exception', [
-                'buyer' => $buyer,
-                'message' => $e->getMessage(),
-            ]);
+            Log::error('Payment creation exception', ['buyer' => $buyer, 'message' => $e->getMessage(),]);
 
         }
     }
