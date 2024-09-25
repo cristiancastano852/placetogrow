@@ -5,9 +5,9 @@
     
     <div class="mb-4 flex justify-between items-center">
       <button @click="addPlan" type="button" class="bg-blue-500 text-white px-4 py-2 rounded" :disabled="plans.length >= 3">
-        Add New Plan
+        Crear nuevo plan
       </button>
-      <span class="text-sm text-gray-600">{{ plans.length }} / 3 plans created</span>
+      <span class="text-sm text-gray-600">{{ plans.length }} / 3 planes creados</span>
     </div>
 
     <div class="h-full overflow-y-auto pr-4">

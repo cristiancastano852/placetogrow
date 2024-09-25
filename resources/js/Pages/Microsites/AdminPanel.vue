@@ -5,7 +5,7 @@ import {SButton, SDataTable, SBadge } from '@placetopay/spartan-vue';
 import { MenuIcon, ArrowDownIcon , AddIcon  } from '@placetopay/iconsax-vue/linear';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 
 const goBack = () => {
     router.visit('/');
@@ -14,6 +14,7 @@ const goBack = () => {
 const goEditProfile = () => {
     router.visit('/profile');
 }
+const { props: { auth: { permissions, roles }}} = usePage();
 
 const props = defineProps({
     microsites: {
@@ -74,7 +75,7 @@ const importInvoices = (id) => {
             <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
                 <main class="h-full w-full py-10">
                     <div class="h-full w-full px-4 sm:px-6 lg:px-8">
-                        <SButton v-if="can('microsites.create')"  :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
+                        <SButton v-if="permissions.includes('microsites.create')"  :leftIcon="AddIcon " size="sm" rounded="full" @click="createMicrosite()"/>
                         <SDataTable 
                         :cols="cols" 
                         :data="props.microsites"
@@ -90,11 +91,11 @@ const importInvoices = (id) => {
                             <template #col[actions]="{ record }">
 
                                 <div class="flex gap-4">
-                                    <button v-if="can('microsites.view')" @click="viewMicrosite(record.id)"
+                                    <button v-if="permissions.includes('microsites.view')" @click="viewMicrosite(record.id)"
                                         class="text-neutral-600 hover:text-neutral-900">{{$t('microsite.show')}}</button>
-                                    <button v-if="can('microsites.update')" @click="editMicrosite(record.id)"
+                                    <button v-if="permissions.includes('microsites.update')" @click="editMicrosite(record.id)"
                                         class="text-indigo-600 hover:text-indigo-900">{{$t('microsite.edit')}}</button>
-                                    <button v-if="can('microsites.delete')" @click="deleteMicrosite(record.id)"
+                                    <button v-if="permissions.includes('microsites.delete')" @click="deleteMicrosite(record.id)"
                                         class="text-red-600 hover:text-red-900">{{$t('microsite.delete')}}</button>
                                     <button v-if="record.site_type === 'Subscripciones'" @click="createPlans(record.id)"
                                         class="text-green-600 hover:text-green-900">{{$t('microsite.Plans')}}</button>

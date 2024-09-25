@@ -41,7 +41,7 @@ const emit = defineEmits({
 </script>
 
 <template>
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <SAccordion :open="open" class="hidden lg:block">
             <MainSidebar v-model="value" :permissions="permissions" :roles="roles"/>
         </SAccordion>
@@ -51,7 +51,7 @@ const emit = defineEmits({
         </SModalLeft>
         
 
-        <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
+        <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600 overflow-hidden">
             <nav class="flex w-full justify-between items-center border-b border-gray-200 px-5 py-2">
                 <button @click="open = !open">
                     <MenuIcon class="relative h-6 w-6 text-gray-400" />
@@ -73,7 +73,7 @@ const emit = defineEmits({
                 </div>
             </header>
 
-            <main class="h-full w-full py-10 overflow-hidden">
+            <main class="h-full w-full py-10 overflow-y-auto">
                 <slot />
             </main>
         </div>
