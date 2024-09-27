@@ -36,7 +36,7 @@ class PaymentService implements PaymentServiceContract
     {
         $process_identifier = $this->payment->process_identifier;
         if (empty($process_identifier)) {
-            Log::error('Payment process identifier is empty', ['payment' => $this->payment,]);
+            Log::error('Payment process identifier is empty', ['payment' => $this->payment]);
 
             return $this->payment;
         }
@@ -45,8 +45,8 @@ class PaymentService implements PaymentServiceContract
 
         $invoice_id = $this->payment->invoice_id ?? null;
         if ($response->status->name === PaymentStatus::APPROVED->value && ! empty($invoice_id)) {
-            Log::info('Invoice approved', ['payment' => $this->payment,]);
-            $this->payment->invoice()->update(['status' => InvoiceStatus::PAID,]);
+            Log::info('Invoice approved', ['payment' => $this->payment]);
+            $this->payment->invoice()->update(['status' => InvoiceStatus::PAID]);
         }
 
         return tap($this->payment)->update([

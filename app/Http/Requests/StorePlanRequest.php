@@ -18,12 +18,24 @@ class StorePlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plans.*.name' => 'required|string|max:255',
-            'plans.*.price' => 'required|numeric|min:1',
-            'plans.*.description' => 'nullable|string|max:1000',
-            'plans.*.duration_unit' => 'required|string|in:'.implode(',', TimeUnitSubscription::toArray()),
-            'plans.*.billing_frequency' => 'required|integer|min:1',
-            'plans.*.duration_period' => 'required|integer|min:1',
+            'plan.name' => 'required|string|max:255',
+            'plan.price' => 'required|numeric|min:1',
+            'plan.description' => 'required|string|max:1000',
+            'plan.duration_unit' => 'required|string|in:'.implode(',', TimeUnitSubscription::toArray()),
+            'plan.billing_frequency' => 'required|integer|min:1',
+            'plan.duration_period' => 'required|integer|min:1',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'plan.name' => 'nombre del plan',
+            'plan.price' => 'precio',
+            'plan.description' => 'descripción',
+            'plan.duration_unit' => 'unidad de duración',
+            'plan.billing_frequency' => 'frecuencia del cobro',
+            'plan.duration_period' => 'periodo de duración',
         ];
     }
 }

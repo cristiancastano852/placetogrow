@@ -8,16 +8,12 @@ import { SInput, SSelect, SButton, SLabel, SInputBlock, SSteps, SStepsItem } fro
 import CreatePlans from '@/Components/Plans/CreatePlans.vue';
 
 const props = defineProps({
-    microsite_id: {
-        type: Number,
+    microsite: {
+        type: Object,
         required: true
     },
     duration_units: {
         type: Array,
-        required: true
-    },
-    microsite_name: {
-        type: Object,
         required: true
     },
     plans: {
@@ -39,13 +35,8 @@ const props = defineProps({
     <AuthenticatedMainLayout v-model="value">
         <div class="container mx-auto p-4">
             <div>
-                <CreatePlans :microsite_id="microsite_id"
-                :duration_units="duration_units"
-                :microsite_name="microsite_name"
-                :errors="errors"
-                :plans="plans"
-                
-                />
+                <CreatePlans :microsite="microsite" :duration_units="duration_units"
+                    :errors="errors" :plans="plans" />
             </div>
         </div>
     </AuthenticatedMainLayout>
