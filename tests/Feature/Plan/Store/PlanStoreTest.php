@@ -40,23 +40,20 @@ class PlanStoreTest extends TestCase
         $this->actingAs($user);
 
         $data = [
-            'plans' => [
-                [
-                    'name' => 'Basic Plan',
-                    'price' => 10,
-                    'description' => 'This is a basic plan.',
-                    'duration_unit' => 'Months',
-                    'billing_frequency' => 1,
-                    'duration_period' => 12,
-                ],
+            'plan' => [
+                'name' => 'Basic Plan',
+                'price' => 10,
+                'description' => 'This is a basic plan.',
+                'duration_unit' => 'Months',
+                'billing_frequency' => 1,
+                'duration_period' => 12,
             ],
         ];
 
         $response = $this->actingAs($user)
             ->get(route('microsites.create'));
         $response = $this->post(route('plans.store', $microsite->id), $data);
-
-        $response->assertRedirect(route('microsites.show', $microsite->id));
+        $response->assertRedirect(route('plans.index', $microsite->id));
         $response->assertSessionHas('success', 'Planes creados correctamente');
 
         $this->assertDatabaseHas('plans', [

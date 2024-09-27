@@ -6,14 +6,11 @@ use App\Constants\PermissionSlug;
 use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class PlanDestroyTest extends TestCase
 {
-
     public function test_plan_destroy_success(): void
     {
         $user = User::factory()->create();

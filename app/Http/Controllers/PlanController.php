@@ -7,7 +7,6 @@ use App\Constants\TimeUnitSubscription;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Microsites;
 use App\Models\Plan;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PlanController extends Controller
@@ -62,7 +61,8 @@ class PlanController extends Controller
         ]);
     }
 
-    public function update(StorePlanRequest $request, Microsites $microsite, Plan $plan,  UpdateAction $updateAction) {
+    public function update(StorePlanRequest $request, Microsites $microsite, Plan $plan, UpdateAction $updateAction)
+    {
         $plan_data = $request->validated();
         $plan_data['id'] = $plan->id;
         $updateAction->execute($plan_data);
@@ -70,10 +70,11 @@ class PlanController extends Controller
         return redirect()->route('plans.index', $microsite->id)->with('success', 'Plan actualizado correctamente');
     }
 
-    public function destroy(Microsites $microsite, Plan $plan) {
+    public function destroy(Microsites $microsite, Plan $plan)
+    {
         $microsite_id = $microsite->id;
         $plan->delete();
-        
+
         return redirect()->route('plans.index', $microsite_id)->with('success', 'Plan eliminado correctamente');
     }
 }
