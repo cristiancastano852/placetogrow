@@ -24,7 +24,7 @@ class DonationPaymentService implements PaymentServiceContract
     public function create(array $buyer): PaymentResponse
     {
         try {
-            // SendConfirmationToClient::dispatch($buyer);
+            SendConfirmationToClient::dispatch($buyer);
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->payment($this->payment)
