@@ -27,11 +27,13 @@ class Subscription extends Model
         'expiration_date',
         'billing_frequency',
         'payer',
+        'next_retry_date',
     ];
 
     protected $casts = [
         'next_billing_date' => 'datetime',
         'expiration_date' => 'datetime',
+        'next_retry_date' => 'datetime',
         'payer' => 'array',
     ];
 

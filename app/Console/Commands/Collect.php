@@ -28,26 +28,23 @@ class Collect extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $this->info('---Collecting payment for subscription');
         Log::info('Collecting payment for subscription');
-        $subscriptions = Subscription::where('status', SubscriptionStatus::ACTIVE->value)
-            ->where('next_billing_date', '<=', now()->addDays(3))
-            ->where('expiration_date', '>=', now())
+        $subscriptionsToCollect = Subscription::where('status', SubscriptionStatus::ACTIVE->value)
+            ->where('next_retry_date', '<=', now())
+            ->with('microsite')
             ->get();
 
-        if ($subscriptions->isEmpty()) {
+        if ($subscriptionsToCollect->isEmpty()) {
             $this->info('---No subscription to collect');
             Log::info('No subscription to collect');
 
             return;
         }
 
-        foreach ($subscriptions as $subscription) {
+        foreach ($subscriptionsToCollect as $subscription) {
             $this->processPayment($subscription);
         }
 
@@ -61,6 +58,7 @@ class Collect extends Command
         $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
         $response = $subscriptionService->ProcessPaymentCollect();
         if ($response['status']['status'] === PaymentStatus::APPROVED->value) {
+            Log::info('Payment approved of subscription: '.$subscription->id);
             $billing_frequency = $subscription->billing_frequency;
             $plan = Plan::find($subscription->plan_id);
             $duration_unit = $plan->duration_unit;
@@ -69,22 +67,25 @@ class Collect extends Command
             if ($new_next_billing_date->greaterThan($subscription->expiration_date)) {
                 $subscription->status = SubscriptionStatus::EXPIRED->value;
             }
+            $subscription->next_retry_date = $new_next_billing_date;
             $subscription->next_billing_date = $new_next_billing_date;
+            $subscription->retry_attempts = 0;
             $subscription->save();
 
             return;
         }
 
-        if ($response['status']['status'] === PaymentStatus::REJECTED->value) {
-            if (now()->toDateString() === $subscription->next_billing_date->toDateString()) {
-                Log::info('Payment rejected and subscription suspended'.$subscription->id);
-                $subscription->status = SubscriptionStatus::SUSPENDED->value;
-                $subscription->save();
+        if ($subscription->retry_attempts >= $microsite->payment_retries) {
+            Log::info('Payment rejected, subscription suspended '.$subscription->id);
+            $subscription->status = SubscriptionStatus::SUSPENDED->value;
+            $subscription->save();
 
-                //Send Email to user that subscription is suspended
-                return;
-            }
-            Log::info('Payment rejected, tomorrow will try again '.$subscription->id);
+            //Send Email to user that subscription is suspended
+            return;
         }
+        $subscription->retry_attempts = $subscription->retry_attempts + 1;
+        $subscription->next_retry_date = $subscription->next_retry_date->addDays($microsite->retry_duration);
+        Log::info('Payment rejected, retrying '.$subscription->next_retry_date);
+        $subscription->save();
     }
 }

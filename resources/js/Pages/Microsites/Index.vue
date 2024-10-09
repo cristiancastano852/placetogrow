@@ -28,12 +28,13 @@ const props = defineProps({
 
     <Head title="Micrositios" />
     <GuestMicrositesLayout>
-        <div class="container mx-auto py-8">
+        
+        <div class="container mx-auto py-8 w-full py-10 h-[80vh]">
             <h1 class="text-2xl font-bold mb-4">Sitios</h1>
             <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">Selecciona tu sitio para hacer tu pago</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="microsite in props.microsites" :key="microsite.id"
-                    class="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                    class="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800 ">
                     <img :src="microsite.logo" alt="Logo de Micrositio"
                         class="w-24 h-24 object-cover mx-auto mb-4 rounded-full shadow-lg" />
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ microsite.name }}</h2>

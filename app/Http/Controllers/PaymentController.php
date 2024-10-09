@@ -50,9 +50,9 @@ class PaymentController extends Controller
             'gateway' => $payment->gateway,
         ]);
 
-        if ($payment->status === PaymentStatus::PENDING->value) {
-            $payment = $paymentService->query();
-        }
+        // if ($payment->status === PaymentStatus::PENDING->value) {
+        $payment = $paymentService->query();
+        // }
 
         return Inertia::render('Payments/Show', [
             'payment' => $payment,
