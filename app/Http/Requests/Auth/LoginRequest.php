@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -11,9 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -63,16 +59,6 @@ class LoginRequest extends FormRequest
             return;
         }
 
-        // event(new Lockout($this));
-
-        // $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        // throw ValidationException::withMessages([
-        //     'email' => trans('auth.throttle', [
-        //         'seconds' => $seconds,
-        //         'minutes' => ceil($seconds / 60),
-        //     ]),
-        // ]);
     }
 
     /**

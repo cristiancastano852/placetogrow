@@ -29,7 +29,6 @@ class PaymentController extends Controller
             'payment' => $payment,
             'gateway' => $gateway,
         ]);
-
         $response = $paymentService->create($buyerData);
         if ($response->status === 'exception') {
             return back()->withErrors(['message' => $response->message]);
@@ -62,21 +61,6 @@ class PaymentController extends Controller
         $microsites = Microsites::all();
 
         $payments = Payment::transactionsByRole($user)->get();
-
-        return Inertia::render('Payments/Transactions', [
-            'payments' => $payments,
-            'microsites' => $microsites,
-        ]);
-    }
-
-    public function transactionsByMicrosite($microsite_id): \Inertia\Response
-    {
-        $user = Auth::user();
-        $payments = Payment::where('microsite_id', $microsite_id)
-            ->with('microsite')
-            ->get();
-
-        $microsites = Microsites::all();
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,
