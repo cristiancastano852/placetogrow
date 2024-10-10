@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MicrositePaymentController;
 use App\Http\Controllers\MicrositesController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -20,7 +21,7 @@ Route::middleware('auth')->group(function () {
         ->name('payments.transactions');
 
     //transactions by microsite
-    Route::get('payments/microsite/{microsite}', [PaymentController::class, 'transactionsByMicrosite'])
+    Route::get('payments/microsite/{microsite}', [MicrositePaymentController::class, 'transactionsByMicrosite'])
         ->name('payments.transactionsByMicrosite');
 });
 

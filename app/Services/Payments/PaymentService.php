@@ -21,7 +21,6 @@ class PaymentService implements PaymentServiceContract
                 ->buyer($buyer)
                 ->payment($this->payment)
                 ->process();
-
             $this->payment->update([
                 'process_identifier' => $response->processIdentifier,
             ]);

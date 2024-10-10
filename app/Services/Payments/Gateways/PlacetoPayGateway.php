@@ -80,7 +80,8 @@ class PlacetoPayGateway implements PaymentGateway
     public function process(): PaymentResponse
     {
         try {
-            $response = Http::post($this->config['url'], $this->data);
+            $url = $this->config['url'].'/api/session/';
+            $response = Http::post($url, $this->data);
             if ($response->successful()) {
                 Log::info('PlacetoPay response succesful', $response->json());
                 $data = $response->json();
@@ -96,7 +97,7 @@ class PlacetoPayGateway implements PaymentGateway
                 return new PaymentResponse(
                     0,
                     '',
-                    'client_error',
+                    'exception',
                     $response->json('message', 'Client error occurred')
                 );
             }
