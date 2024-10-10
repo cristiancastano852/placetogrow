@@ -35,6 +35,8 @@ class DefaultRolesAndPermissionsSeeder extends Seeder
                     PermissionSlug::ROLES_UPDATE->value,
                     PermissionSlug::ROLE_PERMISSION_VIEW->value,
                     PermissionSlug::ROLE_PERMISSION_UPDATE->value,
+                    PermissionSlug::TRANSACTIONS_VIEW_ANY->value,
+                    PermissionSlug::TRANSACTIONS_VIEW->value,
                 ],
             ],
             [
@@ -45,11 +47,16 @@ class DefaultRolesAndPermissionsSeeder extends Seeder
                     PermissionSlug::CATEGORIES_UPDATE->value,
                     PermissionSlug::CATEGORIES_DELETE->value,
                     PermissionSlug::MICROSITES_VIEW_ANY->value,
+                    PermissionSlug::TRANSACTIONS_VIEW_ANY->value,
+                    PermissionSlug::TRANSACTIONS_VIEW->value,
                 ],
             ],
             [
                 'name' => 'Guests',
-                'permissions' => [],
+                'permissions' => [
+                    PermissionSlug::TRANSACTIONS_VIEW_ANY->value,
+                    PermissionSlug::TRANSACTIONS_VIEW->value,
+                ],
             ],
         ];
 
@@ -66,5 +73,8 @@ class DefaultRolesAndPermissionsSeeder extends Seeder
 
         User::query()->find(2)
             ->assignRole('Customer');
+
+        User::query()->find(3)
+            ->assignRole('Guests');
     }
 }

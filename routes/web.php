@@ -1,26 +1,42 @@
 <?php
 
+use App\Http\Controllers\MicrositePaymentController;
 use App\Http\Controllers\MicrositesController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+Route::get('/', [MicrositesController::class, 'showAll'])->name('micrositesall');
+
+Route::post('payments', [PaymentController::class, 'store'])
+    ->name('payments.store');
+
+Route::get('payments/{payment}', [PaymentController::class, 'show'])
+    ->name('payments.show');
+Route::middleware('auth')->group(function () {
+    Route::get('payments', [PaymentController::class, 'transactions'])
+        ->name('payments.transactions');
+
+    //transactions by microsite
+    Route::get('payments/microsite/{microsite}', [MicrositePaymentController::class, 'transactionsByMicrosite'])
+        ->name('payments.transactionsByMicrosite');
 });
 
+// Route::middleware('auth')->group(function () {
+//     Route::get('payments', [PaymentController::class, 'transactions'])
+//         ->name('payments.transactions');
+// });
+
 Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('micrositesall');
-Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
+Route::middleware('auth')->group(function () {
+    Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
+});
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return Inertia::render('Dashboard');
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
