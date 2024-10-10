@@ -9,7 +9,6 @@ use Inertia\Inertia;
 
 class MicrositePaymentController extends Controller
 {
-
     public function transactionsByMicrosite($microsite_id): \Inertia\Response
     {
         $user = Auth::user();

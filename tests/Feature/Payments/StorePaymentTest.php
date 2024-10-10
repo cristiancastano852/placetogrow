@@ -97,7 +97,6 @@ class StorePaymentTest extends TestCase
         ];
 
         Http::fake(fn (Request $request) => Http::response($responseData, 400));
-        
 
         $user = User::factory()->create();
 

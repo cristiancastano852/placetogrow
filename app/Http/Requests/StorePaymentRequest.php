@@ -2,11 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\Currency;
-use App\Constants\DocumentTypes;
-use App\Constants\PaymentGateway;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StorePaymentRequest extends FormRequest
 {

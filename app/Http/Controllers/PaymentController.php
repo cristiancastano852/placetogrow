@@ -67,5 +67,4 @@ class PaymentController extends Controller
             'microsites' => $microsites,
         ]);
     }
-
 }
