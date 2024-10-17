@@ -22,7 +22,8 @@ class SendSubscriptionExpiryAlertJob implements ShouldQueue
     {
         Log::info('Sending subscription expiry alert mail');
         $today = Carbon::now();
-        $expiryDate = $today->copy()->addDays(7)->format('Y-m-d');
+        $daysBeforeExpiration = config('subscriptions.expiry_alert_days', 7);
+        $expiryDate = $today->copy()->addDays($daysBeforeExpiration)->format('Y-m-d');
         Log::info("Subscriptions with expiry date: {$expiryDate}");
         $subscriptions = Subscription::where('expiration_date', $expiryDate)
             ->where('status', SubscriptionStatus::ACTIVE->value)

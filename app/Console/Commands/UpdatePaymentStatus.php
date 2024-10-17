@@ -61,7 +61,6 @@ class UpdatePaymentStatus extends Command
                 }
                 if ($payment->status === PaymentStatus::REJECTED->value and $subscription->next_payment_date->lessThanOrEqualTo(now())) {
                     $this->log('Payment rejected'.$payment->id);
-                    // $subscription->status = PaymentStatus::REJECTED->value;
                 }
             }
             Log::info('---- Finished updating payment status to '.$payment->status->value.' ----');
