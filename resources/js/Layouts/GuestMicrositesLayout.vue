@@ -23,7 +23,7 @@ const goDashboard = () => {
 </script>
 
 <template>
-    <div class="flex h-screen w-full flex flex-1 flex-col ">
+    <div class="flex h-screen w-full flex flex-1 flex-col h-full ">
 
         <Head title="Micrositios" />
         <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
@@ -51,13 +51,11 @@ const goDashboard = () => {
                 </div>
             </header>
 
-            <main class="h-full w-full py-10 overflow-hidden">
+            <main class="h-full w-full py-10 overflow-y-auto">
                 <slot />
             </main>
         </div>
-        <!-- <footer class="w-full bg-white dark:bg-gray-800 py-4 text-center text-gray-600 dark:text-gray-400">
-            &copy; {{ new Date().getFullYear() }} Micrositios
-        </footer> -->
+
         <footer class="flex w-full justify-center gap-8 bg-white text-gray-400">
             <span>© Placetopay</span>
 

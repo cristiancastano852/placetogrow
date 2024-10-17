@@ -42,7 +42,6 @@ class SubscriptionController extends Controller
         if ($response['status']['status'] !== 'OK') {
             Log::error('Error creating session', ['response' => $response]);
         }
-
         $subscription->update([
             'request_id' => $response['requestId'],
             'status_message' => $response['status']['message'],

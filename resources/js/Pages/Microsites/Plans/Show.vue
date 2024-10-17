@@ -60,11 +60,11 @@ const handleSelectPlan = (plan) => {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="plan in props.plans" :key="plan.id"
                     class="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ plan.name }}</h2>
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ plan.name }}</h2>
                     <p class="text-gray-600 dark:text-gray-400">Duración del plan {{ plan.duration_period }}</p>
                     <p class="text-gray-600 dark:text-gray-400">Precio: {{ plan.price }} cada {{ plan.billing_frequency }} {{ plan.duration_unit }}</p>
                     <p class="text-gray-600 dark:text-gray-400">Descripción: {{ plan.description }}</p>
-                    <SButton @click="handleSelectPlan(plan)"> Seleccionar plan</SButton>
+                    <SButton @click="handleSelectPlan(plan)" class="mt-4"> Seleccionar plan</SButton>
                 </div>
             </div>
         </div>

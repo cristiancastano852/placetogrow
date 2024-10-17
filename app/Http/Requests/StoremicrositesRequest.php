@@ -26,6 +26,9 @@ class StoremicrositesRequest extends FormRequest
             'currency' => 'required|in:'.implode(',', array_column(Currency::cases(), 'name')),
             'site_type' => 'required|in:'.implode(',', array_column(MicrositesTypes::cases(), 'name')),
             'payment_expiration' => 'required|integer|min:1',
+            'payment_retries' => 'nullable|integer|min:1',
+            'retry_duration' => 'nullable|integer|min:1',
+            'late_fee_percentage' => 'nullable|numeric|min:0|max:100',
             'payment_fields' => 'nullable|array',
             'payment_fields.*.label' => 'required|string|max:255',
             'payment_fields.*.name' => 'required|string|max:255',
@@ -33,6 +36,7 @@ class StoremicrositesRequest extends FormRequest
             'payment_fields.*.optional' => 'required|boolean',
             'payment_fields.*.validation' => 'nullable|string|in:text,number,email',
             'payment_fields.*.placeholder' => 'nullable|string|max:255',
+
         ];
     }
 }

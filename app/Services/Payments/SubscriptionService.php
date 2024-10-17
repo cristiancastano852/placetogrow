@@ -5,8 +5,8 @@ namespace App\Services\Payments;
 use App\Constants\PaymentStatus;
 use App\Constants\SubscriptionStatus;
 use App\Contracts\PaymentGateway;
-use App\Jobs\SendConfirmationToClient;
 use App\Models\Microsites;
+use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Repositories\PaymentRepository;
@@ -39,7 +39,9 @@ class SubscriptionService
                 'document_type' => $buyer->document_type,
                 'document_number' => $buyer->document_number,
             ];
-            SendConfirmationToClient::dispatch($buyer);
+
+            // $payment = $this->create_payment();
+            // Log::info('Creating subscription', ['buyer' => $buyer, 'payment' => $payment]);
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->subscription($this->subscription)
@@ -117,6 +119,23 @@ class SubscriptionService
         ]);
 
         return $response;
+    }
+
+    public function create_payment(): Payment
+    {
+        $paymentRepository = new PaymentRepository();
+        $user = User::find($this->subscription->user_id);
+        $data = [
+            'description' => $this->subscription->description,
+            'amount' => $this->subscription->price,
+            'fields_data' => $this->subscription->payer,
+            '',
+        ];
+        $microsite = Microsites::find($this->subscription->microsite_id);
+        $payment = $paymentRepository->create($data, $user, $microsite);
+        $payment->subscription_id = $this->subscription->id;
+
+        return $payment;
     }
 
     public function cancel(): ?ClientResponse

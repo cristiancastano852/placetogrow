@@ -21,6 +21,9 @@ class Microsites extends Model
         'currency',
         'site_type',
         'payment_expiration',
+        'payment_retries',
+        'retry_duration',
+        'late_fee_percentage',
         'payment_fields',
         'user_id',
     ];

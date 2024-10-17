@@ -7,6 +7,7 @@ use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\User;
+use Carbon\Carbon;
 
 class StoreSubscriptionAction
 {
@@ -20,8 +21,12 @@ class StoreSubscriptionAction
         $status = SubscriptionStatus::INACTIVE->value;
         $billing_frequency = $plan->billing_frequency;
         $expiration_date = now()->addMonths($plan->duration_period);
+        $duration_unit = $plan->duration_unit;
+        $next_billing_date = Carbon::now()->add($billing_frequency, $duration_unit);
+        $next_retry_date = $next_billing_date;
         $name = $plan->name;
         $subscription = new Subscription();
+
         $subscription->fill([
             'plan_id' => $plan->id,
             'user_id' => $user_id,
@@ -33,6 +38,8 @@ class StoreSubscriptionAction
             'price' => $price,
             'billing_frequency' => $billing_frequency,
             'expiration_date' => $expiration_date,
+            'next_billing_date' => $next_billing_date,
+            'next_retry_date' => $next_retry_date,
         ]);
         $subscription->save();
 

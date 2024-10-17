@@ -72,7 +72,7 @@ const cancelSubscription = (id) => {
                     <SButton color="primary" rounded="right" @click="searchByMicrosite">Buscar</SButton>
                 </div>
             </div>
-            <h1>Transacciones</h1>
+            <h1>Subscripciones</h1>
             <div  v-if="props.subscriptions.length > 0">
                 <SDataTable :cols="cols" :data="props.subscriptions">
                     <template #col[description]="{ value }">

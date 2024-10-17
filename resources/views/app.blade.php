@@ -16,7 +16,7 @@
         @vite('resources/css/app.css')
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased overflow-hidden">
         @inertia
         <script type="text/javascript">
           window.Laravel = {

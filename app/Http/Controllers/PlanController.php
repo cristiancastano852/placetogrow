@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Plans\UpdateAction;
 use App\Constants\TimeUnitSubscription;
 use App\Http\Requests\StorePlanRequest;
 use App\Models\Microsites;
 use App\Models\Plan;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PlanController extends Controller
 {
     public function index(Microsites $microsite)
     {
-        return Inertia::render('Microsites/Plans/Create');
+        $plans = Plan::where('microsite_id', $microsite->id)->get();
+
+        return Inertia::render('Microsites/Plans/ShowPlans', [
+            'plans' => $plans,
+            'microsite' => $microsite,
+        ]);
     }
 
     public function create(Microsites $microsite)
@@ -22,21 +27,19 @@ class PlanController extends Controller
 
         return Inertia::render('Microsites/Plans/Create', [
             'plans' => $plans,
-            'microsite_id' => $microsite->id,
+            'microsite' => $microsite,
             'duration_units' => TimeUnitSubscription::toArray(),
-            'microsite_name' => $microsite->name,
         ]);
     }
 
     public function store(StorePlanRequest $request, Microsites $microsite)
     {
         $validated = $request->validated();
-        foreach ($validated['plans'] as $plan) {
-            $plan['microsite_id'] = $microsite->id;
-            Plan::create($plan);
-        }
+        $plan = $validated['plan'];
+        $plan['microsite_id'] = $microsite->id;
+        Plan::create($plan);
 
-        return redirect()->route('microsites.show', $microsite->id)->with('success', 'Planes creados correctamente');
+        return redirect()->route('plans.index', $microsite->id)->with('success', 'Planes creados correctamente');
     }
 
     public function show(Microsites $microsite)
@@ -49,16 +52,29 @@ class PlanController extends Controller
         ]);
     }
 
-    // public function edit(Microsites $microsite, Plan $plan)
-    // {
-    //     return Inertia::render('Microsites/Plans/Edit', [
-    //         'plan' => $plan,
-    //         'microsite_name' => $microsite->name,
-    //         'microsite_id' => $microsite->id,
-    //     ]);
-    // }
+    public function edit(Microsites $microsite, Plan $plan)
+    {
+        return Inertia::render('Microsites/Plans/Edit', [
+            'plan' => $plan,
+            'microsite' => $microsite,
+            'duration_units' => TimeUnitSubscription::toArray(),
+        ]);
+    }
 
-    public function update(Request $request, string $id) {}
+    public function update(StorePlanRequest $request, Microsites $microsite, Plan $plan, UpdateAction $updateAction)
+    {
+        $plan_data = $request->validated();
+        $plan_data['id'] = $plan->id;
+        $updateAction->execute($plan_data);
 
-    public function destroy(string $id) {}
+        return redirect()->route('plans.index', $microsite->id)->with('success', 'Plan actualizado correctamente');
+    }
+
+    public function destroy(Microsites $microsite, Plan $plan)
+    {
+        $microsite_id = $microsite->id;
+        $plan->delete();
+
+        return redirect()->route('plans.index', $microsite_id)->with('success', 'Plan eliminado correctamente');
+    }
 }

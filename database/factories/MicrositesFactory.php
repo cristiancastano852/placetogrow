@@ -44,6 +44,9 @@ class MicrositesFactory extends Factory
             'user_id' => User::factory(),
             'site_type' => $this->faker->randomElement(array_column(MicrositesTypes::cases(), 'name')),
             'payment_fields' => $paymentFields,
+            'payment_retries' => $this->faker->numberBetween(1, 3),
+            'retry_duration' => $this->faker->numberBetween(1, 3),
+            'late_fee_percentage' => $this->faker->randomFloat(2, 0, 100),
 
         ];
     }

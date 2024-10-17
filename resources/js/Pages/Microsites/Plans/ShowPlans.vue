@@ -5,28 +5,27 @@ import { Head } from '@inertiajs/vue3';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { ClipboardTickIcon } from '@placetopay/iconsax-vue/linear';
 import { SInput, SSelect, SButton, SLabel, SInputBlock, SSteps, SStepsItem } from '@placetopay/spartan-vue';
-import EditPlans from '@/Components/Plans/EditPlans.vue';
+import ShowPlans from '@/Components/Plans/ShowPlans.vue';
 
 const props = defineProps({
-    microsite:{
+    microsite: {
         type: Object,
         required: true
     },
-    plan: {
+    plans: {
         type: Object,
-        required: true
-    },
-    duration_units: {
-        type: Array,
         required: true
     },
     errors: {
         type: Object,
         required: true
+    },
+    success: {
+        type: Object,
+        required: true
     }
-});
 
-const value = ref('Sitios');
+});
 
 
 </script>
@@ -37,11 +36,11 @@ const value = ref('Sitios');
     <AuthenticatedMainLayout v-model="value">
         <div class="container mx-auto p-4">
             <div>
-                <EditPlans 
+                <ShowPlans
                 :microsite="microsite"
-                :plan="plan"
-                :duration_units="duration_units"
                 :errors="errors"
+                :plans="plans"
+                :success="success"
                 
                 />
             </div>

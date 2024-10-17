@@ -36,7 +36,7 @@ class SubscriptionFactory extends Factory
             'user_id' => User::factory(),
             'microsite_id' => Microsites::factory(),
             'plan_id' => $plan->id,
-            'reference' => $this->faker->unique()->word,
+            'reference' => $this->faker->unique()->word.$this->faker->unique()->word,
             'description' => $this->faker->word,
             'status' => SubscriptionStatus::ACTIVE->value,
             'status_message' => $this->faker->sentence,
@@ -49,6 +49,8 @@ class SubscriptionFactory extends Factory
             'billing_frequency' => $plan->billing_frequency,
             'next_billing_date' => Carbon::now()->addMonth($plan->billing_frequency),
             'payer' => $payer,
+            'next_retry_date' => Carbon::now()->addMonth($plan->billing_frequency),
+            'retry_attempts' => 0,
         ];
     }
 }
