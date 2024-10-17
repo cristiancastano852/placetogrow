@@ -1,6 +1,5 @@
 <?php
 
-use App\Constants\PaymentStatus;
 use App\Constants\SubscriptionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +14,7 @@ return new class extends Migration
     {
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->enum('status', SubscriptionStatus::toArray())
-                ->default(SubscriptionStatus::INACTIVE->value)
+                ->default(SubscriptionStatus::PENDING->value)
                 ->change();
         });
     }
@@ -26,9 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->enum('status', [PaymentStatus::PENDING->value, PaymentStatus::APPROVED->value,
-                PaymentStatus::PARTIAL_EXPIRED->value, PaymentStatus::REJECTED->value])
-                ->default('PENDING')
+            $table->enum('status', SubscriptionStatus::toArray())
+                ->default(SubscriptionStatus::PENDING->value)
                 ->change();
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('plan_id')->constrained()->onDelete('cascade');
             $table->string('reference')->unique();
             $table->text('description')->nullable();
-            $table->enum('status', PaymentStatus::toArray())->default(PaymentStatus::PENDING->value);
+            $table->enum('status', SubscriptionStatus::toArray())->default(SubscriptionStatus::PENDING->value);
             $table->string('status_message')->nullable();
             $table->string('request_id')->nullable();
             $table->string('name');

@@ -9,6 +9,7 @@ enum SubscriptionStatus: string
     case CANCELED = 'CANCELED';
     case SUSPENDED = 'SUSPENDED';
     case EXPIRED = 'EXPIRED';
+    case PENDING = 'PENDING';
 
     public static function toArray(): array
     {

@@ -36,8 +36,6 @@ class PaymentService implements PaymentServiceContract
     {
         $process_identifier = $this->payment->process_identifier;
         if (empty($process_identifier)) {
-            Log::error('Payment process identifier is empty', ['payment' => $this->payment]);
-
             return $this->payment;
         }
         $response = $this->gateway->prepare()

@@ -16,7 +16,7 @@
 
           <div class="w-full p-2">
             <SLabel for="name" class="block text-gray-700">Nombre</SLabel>
-            <SInput id="name" placeholder="Nombre del micrositio" v-model="form.name" />
+            <SInput id="name" placeholder="Nombre del plan" v-model="form.name" />
             <SCaption :text="props.errors['plan.name']" />
           </div>
           <div class="w-full p-2">

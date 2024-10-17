@@ -35,7 +35,7 @@ class ProcessPaymentCollectSubscripcionJob implements ShouldQueue
 
     public function backoff(): int
     {
-        return $this->microsite->retry_duration * 3;
+        return $this->microsite->retry_duration * 3600;
 
     }
 

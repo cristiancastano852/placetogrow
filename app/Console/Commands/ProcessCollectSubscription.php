@@ -8,7 +8,7 @@ use App\Models\Subscription;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class Collect extends Command
+class ProcessCollectSubscription extends Command
 {
     protected $signature = 'app:collect';
 

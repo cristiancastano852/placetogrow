@@ -5,13 +5,14 @@ namespace App\Services\Payments;
 use App\Constants\PaymentStatus;
 use App\Constants\SubscriptionStatus;
 use App\Contracts\PaymentGateway;
-use App\Models\Microsites;
+use App\Jobs\ProcessPaymentCollectSubscripcionJob;
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Repositories\PaymentRepository;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
 use Illuminate\Http\Client\Response as ClientResponse;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class SubscriptionService
@@ -39,9 +40,6 @@ class SubscriptionService
                 'document_type' => $buyer->document_type,
                 'document_number' => $buyer->document_number,
             ];
-
-            // $payment = $this->create_payment();
-            // Log::info('Creating subscription', ['buyer' => $buyer, 'payment' => $payment]);
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->subscription($this->subscription)
@@ -54,7 +52,7 @@ class SubscriptionService
         }
     }
 
-    public function query(): Subscription
+    public function checkSubscriptionStatus(): Subscription
     {
         $response = $this->gateway->prepare()
             ->checkSubscription($this->subscription->request_id);
@@ -71,16 +69,19 @@ class SubscriptionService
     {
         $status = SubscriptionStatus::INACTIVE->value;
         if ($response['status']['status'] === PaymentStatus::APPROVED->value) {
+            Log::info('Subscription approved', ['subscription' => $this->subscription->id]);
             $status = SubscriptionStatus::ACTIVE->value;
             $token = $response['subscription']['instrument'][0]['value'];
             $subtoken = $response['subscription']['instrument'][1]['value'];
+            $this->subscription->update([
+                'token' => Crypt::encryptString($token),
+                'subtoken' => Crypt::encryptString($subtoken),
+            ]);
+            ProcessPaymentCollectSubscripcionJob::dispatch($this->subscription);
         }
         $this->subscription->update([
             'status' => $status,
-            'token' => $token ?? null,
-            'subtoken' => $subtoken ?? null,
         ]);
-
     }
 
     public function SavePayer(array $payer)
@@ -94,18 +95,7 @@ class SubscriptionService
 
     public function ProcessPaymentCollect(): ClientResponse
     {
-        $paymentRepository = new PaymentRepository();
-        $user = User::find($this->subscription->user_id);
-        $data = [
-            'description' => $this->subscription->description,
-            'amount' => $this->subscription->price,
-            'fields_data' => $this->subscription->payer,
-            '',
-        ];
-        $microsite = Microsites::find($this->subscription->microsite_id);
-        $payment = $paymentRepository->create($data, $user, $microsite);
-        $payment->subscription_id = $this->subscription->id;
-        $microsite = $this->subscription->microsite;
+        $payment = $this->create_payment();
         $payer = $this->subscription->payer;
 
         $response = $this->gateway->prepare()
@@ -131,7 +121,7 @@ class SubscriptionService
             'fields_data' => $this->subscription->payer,
             '',
         ];
-        $microsite = Microsites::find($this->subscription->microsite_id);
+        $microsite = $this->subscription->microsite;
         $payment = $paymentRepository->create($data, $user, $microsite);
         $payment->subscription_id = $this->subscription->id;
 
