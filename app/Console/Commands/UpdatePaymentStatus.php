@@ -37,6 +37,7 @@ class UpdatePaymentStatus extends Command
 
         if ($PaymentsPending->isEmpty()) {
             Log::info('No payments to update');
+
             return;
         }
         foreach ($PaymentsPending as $payment) {

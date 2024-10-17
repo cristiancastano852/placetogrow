@@ -53,7 +53,6 @@ class SubscriptionController extends Controller
     public function return(Microsites $microsite, Subscription $subscription)
     {
 
-
         return Inertia::render('Subscription/Show', [
             'subscription' => $subscription,
             'microsite' => $microsite,

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Repositories\PaymentRepository;
 use App\Services\Payments\Gateways\PlacetoPayGateway;
 use Illuminate\Http\Client\Response as ClientResponse;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class SubscriptionService
@@ -77,8 +78,8 @@ class SubscriptionService
             $token = $response['subscription']['instrument'][0]['value'];
             $subtoken = $response['subscription']['instrument'][1]['value'];
             $this->subscription->update([
-                'token' => $token,
-                'subtoken' => $subtoken,
+                'token' => Crypt::encryptString($token),
+                'subtoken' => Crypt::encryptString($subtoken),
             ]);
             ProcessPaymentCollectSubscripcionJob::dispatch($this->subscription);
         }

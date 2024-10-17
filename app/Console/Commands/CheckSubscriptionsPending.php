@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class CheckSubscriptionsPending extends Command
 {
-
     protected $signature = 'app:check-subscriptions-pending';
 
     protected $description = 'Check subscriptions pending';
@@ -24,6 +23,7 @@ class CheckSubscriptionsPending extends Command
 
         if ($subscriptionsPending->isEmpty()) {
             Log::info('No subscription pending');
+
             return;
         }
 

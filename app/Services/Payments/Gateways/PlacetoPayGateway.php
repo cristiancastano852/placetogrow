@@ -9,6 +9,7 @@ use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\QueryPaymentResponse;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -141,7 +142,7 @@ class PlacetoPayGateway implements PaymentGateway
 
         $this->data['instrument'] = [
             'token' => [
-                'token' => $subscription->token,
+                'token' => Crypt::decryptString($subscription->token),
             ],
         ];
 
