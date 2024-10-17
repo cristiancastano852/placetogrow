@@ -6,7 +6,7 @@ class PaymentResponse
 {
     public function __construct(
         public readonly int $processIdentifier,
-        public readonly string $url,
+        public readonly ?string $url,
         public readonly string $status,
         public readonly ?string $message = null
     ) {}
@@ -14,10 +14,8 @@ class PaymentResponse
     public function toArray(): array
     {
         return [
-            'process_identifier' => $this->processIdentifier,
-            'url' => $this->url,
-            'status' => $this->status,
-            'message' => $this->message,
+            'process_identifier' => $this->processIdentifier, 'url' => $this->url,
+            'status' => $this->status, 'message' => $this->message,
         ];
     }
 

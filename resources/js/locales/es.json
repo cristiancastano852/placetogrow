@@ -23,6 +23,8 @@
         "create": "Crear",
         "edit": "Editar",
         "delete": "Eliminar",
+        "Plans": "Planes",
+        "Invoices": "Facturas",
         "save": "Guardar",
         "cancel": "Cancelar",
         "back": "Regresar",

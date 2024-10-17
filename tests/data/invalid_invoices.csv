@@ -1,0 +1,5 @@
+reference,document_number,document_type,name,surname,email,mobile,description,amount,currency,expiration_date
+INV001,1234e5678,CC,John,Doe,john.doe@example.com,"+573116349870",Payment for services,150.00,USD,2025-12-31
+INV002,876e54321,CC,Jane,Smith,jane.smith@example.com,"+573115459870",Subscription renewal,200.00,USD,2026-12-31
+INV500,1122e3344,CC,Robert,Brown,robertffff,"+573136549870",Product purchase,99.99,USD,2024-12-31
+INV004,44332e211,CC,Emily,White,emily.white@example.com,"+573216549870",Consultation fee,250.00,USD,2024-12-31

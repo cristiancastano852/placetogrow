@@ -11,6 +11,14 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    errors: {
+        type: Array,
+        required: true,
+    },
+    successMessage: {
+        type: String,
+        required: false,
+    },
 });
 
 let formData = {

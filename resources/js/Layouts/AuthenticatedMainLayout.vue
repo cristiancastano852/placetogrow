@@ -5,7 +5,11 @@ import { MenuIcon, LogoutIcon, UserEditIcon , ReceiptTextIcon, DocumentCodeIcon 
 import { router } from '@inertiajs/vue3'
 import MainSidebar from '../Components/MainSidebar.vue';
 import { computed } from 'vue';
-
+import {usePage} from "@inertiajs/vue3";
+const page = usePage();
+const permissions = page.props.auth?.permissions;
+const roles = page.props.auth?.user.roles;
+("----------", page.props);
 const open = ref(true);
 
 const goBack = () => {
@@ -39,7 +43,7 @@ const emit = defineEmits({
 <template>
     <div class="flex h-screen">
         <SAccordion :open="open" class="hidden lg:block">
-            <MainSidebar v-model="value" />
+            <MainSidebar v-model="value" :permissions="permissions" :roles="roles"/>
         </SAccordion>
 
         <SModalLeft breakpoint="lg" :open="open" @close="() => (open = false)">
