@@ -6,7 +6,6 @@ use App\Constants\PaymentStatus;
 use App\Constants\SubscriptionStatus;
 use App\Contracts\PaymentGateway;
 use App\Jobs\ProcessPaymentCollectSubscripcionJob;
-use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Models\User;
@@ -41,9 +40,6 @@ class SubscriptionService
                 'document_type' => $buyer->document_type,
                 'document_number' => $buyer->document_number,
             ];
-
-            // $payment = $this->create_payment();
-            // Log::info('Creating subscription', ['buyer' => $buyer, 'payment' => $payment]);
             $response = $this->gateway->prepare()
                 ->buyer($buyer)
                 ->subscription($this->subscription)
@@ -99,18 +95,7 @@ class SubscriptionService
 
     public function ProcessPaymentCollect(): ClientResponse
     {
-        $paymentRepository = new PaymentRepository();
-        $user = User::find($this->subscription->user_id);
-        $data = [
-            'description' => $this->subscription->description,
-            'amount' => $this->subscription->price,
-            'fields_data' => $this->subscription->payer,
-            '',
-        ];
-        $microsite = Microsites::find($this->subscription->microsite_id);
-        $payment = $paymentRepository->create($data, $user, $microsite);
-        $payment->subscription_id = $this->subscription->id;
-        $microsite = $this->subscription->microsite;
+        $payment = $this->create_payment();
         $payer = $this->subscription->payer;
 
         $response = $this->gateway->prepare()
@@ -136,7 +121,7 @@ class SubscriptionService
             'fields_data' => $this->subscription->payer,
             '',
         ];
-        $microsite = Microsites::find($this->subscription->microsite_id);
+        $microsite = $this->subscription->microsite;
         $payment = $paymentRepository->create($data, $user, $microsite);
         $payment->subscription_id = $this->subscription->id;
 
