@@ -5,6 +5,7 @@ namespace Tests\Feature\Subscriptions;
 use App\Constants\SubscriptionStatus;
 use App\Models\Subscription;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
@@ -29,8 +30,8 @@ class SubscriptionCancelTest extends TestCase
         $subscription = Subscription::factory()->create([
             'user_id' => $user->id,
             'status' => SubscriptionStatus::ACTIVE->value,
-            'token' => '123',
-            'subtoken' => '123',
+            'token' => Crypt::encryptString('123'),
+            'subtoken' => Crypt::encryptString('123'),
         ]);
 
         $response = $this->actingAs($user)

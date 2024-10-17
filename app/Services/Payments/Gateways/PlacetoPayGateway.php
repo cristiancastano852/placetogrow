@@ -193,10 +193,10 @@ class PlacetoPayGateway implements PaymentGateway
         $url = $this->config['url'].'/api/instrument/invalidate';
         $this->data['instrument'] = [
             'token' => [
-                'token' => $token,
+                'token' => Crypt::decryptString($token),
             ],
             'subtoken' => [
-                'subtoken' => $subtoken,
+                'subtoken' => Crypt::decryptString($subtoken),
             ],
         ];
         $response = Http::post($url, $this->data);
