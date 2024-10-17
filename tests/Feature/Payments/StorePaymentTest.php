@@ -142,7 +142,7 @@ class StorePaymentTest extends TestCase
             'message' => 'An unknown error occurred',
         ];
 
-        Http::fake(fn (Request $request) => Http::response($responseData, 418)); // 418 I'm a teapot
+        Http::fake(fn (Request $request) => Http::response($responseData, 400));
 
         $user = User::factory()->create();
 

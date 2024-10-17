@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MicrositePaymentController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MicrositesController;
@@ -24,7 +25,7 @@ Route::middleware('auth')->group(function () {
         ->name('payments.transactions');
 
     //transactions by microsite
-    Route::get('payments/microsite/{microsite}', [PaymentController::class, 'transactionsByMicrosite'])
+    Route::get('payments/microsite/{microsite}', [MicrositePaymentController::class, 'transactionsByMicrosite'])
         ->name('payments.transactionsByMicrosite');
 
     Route::get('invoices', [InvoiceController::class, 'invoicesByUser'])->name('invoice.invoicesByUser');
