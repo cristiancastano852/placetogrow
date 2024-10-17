@@ -30,16 +30,23 @@ class UpdatePaymentStatus extends Command
      */
     public function handle()
     {
-        $PaymentsPending = Payment::where('status', PaymentStatus::PENDING->value)
-            ->get();
         Log::info('---- Updating payment status   ----');
+        $PaymentsPending = Payment::where('status', PaymentStatus::PENDING->value)
+            ->Where('process_identifier', '!=', null)
+            ->get();
+
+        if ($PaymentsPending->isEmpty()) {
+            Log::info('No payments to update');
+            return;
+        }
         foreach ($PaymentsPending as $payment) {
+            Log::info('Check payment with id '.$payment->id);
+
             /** @var PaymentService $paymentService */
             $paymentService = app(PaymentService::class, [
                 'payment' => $payment,
                 'gateway' => $payment->gateway,
             ]);
-            Log::info(' Update payment status'.$payment->id.'sss'.$payment->reference);
             if ($payment->status === PaymentStatus::PENDING->value) {
                 $payment = $paymentService->query();
                 $suscription_id = $payment->suscription_id;
@@ -56,6 +63,7 @@ class UpdatePaymentStatus extends Command
                     // $subscription->status = PaymentStatus::REJECTED->value;
                 }
             }
+            Log::info('---- Finished updating payment status to '.$payment->status->value.' ----');
         }
     }
 }

@@ -52,8 +52,7 @@ class SubscriptionController extends Controller
 
     public function return(Microsites $microsite, Subscription $subscription)
     {
-        $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
-        $subscription = $subscriptionService->query();
+
 
         return Inertia::render('Subscription/Show', [
             'subscription' => $subscription,

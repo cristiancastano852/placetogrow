@@ -5,6 +5,7 @@ namespace App\Services\Payments;
 use App\Constants\PaymentStatus;
 use App\Constants\SubscriptionStatus;
 use App\Contracts\PaymentGateway;
+use App\Jobs\ProcessPaymentCollectSubscripcionJob;
 use App\Models\Microsites;
 use App\Models\Payment;
 use App\Models\Subscription;
@@ -54,7 +55,7 @@ class SubscriptionService
         }
     }
 
-    public function query(): Subscription
+    public function checkSubscriptionStatus(): Subscription
     {
         $response = $this->gateway->prepare()
             ->checkSubscription($this->subscription->request_id);
@@ -71,16 +72,19 @@ class SubscriptionService
     {
         $status = SubscriptionStatus::INACTIVE->value;
         if ($response['status']['status'] === PaymentStatus::APPROVED->value) {
+            Log::info('Subscription approved', ['subscription' => $this->subscription->id]);
             $status = SubscriptionStatus::ACTIVE->value;
             $token = $response['subscription']['instrument'][0]['value'];
             $subtoken = $response['subscription']['instrument'][1]['value'];
+            $this->subscription->update([
+                'token' => $token,
+                'subtoken' => $subtoken,
+            ]);
+            ProcessPaymentCollectSubscripcionJob::dispatch($this->subscription);
         }
         $this->subscription->update([
             'status' => $status,
-            'token' => $token ?? null,
-            'subtoken' => $subtoken ?? null,
         ]);
-
     }
 
     public function SavePayer(array $payer)

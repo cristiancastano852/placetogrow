@@ -18,7 +18,7 @@ class StoreSubscriptionAction
         $price = $plan->price;
         $user_id = $user->id;
         $microsite_id = $microsite->id;
-        $status = SubscriptionStatus::INACTIVE->value;
+        $status = SubscriptionStatus::PENDING->value;
         $billing_frequency = $plan->billing_frequency;
         $expiration_date = now()->addMonths($plan->duration_period);
         $duration_unit = $plan->duration_unit;

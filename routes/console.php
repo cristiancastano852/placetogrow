@@ -13,9 +13,11 @@ Artisan::command('inspire', function () {
 
 Schedule::command('app:collect')->daily()->at('00:00');
 
+Schedule::command('app:check-subscriptions-pending')
+    ->everyFiveMinutes();
+
 Schedule::command('app:update-payment-status')
-    ->everyFiveMinutes()
-    ->appendOutputTo('storage/logs/collect.log');
+    ->everyFiveMinutes();
 
 Schedule::job((new SendSubscriptionExpiryAlertJob()))
     ->daily();
