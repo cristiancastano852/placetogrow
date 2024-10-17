@@ -28,7 +28,6 @@ function formatDate(dateString: string): string {
     return format(new Date(dateString), 'dd/MM/yyyy HH:mm');
 }
 
-console.log(props.microsites);
 const cols = [
     { id: 'id', header: 'ID' },
     { id: 'reference', header: 'Referencia' },

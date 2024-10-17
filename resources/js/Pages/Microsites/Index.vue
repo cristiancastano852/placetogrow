@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import GuestMicrositesLayout from '@/Layouts/GuestMicrositesLayout.vue';
-
+import { SBadge, SButton } from '@placetopay/spartan-vue';
+const colorByType = {
+    Subscripciones: 'green',
+    Facturas: 'red',
+    Donaciones: 'yellow',
+};
 const goToMicrositesPayment = (microsite) => {
-    router.visit(`/microsite/pay/${microsite.slug}_${microsite.id}`);
+    if (microsite.site_type == "Subscripciones") {
+        router.visit(`/microsites/${microsite.id}/plans/show`);
+    }else{
+        router.visit(`/microsites/${microsite.id}/invoice`);
+    }
 };
 
 const props = defineProps({
@@ -29,25 +38,19 @@ const props = defineProps({
                         class="w-24 h-24 object-cover mx-auto mb-4 rounded-full shadow-lg" />
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ microsite.name }}</h2>
                     <p class="text-gray-600 dark:text-gray-400">Categoría: {{ microsite.category.name }}</p>
-                    <p class="text-gray-600 dark:text-gray-400">Tipo de sitio: {{ microsite.site_type }}</p>
-                    <button @click="goToMicrositesPayment(microsite)"
-                        class="inline-flex items-center px-3 py-2 mt-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Ir al sitio
-                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M1 5h12m0 0L9 1m4 4L9 9" />
-                        </svg>
-                    </button>
-                    <!-- <Link :href="`/microsite/pay/${microsite.slug}_${microsite.id}`"
-                        class="inline-flex items-center px-3 py-2 mt-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Ir al sitio
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                    </Link> -->
+                    <div class="flex justify-between items-center">
+                        <SBadge class="capitalize" :color="colorByType[microsite.site_type]">{{ microsite.site_type }}
+                        </SBadge>
+
+                        <SButton @click="goToMicrositesPayment(microsite)" variant="outline">
+                            Ir al sitio
+                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                            </svg>
+                        </SButton>
+                    </div>
                 </div>
             </div>
         </div>

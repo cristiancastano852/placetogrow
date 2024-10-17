@@ -25,7 +25,7 @@ Autor:
 - **Cache**: Implementación de caching para mejorar el rendimiento.
 - **Gestión de Logs**: Configuración para registrar y gestionar logs de la aplicación.
 
-###Diagrama entidad-relación
+### Diagrama entidad-relación
 ![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
 
 Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
@@ -63,15 +63,41 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
    docker-compose exec app composer install
    ```
 
-4. **Correr las migraciones y seeders:**
+4. **Instalar las dependencias de node:**
+   
+   Instalar las dependencias de node
+
+   ```bash
+   docker-compose exec app npm install
+   ```
+5. **Hacer el build de node:**
+
+   ```bash
+   docker-compose exec app npm run build 
+   ```
+
+6. **Correr las migraciones y seeders:**
    
    Ejecuta las migraciones y seeders para configurar la base de datos:
 
    ```bash
-   docker-compose exec app php artisan migrate --seed
+   docker-compose exec app php artisan migrate:refresh --seed
    ```
+7. **Crear ambiente para los jobs:**
+   
+   Ejecuta el comando para poder ejecutar los jobs:
 
-5. **Acceder a la aplicación:**
+   ```bash
+   docker-compose exec app php artisan queue:work
+   ```
+8. **Crear ambiente para las tareas programadas:**
+   
+   Ejecuta el comando para poder ejecutar las tareas programadas:
+
+   ```bash
+   docker-compose exec app php artisan schedule:work
+   ```
+9. **Acceder a la aplicación:**
    
    Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
 

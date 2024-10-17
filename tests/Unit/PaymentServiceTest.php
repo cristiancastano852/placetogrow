@@ -177,6 +177,7 @@ class PaymentServiceTest extends TestCase
             'last_name' => 'Doe',
             'document_number' => 12123123123,
             'document_type' => DocumentTypes::CC->name,
+            'email' => fake()->freeEmail,
         ];
 
         $placetopay = $this->createStub(PlacetoPayGateway::class);
