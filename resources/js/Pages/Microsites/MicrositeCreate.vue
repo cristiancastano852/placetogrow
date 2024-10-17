@@ -264,12 +264,11 @@ const showDonationsFields = computed(() => form.site_type === 'Donaciones');
               <div class="flex gap-4 my-4">
                 
                 <div class="w-full">
-                  <SLabel for="retry_duration" class="block text-gray-700">Intervalo entre intentos de cobro (días)</SLabel>
+                  <SLabel for="retry_duration" class="block text-gray-700">Intervalo entre intentos de cobro</SLabel>
                   <SSelect v-model="form.retry_duration" id="retry_duration" class="w-full">
-                    <option value="1" >1 días</option>
-                    <option value="2">2 días</option>
-                    <option value="3">3 días</option>
-                    <option value="4">4 días</option>
+                    <option value="6" >Cada 6 horas</option>
+                    <option value="12">Cada 12 horas</option>
+                    <option value="24">Cada 24 horas</option>
                   </SSelect>
                 </div>
                 <div class="w-full">
@@ -277,7 +276,7 @@ const showDonationsFields = computed(() => form.site_type === 'Donaciones');
                   <SInput v-model="form.payment_retries" id="payment_retries" placeholder="Número de reintentos"/>
                 </div>
               </div>
-              <p>Se reinterara de nuevo el cobro cada {{ form.retry_duration }} días durante {{ form.retry_duration * form.payment_retries }} días</p>
+              <p>Se reinterara de nuevo el cobro cada {{ form.retry_duration }} horas, maximo {{ form.payment_retries }} veces</p>
             </div>
 
             <div v-if="showInvoicesFields">
