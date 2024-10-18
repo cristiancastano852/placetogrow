@@ -9,7 +9,6 @@ import {usePage} from "@inertiajs/vue3";
 const page = usePage();
 const permissions = page.props.auth?.permissions;
 const roles = page.props.auth?.user.roles;
-("----------", page.props);
 const open = ref(true);
 
 const goBack = () => {

@@ -63,11 +63,14 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('microsite_id', $microsite->id)
             ->where('id', $invoice_id)
             ->first();
+        if ($invoice->expiration_date < now() && $invoice->late_fee_amount <= 0) {
+            $invoice->applyLateFee();
+        }
         $user = User::find(Auth::user()->id);
         $paymentRepository = new PaymentRepository();
         $invoiceData = [
             'description' => $invoice->description,
-            'amount' => $invoice->amount,
+            'amount' => $invoice->total_amount,
             'reference' => $invoice->reference,
             'invoice_id' => $invoice->id,
 
@@ -93,6 +96,7 @@ class InvoiceController extends Controller
 
             return back()->withErrors(['message' => $response->message]);
         }
+        $invoice->updateStatusToInProcess();
 
         return Inertia::location($response->url);
     }

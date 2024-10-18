@@ -21,9 +21,19 @@ class InvoiceFactory extends Factory
      */
     public function definition(): array
     {
+        $amount = 10000;
+        $status = $this->faker->randomElement(array_column(InvoiceStatus::cases(), 'name'));
+        $lateFeeAmount = 0;
+        $totalAmount = $amount;
+        if ($status === InvoiceStatus::EXPIRED->name) {
+            $lateFeePercentage = $this->faker->randomFloat(2, 0, 0.2);
+            $lateFeeAmount = $amount * $lateFeePercentage;
+            $totalAmount = $amount + $lateFeeAmount;
+        }
+
         return [
             'reference' => $this->faker->word,
-            'status' => $this->faker->randomElement(array_column(InvoiceStatus::cases(), 'name')),
+            'status' => $status,
             'document_number' => $this->faker->numerify('###########'),
             'document_type' => $this->faker->randomElement(array_column(DocumentTypes::cases(), 'name')),
             'name' => $this->faker->name,
@@ -32,7 +42,9 @@ class InvoiceFactory extends Factory
             'mobile' => $this->faker->phoneNumber,
             'description' => $this->faker->sentence,
             'currency' => $this->faker->randomElement(array_column(Currency::cases(), 'name')),
-            'amount' => 10000,
+            'amount' => $amount,
+            'late_fee_amount' => $lateFeeAmount,
+            'total_amount' => $totalAmount,
             'expiration_date' => Carbon::now()->addMonth()->toDateTimeString(),
             'microsite_id' => Microsites::factory(),
         ];

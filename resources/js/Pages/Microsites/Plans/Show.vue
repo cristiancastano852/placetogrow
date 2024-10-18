@@ -45,7 +45,7 @@ const initializeFormData = () => {
 const documentTypes = ['CC', 'CE', 'NIT', 'PPN'];
 const handleSelectPlan = (plan) => {
     selectedPlan.value = plan;
-    initializeFormData(); // Inicializa los campos del formulario
+    initializeFormData();
     buyerModal.value = true;
 };
 </script>

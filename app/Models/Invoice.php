@@ -22,6 +22,8 @@ class Invoice extends Model
         'description',
         'currency',
         'amount',
+        'late_fee_amount',
+        'total_amount',
         'expiration_date',
         'microsite_id',
     ];
@@ -55,5 +57,26 @@ class Invoice extends Model
             $query->where('email', $user->email)
                 ->with('microsite');
         }
+        $query->orderBy('created_at', 'desc');
+    }
+
+    public function applyLateFee(): self
+    {
+        $microsite = $this->microsite;
+        $lateFee = $microsite->late_fee_percentage;
+        $amount = $this->amount;
+        $lateFeeAmount = $amount * ($lateFee / 100);
+        $this->amount = $amount + $lateFeeAmount;
+        $this->save();
+
+        return $this;
+    }
+
+    public function updateStatusToInProcess(): self
+    {
+        $this->status = InvoiceStatus::IN_PROCESS;
+        $this->save();
+
+        return $this;
     }
 }
