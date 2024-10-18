@@ -10,6 +10,7 @@ use App\Services\Payments\Gateways\PlacetoPayGateway;
 use App\Services\Payments\PaymentService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 use InvalidArgumentException;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,8 +41,14 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void {}
+    public function boot()
+    {
+        Inertia::share([
+            'flash' => function () {
+                return [
+                    'message' => session('message'),
+                ];
+            },
+        ]);
+    }
 }

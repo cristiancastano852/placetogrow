@@ -8,6 +8,7 @@ enum InvoiceStatus
     case PAID;
     case FAILED;
     case EXPIRED;
+    case IN_PROCESS;
 
     public static function toArray(): array
     {

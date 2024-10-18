@@ -43,6 +43,8 @@ class InvoiceImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunk
             'description' => $row['description'],
             'currency' => $row['currency'],
             'amount' => $row['amount'],
+            'late_fee_amount' => 0,
+            'total_amount' => $row['amount'],
             'expiration_date' => $row['expiration_date'],
             'microsite_id' => $this->import->microsite_id,
         ]);

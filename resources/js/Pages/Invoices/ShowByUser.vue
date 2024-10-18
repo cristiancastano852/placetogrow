@@ -42,21 +42,23 @@ const cols = [
     { id: 'document_number', header: 'Número de documento' },
     { id: 'name', header: 'Nombre' },
     { id: 'email', header: 'Email' },
-    { id: 'currency', header: 'Moneda' },
-    { id: 'amount', header: 'Valor' },
-    { id: 'expiration_date', header: 'Fecha de expiración' },
-    { id: 'created_at', header: 'Fecha de creación' },
+    { id: 'created_at', header: 'Fecha de recepción' },
+    { id: 'amount', header: 'Monto' },
+    { id: 'late_fee_amount', header: 'Recargo' },
+    { id: 'total_amount', header: 'Total a pagar' },
     { id: 'actions', header: 'Acciones' },
 ];
 
 const colorByType = {
     PAID: 'green',
-    PENDING: 'blue',
-    FAILED: 'yellow',
+    REJECTED: 'red',
+    PENDING: 'yellow',
+    EXPIRED: 'red',
+    IN_PROCESS: 'primary',
 };
 
 const returnPage = () => {
-    router.visit(route('microsites.index'));
+    router.visit(route('micrositesall'));
 }
 
 
@@ -95,6 +97,15 @@ const returnPage = () => {
                             <template #col[actions]="{ record }">
                                 <button v-if="record.status!=='PAID'" @click="paymentInvoice(record.id)"
                                         class="text-green-600 hover:text-green-900">Pagar</button>
+                            </template>
+                            <template #col[amount]="{ record, value }">
+                                <span>{{ value }} {{ record.currency }}</span>
+                            </template>
+                            <template #col[late_fee_amount]="{ record, value }">
+                                <span>{{ value }} {{ record.currency }}</span>
+                            </template>
+                            <template #col[total_amount]="{ record, value }">
+                                <SBadge color="indigo"> {{ value }} {{ record.currency }} </SBadge>
                             </template>
                         </SDataTable>
                     </div>
