@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Microsites;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProcessExpiredPendingInvoiceJobTest extends TestCase
@@ -20,7 +19,7 @@ class ProcessExpiredPendingInvoiceJobTest extends TestCase
         Microsites::factory()
             ->for(Category::factory()->create())
             ->create();
-        
+
         $invoice = Invoice::factory()->create([
             'status' => InvoiceStatus::PENDING->name,
             'expiration_date' => now()->subDay(),
@@ -33,6 +32,6 @@ class ProcessExpiredPendingInvoiceJobTest extends TestCase
             'id' => $invoice->id,
             'status' => InvoiceStatus::EXPIRED->name,
         ]);
-        
+
     }
 }

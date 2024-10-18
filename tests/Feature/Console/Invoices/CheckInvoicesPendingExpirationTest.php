@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Microsites;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
@@ -26,11 +25,10 @@ class CheckInvoicesPendingExpirationTest extends TestCase
     {
         Bus::fake();
 
-
         Microsites::factory()
             ->for(Category::factory()->create())
             ->create();
-        
+
         Invoice::factory()->create([
             'status' => InvoiceStatus::PENDING->name,
             'expiration_date' => now()->subDay(),
@@ -40,6 +38,6 @@ class CheckInvoicesPendingExpirationTest extends TestCase
             ->assertExitCode(0);
 
         Bus::assertDispatched(ProcessExpiredPendingInvoiceJob::class);
-        
+
     }
 }
