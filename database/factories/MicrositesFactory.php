@@ -22,7 +22,7 @@ class MicrositesFactory extends Factory
      */
     public function definition(): array
     {
-        $companyName = $this->faker->company();
+        $companyName = $this->faker->company().' '.$this->faker->randomFloat(2, 0, 100);
         $slug = Str::slug($companyName, '-');
         $paymentFields = [
             ['name' => 'description', 'type' => 'input', 'label' => 'Dame un notica :)', 'optional' => true, 'validation' => null, 'placeholder' => 'Los amo <3'],

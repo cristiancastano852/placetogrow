@@ -72,7 +72,7 @@ const emit = defineEmits({
                 </div>
             </header>
 
-            <main class="h-full w-full py-10 overflow-y-auto">
+            <main class="h-full w-full overflow-y-auto">
                 <slot />
             </main>
         </div>
