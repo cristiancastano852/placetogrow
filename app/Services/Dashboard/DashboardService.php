@@ -4,8 +4,10 @@ namespace App\Services\Dashboard;
 
 use App\Constants\DateFilterTypes;
 use App\Constants\InvoiceStatus;
+use Barryvdh\Debugbar\Twig\Extension\Dump;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 class DashboardService
 {
@@ -29,6 +31,42 @@ class DashboardService
 
         return $metrics;
     }
+
+    public function getInvoicesMetricsByParams(
+        ?string $userId = null,
+        ?string $email = null,
+        ?string $startDate = null,
+        ?string $endDate = null,
+        ?string $status = InvoiceStatus::PENDING->name
+    ): array {
+        $cacheKey = 'invoices_dasssdata_metrics'.$userId.'_'.$email.'_'.($startDate ?? 'no_start_date').'_'.
+            ($endDate ?? 'no_end_date').'_'.$status;
+        $startDate = $this->formatDate($startDate, DateFilterTypes::START->value);
+        $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
+        $queryResult = Cache::remember($cacheKey, 3600, function () use ($userId, $email, $startDate, $endDate, $status) {
+            return DB::select('CALL GetInvoicesDueExpireAlert(?, ?, ?, ?, ?)', [
+                $userId, 
+                $email, 
+                $startDate, 
+                $endDate,
+                $status
+            ]);
+        });
+
+        if (count($queryResult) <= 0) {
+            return [
+                'total_count' => 0,
+                'invoices' => []
+            ];
+        }
+        $totalCount = $queryResult[0]->total_count;
+        $data = [
+            'total_count' => $totalCount,
+            'invoices' => $queryResult
+        ];
+        return $data;
+    }
+    
 
     private function formatDate(?string $date, string $type): ?string
     {

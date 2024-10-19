@@ -21,6 +21,7 @@ class DashboardRequest extends FormRequest
         return [
             'startDate' => 'nullable|date',
             'endDate' => 'nullable|date',
+            'expirateDateLimit' => 'nullable|date',
             'micrositeId' => 'nullable|integer|exists:microsites,id',
         ];
     }
@@ -30,6 +31,7 @@ class DashboardRequest extends FormRequest
         $this->merge([
             'startDate' => $this->input('startDate', now()->subMonth()->startOfMonth()->format('Y-m-d')),
             'endDate' => $this->input('endDate', now()->subMonth()->endOfMonth()->format('Y-m-d')),
+            'expirateDateLimit' => $this->input('expirateDateLimit', now()->addDays(7)->format('Y-m-d')),
         ]);
     }
 }

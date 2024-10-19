@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         DB::unprepared('DROP PROCEDURE IF EXISTS GetInvoiceMetrics');
-        $path = database_path('sql/get_invoice_metrics.sql');
+        $path = database_path('sql/count_invoices_by_status.sql');
         $sql = File::get($path);
         DB::unprepared($sql);
 

@@ -32,7 +32,6 @@ function formatDate(dateString: string): string {
 
 const cols = [
     { id: 'reference', header: 'Referencia' },
-    { id: 'document_number', header: 'Número de documento' },
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
     { id: 'microsite.name', header: 'Sitio de pago' },

@@ -23,10 +23,8 @@ const value = ref('Sitios');
 const pagination = ref({
     page: microsites.page || 1,
     size: microsites.per_page || 10,
-    count: microsites.total || 0,
-    sizes: [10, 20, 50],
+    count: microsites.last_page || 0,
 });
-console.log("aaaaaaaaaaaaaaaaa", pagination);
 
 console.log(microsites);
 const handlePaginationChange = ({ page, size }) => {
