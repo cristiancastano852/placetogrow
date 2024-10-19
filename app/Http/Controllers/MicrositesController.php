@@ -19,16 +19,19 @@ use Inertia\Inertia;
 
 class MicrositesController extends Controller
 {
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
-
         $user = User::find(Auth::user()->id);
-
         if ($user->hasRole('Admin')) {
-            $microsites = Microsites::all();
+            $microsites = Microsites::orderBy('created_at', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
         } else {
-            $microsites = Microsites::where('user_id', $user->id)->get();
+            $microsites = Microsites::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
         }
 
         return Inertia::render('Microsites/AdminPanel', [

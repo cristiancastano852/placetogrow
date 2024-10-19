@@ -2,7 +2,7 @@
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head, router } from '@inertiajs/vue3'
 import { ref, onMounted } from 'vue';
-import { SButton, SInputDate, SSelect, SBreadcrumbsItem, SBreadcrumbs } from '@placetopay/spartan-vue';
+import { SButton, SInputDate, SSelect, SBreadcrumbsItem, SBreadcrumbs, SInputDateBlock } from '@placetopay/spartan-vue';
 import Chart from 'chart.js/auto';
 
 const props = defineProps({
@@ -101,25 +101,45 @@ const applyFilters = () => {
         <div class="">
             <div class="w-full h-full  ">
                 <div class="text-gray-900">
+                    <div class="mb-4 flex flex-wrap items-center bg-gray-50 p-4 shadow-md rounded-lg">
+    <div class="flex-1 px-2">
+        <p class="text-sm text-gray-600">Micrositio</p>
+        <SSelect class="w-full" v-model="selectedMicrosite">
+            <option value="0" selected="True">Todos</option>
+            <option v-for="microsite in props.microsites" :value="microsite.id">{{ microsite.name }}</option>
+        </SSelect>
+    </div>
+    <div class="flex-1 px-2">
+        <p class="text-sm text-gray-600">Fecha inicial</p>
+        <SInputDate v-model="startDate" placeholder="Fecha de inicio" class="w-full" />
+    </div>
+    <div class="flex-1 px-2">
+        <p class="text-sm text-gray-600">Fecha final</p>
+        <SInputDate v-model="endDate" placeholder="Fecha final" class="w-full" />
+    </div>
+    <div class="flex-1 px-2">
+        <SButton @click="applyFilters" class="w-full mt-6">Aplicar Filtros</SButton>
+    </div>
+</div>
 
-                    <div class="mb-8 flex justify-between bg-gray-50 p-8 shadow-md">
-                        <SSelect class="mr-4" v-model="selectedMicrosite">
-                            <option value="0" selected="True">Todos</option>
-                            <option v-for="microsite in props.microsites" :value="microsite.id">{{ microsite.name }}
-                            </option>
-                        </SSelect>
-                        <SInputDate v-model="startDate" placeholder="Fecha de inicio" class="mr-4" />
-                        <SInputDate v-model="endDate" placeholder="Fecha final" class="mr-4" />
-                        <SButton @click="applyFilters" class="w-full">Aplicar Filtros</SButton>
-                    </div>
-                    <h4 class="text-2xl font-semibold mb-4">Bienvenido</h4>
-                    <p class="text-lg">Métricas de Facturas</p>
-                    <div class="flex justify-between">
-                        <div class="flex-1 mx-4" style="width: 20%; height: 20%;">
-                            <canvas ref="chartPendingVsPaidRef" width="w-1/5" height="h-1/5"></canvas>
+                    
+                    <h1 class="text-base font-semibold text-gray-900 mx-12">
+                        Bienvenido,
+                    </h1>
+                    <p class="mt-1 text-sm text-gray-600 mx-12">
+                        Visualización de métricas de facturación.
+                    </p>
+                    <div class="flex justify-between mx-8">
+                        <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
+                            style="width: 100%;">
+                            <canvas ref="chartPendingVsPaidRef"
+                                style="max-width: 100%; max-height: 100%;"></canvas>
                         </div>
-                        <div class="flex-1 mx-4" style="width: 20%; height: 20%;">
-                            <canvas ref="chartPendingVsExpiredRef" width="w-1/5" height="h-1/5"></canvas>
+
+                        <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
+                            style="width: 100%;">
+                            <canvas ref="chartPendingVsExpiredRef"
+                                style="max-width: 100%; max-height: 100%;"></canvas>
                         </div>
                     </div>
                 </div>
