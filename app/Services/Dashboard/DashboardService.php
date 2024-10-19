@@ -4,10 +4,8 @@ namespace App\Services\Dashboard;
 
 use App\Constants\DateFilterTypes;
 use App\Constants\InvoiceStatus;
-use Barryvdh\Debugbar\Twig\Extension\Dump;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use PDO;
 
 class DashboardService
 {
@@ -45,28 +43,28 @@ class DashboardService
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
         $queryResult = Cache::remember($cacheKey, 3600, function () use ($userId, $email, $startDate, $endDate, $status) {
             return DB::select('CALL GetInvoicesDueExpireAlert(?, ?, ?, ?, ?)', [
-                $userId, 
-                $email, 
-                $startDate, 
+                $userId,
+                $email,
+                $startDate,
                 $endDate,
-                $status
+                $status,
             ]);
         });
 
         if (count($queryResult) <= 0) {
             return [
                 'total_count' => 0,
-                'invoices' => []
+                'invoices' => [],
             ];
         }
         $totalCount = $queryResult[0]->total_count;
         $data = [
             'total_count' => $totalCount,
-            'invoices' => $queryResult
+            'invoices' => $queryResult,
         ];
+
         return $data;
     }
-    
 
     private function formatDate(?string $date, string $type): ?string
     {

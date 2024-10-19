@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $metricsByStatus = $this->dashboardService->getInvoiceMetrics($startDate, $endDate, $userId, $micrositeId);
         $metricsInvoicesExpiredLast30Days = $this->dashboardService->getInvoicesMetricsByParams($userId, $email, now()->subMonth(), now()->subDay(), InvoiceStatus::EXPIRED->name);
         $metricInvoicesDueExpirate = $this->dashboardService->getInvoicesMetricsByParams($userId, $email, now(), $data['expirateDateLimit'], InvoiceStatus::PENDING->name);
-        
+
         $invoicesExpiredAndDueExpirate = collect($metricInvoicesDueExpirate['invoices'])
             ->merge($metricsInvoicesExpiredLast30Days['invoices'])
             ->sortByDesc('expiration_date');
@@ -42,6 +42,7 @@ class DashboardController extends Controller
             'invoicesAlert' => $paginatedInvoices,
         ];
         $microsites = Microsites::MicrositesByUser(Auth::user())->get();
+
         return Inertia::render('Dashboard', [
             'metrics' => $metrics,
             'microsites' => $microsites,
