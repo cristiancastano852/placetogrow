@@ -4,32 +4,32 @@
 </p>
 
 ## Microsites | PlaceToGrow
-Autor:
+Author:
   Cristian Alexander Castaño Montoya
   
   [<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin">](https://www.linkedin.com/in/cristiancastano852/)
 
-### Stack Tecnológico
+### Technology Stack
 
-- **Separación por Capas**: Se añadieron capas diferentes a MVC, se uso [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
-- **Lenguaje**: PHP Version 8.2.12
-- **Framework Backend**: Laravel V11.9.
-- **Base de datos**: MySQL V8.0.37.
-- **Framework Frontend**: Inertia.js con Vue.js 3.
-- **NodeJs**: node V20.14.1 y npm V10.7.0
-- **Estilos/Librerias**: Spartan y Tailwind CSS.
-- **Graficos**: Chart.js
-- **Contenerización**: Docker V26.1.1 y Docker Compose.
-- **Gestión de Versiones**: Git y GitFlow.
-- **Integración Continua**: GitHub Actions.
-- **Gestiones de roles y permisos**: Spatie
-- **Calidad de Código**: Utilización de PSR para el formato de código y herramientas de análisis estático (Sonar Cloud).
-- **Tipado**: Uso de tipado estricto en la declaración de funciones y métodos.
-- **Cache**: Implementación de caching para mejorar el rendimiento.
-- **Gestión de Logs**: Configuración para registrar y gestionar logs de la aplicación.
+- **Separación por Capas**: Added layers beyond MVC, using [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
+- **Language**: PHP Version 8.2.12
+- **Backend Framework**: Laravel V11.9.
+- **Database**: MySQL V8.0.37.
+- **Frontend Framework**: Inertia.js con Vue.js 3.
+- **NodeJs**: node V20.14.1 and npm V10.7.0
+- **Styles/Libraries**: Spartan and Tailwind CSS.
+- **Charts**: Chart.js
+- **Containerization**: Docker V26.1.1 and Docker Compose.
+- **Version Control**: Git and GitFlow.
+- **Continuous Integration**: GitHub Actions.
+- **Role and Permission Managemen**: Spatie
+- **Code Quality**: Use of PSR standards for code formatting and static analysis tools (Sonar Cloud)
+- **Typing**: Strict typing in function and method declarations
+- **Cache**: Implemented caching for performance improvement
+- **Log Management**: Configured to log and manage application logs
 - **Composer** V2.7.6
 
-### Diagrama entidad-relación
+### Entity-Relationship Diagram
 ![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
 
 ---
