@@ -211,38 +211,25 @@ Follow these steps to set up and run your Laravel application in Docker.
     SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
    ```
 
-### Uso
+### User data to test
 
-- **Autenticación**:
-  - Accede a `/login` para iniciar sesión como administrador.
-  - Registra nuevos usuarios desde la interzar en `/users` .
+  The following test users have been created to facilitate the exploration of the application's functionality. You can use these credentials to log in and test the system with different roles and permissions
 
-- **Gestión de Micrositios**:
-  
-  Administrador y Cliente
-  - Accede a las funcionalidades CRUD para gestionar micrositios en `/microsites`.
-  - Configura detalles como nombre, logo, categoría, configuración de pagos y tipos de sitios.
-  
-  Invitado:
-  - Ver todos los micrositios en`/micrositesall`
-  - Ver el formulario de un sitio en especifico.
-    
-- **Gestión de usuarios**:
-
-  Administrador
-  - Acceder a las funcionalidades para gestionar usuarios en `/users`.
-  - Crea nuevos usuarios
-  - Ver todos los usuarios
-  - Añadir roles a los usuarios
-  - Cambiar roles a los usuarios
-  - Eliminar usuarios.
- 
-- **Gestión de roles y permisos**:
-
-  Administrador
-  - Acceder a las funcionalidades para gestionar los roles y permisos en `/role-permission`.
-  - Ver todos los roles
-  - Cambiar los permisos de los roles
+- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
+   ```env
+    Username: superadmin@microsites.com
+    Password: password
+   ```
+- **Customer**: Can manage microsites they own, access payments, subscriptions, invoices import and metrics.
+  ```env
+    Username: customeradmin@microsites.com
+    Password: password
+   ```
+- **Guest**: Has limited access to viewing public microsites and minimal actions.
+  ```env
+    Username: customeradmin@microsites.com
+    Password: password
+   ```
 
 
 
