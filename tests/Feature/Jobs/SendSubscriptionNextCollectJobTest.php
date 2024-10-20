@@ -8,10 +8,13 @@ use App\Models\Microsites;
 use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SendSubscriptionNextCollectJobTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,13 +29,11 @@ class SendSubscriptionNextCollectJobTest extends TestCase
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
             ->create();
-
         Subscription::factory()->create([
             'microsite_id' => $microsite->id,
             'next_billing_date' => Carbon::now()->addDays(2),
             'user_id' => $user->id,
         ]);
-
         $job = new SendSubscriptionNextCollectJob();
         $job->handle();
 

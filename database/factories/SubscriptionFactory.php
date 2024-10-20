@@ -50,8 +50,6 @@ class SubscriptionFactory extends Factory
             'billing_frequency' => $plan->billing_frequency,
             'next_billing_date' => Carbon::now()->addMonth($plan->billing_frequency),
             'payer' => $payer,
-            'next_retry_date' => Carbon::now()->addMonth($plan->billing_frequency),
-            'retry_attempts' => 0,
         ];
     }
 }

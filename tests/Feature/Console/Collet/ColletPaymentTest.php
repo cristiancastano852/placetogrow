@@ -50,8 +50,6 @@ class ColletPaymentTest extends TestCase
                 'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
-                'next_retry_date' => Carbon::now(),
-                'retry_attempts' => 0,
 
             ]
         );
@@ -85,8 +83,6 @@ class ColletPaymentTest extends TestCase
                 'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
-                'next_retry_date' => Carbon::now(),
-                'retry_attempts' => 0,
             ]
         );
         $this->artisan('app:collect')
@@ -123,8 +119,6 @@ class ColletPaymentTest extends TestCase
                 'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
-                'next_retry_date' => Carbon::now(),
-                'retry_attempts' => 1,
             ]
         );
         $this->artisan('app:collect')

@@ -51,8 +51,6 @@ class ProcessPendingSubscriptionJobTest extends TestCase
             'request_id' => '1',
             'next_billing_date' => Carbon::now(),
             'expiration_date' => Carbon::now()->addMonths(12),
-            'next_retry_date' => Carbon::now(),
-            'retry_attempts' => 0,
         ]);
 
         $job = new ProcessPendingSubscriptionJob($subscription);

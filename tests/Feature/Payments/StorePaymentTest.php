@@ -6,6 +6,7 @@ use App\Constants\Currency;
 use App\Constants\DocumentTypes;
 use App\Constants\PaymentGateway;
 use App\Constants\PaymentStatus;
+use App\Constants\Roles;
 use App\Jobs\SendConfirmationToClient;
 use App\Models\Category;
 use App\Models\Microsites;
@@ -247,6 +248,9 @@ class StorePaymentTest extends TestCase
     public function testItShowsPaymentDetailsSuccessfully(): void
     {
         $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::ADMIN->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
         $microsite = Microsites::factory()
             ->for(Category::factory()->create())
             ->for($user)

@@ -39,7 +39,7 @@ class Invoice extends Model
         return $this->belongsTo(Microsites::class);
     }
 
-    public function scopeInvoicesByRole($query, User $user): void
+    public function scopeInvoicesByRole($query, User $user, ?string $status = null)
     {
         $userRole = $user->roles->first()->name;
         if ($userRole === 'Admin') {
@@ -57,7 +57,8 @@ class Invoice extends Model
             $query->where('email', $user->email)
                 ->with('microsite');
         }
-        $query->orderBy('created_at', 'desc');
+        $query->when($status, fn ($query) => $query->where('status', $status))
+            ->orderBy('created_at', 'desc');
     }
 
     public function applyLateFee(): self

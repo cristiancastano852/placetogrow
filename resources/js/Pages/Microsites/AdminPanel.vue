@@ -14,25 +14,28 @@ const goBack = () => {
 const goEditProfile = () => {
     router.visit('/profile');
 }
-const { props: { auth: { permissions, roles } } } = usePage();
 
-const props = defineProps({
-    microsites: {
-        type: Array,
-        required: true,
-    },
-});
+const { props: { auth: { permissions, roles }, microsites } } = usePage();
 
 const open = ref(true);
 const value = ref('Sitios');
 
+const pagination = ref({
+    page: microsites.page || 1,
+    size: microsites.per_page || 10,
+    count: microsites.last_page || 0,
+});
+
+const handlePaginationChange = ({ page, size }) => {
+    router.get(route('microsites.index'), { page, size });
+};
 
 const cols = [
-    { id: 'id', header: 'Número' },
     { id: 'name', header: 'Sitio' },
     { id: 'logo', header: 'Logo' },
     { id: 'site_type', header: 'Tipo' },
-    { id: 'actions', header: 'Acciones' }];
+    { id: 'actions', header: 'Acciones' }
+];
 
 const colorByType = {
     Facturas: 'green',
@@ -61,14 +64,15 @@ const createMicrosite = () => {
 const showPlans = (id) => {
     router.visit(route('plans.index', id));
 }
+
 const importInvoices = (id) => {
     router.visit(route('invoice.invoicesByMicrosite', id));
 }
 
 </script>
 
-<template>
 
+<template>
     <Head title="Dashboard" />
     <AuthenticatedMainLayout v-model="value">
         <div class="flex h-screen">
@@ -77,7 +81,13 @@ const importInvoices = (id) => {
                     <div class="h-full w-full px-4 sm:px-6 lg:px-8">
                         <SButton v-if="permissions.includes('microsites.create')" :leftIcon="AddIcon" size="sm"
                             rounded="full" @click="createMicrosite()" class="m-4"> Crear nuevo micrositio</SButton>
-                        <SDataTable :cols="cols" :data="props.microsites">
+                        <SDataTable 
+                            :cols="cols" 
+                            :data="microsites.data"
+                            numericPaginator
+                            :pagination="pagination"
+                            @paginationChange="handlePaginationChange"
+                        >
                             <template #col[logo]="{ value }">
                                 <img :src="value" class="w-10 h-10 rounded-xl" />
                             </template>
@@ -87,7 +97,6 @@ const importInvoices = (id) => {
                             </template>
 
                             <template #col[actions]="{ record }">
-
                                 <div class="flex gap-4">
                                     <button v-if="permissions.includes('microsites.view')"
                                         @click="viewMicrosite(record.id)"
@@ -103,7 +112,6 @@ const importInvoices = (id) => {
                                     <button v-if="record.site_type === 'Facturas'" @click="importInvoices(record.id)"
                                         class="text-green-600 hover:text-green-900">{{ $t('microsite.Invoices') }}</button>
                                 </div>
-
                             </template>
                         </SDataTable>
 
@@ -112,5 +120,4 @@ const importInvoices = (id) => {
             </div>
         </div>
     </AuthenticatedMainLayout>
-
 </template>

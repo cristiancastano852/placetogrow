@@ -71,7 +71,7 @@ const returnPage = () => {
                     <div class="flex w-full justify-center m-8">
                         <div class="w-full flex justify-between mx-8">
                             <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                                Facturas desd {{ props.microsite.name }}
+                                Facturas del micrositio: {{ props.microsite.name }}
                             </h1>
                             <div>
                                 <SButton class="mr-4" :leftIcon="DocumentUploadIcon" size="sm" rounded="full"

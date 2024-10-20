@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ImportStatus;
 use App\Constants\MicrositesTypes;
+use App\Constants\PolicyName;
 use App\Imports\InvoiceImport;
 use App\Models\Import;
 use App\Models\Microsites;
@@ -16,6 +17,7 @@ class ImportController extends Controller
 {
     public function create(Microsites $microsite): \Inertia\Response
     {
+        $this->authorize(PolicyName::VIEW, Import::class);
         if ($microsite->site_type !== MicrositesTypes::Facturas->name) {
             abort(404);
         }
