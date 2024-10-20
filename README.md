@@ -93,9 +93,9 @@ Autor:
     ```
    **7.3** Start the Frontend Development Server:
        To start the Vue.js development server with hot-reloading, use:
-        ```bash
-        npm run dev
-       ```
+    ```bash
+    npm run dev
+    ```
 ---
 ## Instalación en Docker
 
