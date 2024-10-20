@@ -171,22 +171,42 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
    
    Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
 ### Configurate Environment Variables
-    asdasdasd
-    asdasdasd
-### Notas importantes
 
-- **Configurar variables de entorno:**
-   
    Asegúrate de que las variables de entorno en tu archivo `.env` estén configuradas correctamente. Aquí tienes un ejemplo de la configuración de la base de datos:
 
+- Database Enviroments
    ```env
-   DB_CONNECTION=mysql
-   DB_HOST=mysql
-   DB_PORT=3306
-   DB_DATABASE=laravel
-   DB_USERNAME=root
-   DB_PASSWORD=root
+    DB_CONNECTION=mysql # Or your database driver
+    DB_HOST=127.0.0.1   # Database host
+    DB_PORT=3306        # Database port
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
    ```
+- Email Configuration
+  ```env
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.mailtrap.io # Example service, replace with your actual email host
+    MAIL_PORT=2525
+    MAIL_USERNAME=your_mail_username
+    MAIL_PASSWORD=your_mail_password
+    MAIL_FROM_ADDRESS="noreply@yourapp.com"
+    MAIL_FROM_NAME="${APP_NAME}"
+   ```
+- Payment Gateway (PlaceToPay) Configuration
+  ```env
+    PLACETOPAY_LOGIN=your_placetopay_login
+    PLACETOPAY_SECRET_KEY=your_placetopay_secret_key
+    PLACETOPAY_URL=https://placetopay.com/re
+   ```
+- Alert Configuration
+  ```env
+    INVOICE_DUE_ALERT_DAYS=  # Number of days before due alert is triggered
+    SUBSCRIPTION_EXPIRY_ALERT_DAYS=  # Number of days before subscription expiry alert is triggered
+    SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
+   ```
+
+### Notas importantes
 
 - **Verificar el estado de los contenedores:**
    
@@ -195,7 +215,6 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
    ```bash
    docker-compose ps
    ```
-
 
 
 ### Uso
