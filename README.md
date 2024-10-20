@@ -113,7 +113,7 @@ Author:
 
    Open your web browser and go to `http://localhost:9005/` (or the port you configured).
 
-   - **NOTE:** Test de web app with [User Configurated](#user-data-to-test).
+   - **NOTE:** Test de web app with [User Configurated](#user-data-to-test). 🧑‍✈️
 ---
 
 ## Docker Installation
