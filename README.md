@@ -32,8 +32,6 @@ Autor:
 ### Diagrama entidad-relación
 ![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
 
-Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
-
 ---
 ## Instalación local
 1. **Clonar el repositorio:**
