@@ -64,19 +64,38 @@ Autor:
    ```bash
     php artisan key:generate
    ```
-6. **Link Storage Directory**
+5. **Link Storage Directory**
 
    To create a symbolic link from `public/storage` to `storage/app/public`, run the following command:
     ```bash
     php artisan storage:link
     ```
-7. **Run Migrations and Seed the Database**
+6. **Run Migrations and Seed the Database**
 
     To run the database migrations and seed the database with initial data, use the following command:
     ```bash
     php artisan migrate --seed
     ```
-8. 
+
+7. **Run the Application**
+
+    To serve the Laravel application and start the development environment for Vue.js, follow these steps:
+   
+    **7.1** Use the following command to start the Laravel development server:
+   ```bash
+   php artisan serve
+    ```
+
+   **7.2** Build the Frontend for Production:
+       If you want to compile the frontend assets for production, run:
+   ```bash
+   npm run build
+    ```
+   **7.3** Start the Frontend Development Server:
+       To start the Vue.js development server with hot-reloading, use:
+        ```bash
+        npm run dev
+       ```
 ---
 ## Instalación en Docker
 
