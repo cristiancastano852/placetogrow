@@ -61,12 +61,24 @@ Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
     ```
 
 4. **Generate API Key**
-    To generate an API key, run the following command:
+
+   To generate an API key, run the following command:
    ```bash
     php artisan key:generate
    ```
-5. 
-6. 
+6. **Link Storage Directory**
+
+   To create a symbolic link from `public/storage` to `storage/app/public`, run the following command:
+    ```bash
+    php artisan storage:link
+    ```
+7. **Run Migrations and Seed the Database**
+
+    To run the database migrations and seed the database with initial data, use the following command:
+    ```bash
+    php artisan migrate --seed
+    ```
+8. 
 ---
 ## Instalación en Docker
 
