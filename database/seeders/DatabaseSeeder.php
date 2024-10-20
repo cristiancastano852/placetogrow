@@ -13,17 +13,17 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Super Admin',
-            'email' => 'admin@example.com',
+            'email' => 'superadmin@microsites.com',
         ]);
 
         User::factory()->create([
-            'name' => 'Customer',
-            'email' => 'customer@example.com',
+            'name' => 'Customer Admin',
+            'email' => 'customeradmin@microsites.com',
         ]);
 
         User::factory()->create([
             'name' => 'Guest',
-            'email' => 'guest@example.com',
+            'email' => 'guest@microsites.com',
         ]);
 
         $this->call(MicrositesByTypeSeeder::class);

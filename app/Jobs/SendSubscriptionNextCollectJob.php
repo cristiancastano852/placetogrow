@@ -27,7 +27,7 @@ class SendSubscriptionNextCollectJob implements ShouldQueue
         Log::info("Subscriptions with next billing date: {$next_billing_date}");
         $subscriptions = Subscription::where('next_billing_date', $next_billing_date)
             ->where('status', SubscriptionStatus::ACTIVE->value)
-            ->with(['user', 'microsite', 'plan']) //definir parametros
+            ->with(['user', 'microsite', 'plan'])
             ->get();
 
         if ($subscriptions->isEmpty()) {
