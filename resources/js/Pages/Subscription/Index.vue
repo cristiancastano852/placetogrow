@@ -9,7 +9,8 @@ const colorByType = {
     ACTIVE: 'green',
     INACTIVE: 'blue',
     SUSPENDED: 'yellow',
-    CANCELED: 'red',
+    CANCELED: 'primary',
+    EXPIRED: 'red',
 };
 
 const props = defineProps({

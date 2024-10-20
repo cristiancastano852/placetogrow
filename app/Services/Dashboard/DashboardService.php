@@ -13,7 +13,7 @@ class DashboardService
 {
     public function getInvoicesMetrics(?array $data, ?User $user): array
     {
-        $userId = $user->hasRole(Roles::ADMIN->value) ? null :  $user->id;
+        $userId = $user->hasRole(Roles::ADMIN->value) ? null : $user->id;
         $email = $user->hasRole(Roles::GUEST->value) ? $user->email : null;
         if ($email) {
             $userId = null;
@@ -38,9 +38,9 @@ class DashboardService
     }
 
     private function getInvoiceMetricsCountByStatus(
-        ?string $startDate = null, 
-        ?string $endDate = null, 
-        ?string $userId = null, 
+        ?string $startDate = null,
+        ?string $endDate = null,
+        ?string $userId = null,
         ?string $email = null,
         ?int $micrositeId = null): array
     {
@@ -58,6 +58,7 @@ class DashboardService
         foreach ($queryResult as $result) {
             $metrics[$result->status] = $result->total;
         }
+
         return $metrics;
     }
 

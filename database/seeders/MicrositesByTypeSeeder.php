@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Constants\InvoiceStatus;
 use App\Constants\MicrositesTypes;
 use App\Constants\PaymentStatus;
+use App\Constants\SubscriptionStatus;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Microsites;
@@ -65,12 +66,51 @@ class MicrositesByTypeSeeder extends Seeder
 
                 $selectedPlan = fake()->randomElement([$planBasico, $planEstandar, $planPremium]);
 
-                Subscription::factory()->create([
+                $subscription = Subscription::factory()->create([
                     'microsite_id' => $microsite->id,
                     'plan_id' => $selectedPlan->id,
                     'user_id' => 3,
                     'next_billing_date' => Carbon::now()->addMonth(),
                 ]);
+
+                Payment::factory()->create([
+                    'status' => PaymentStatus::APPROVED->name,
+                    'microsite_id' => $microsite->id,
+                    'subscription_id' => $subscription->id,
+                    'user_id' => 3,
+                ]);
+                $selectedPlan = fake()->randomElement([$planBasico, $planEstandar, $planPremium]);
+
+                $subscription = Subscription::factory()->create([
+                    'microsite_id' => $microsite->id,
+                    'plan_id' => $selectedPlan->id,
+                    'user_id' => 3,
+                    'next_billing_date' => Carbon::now()->addMonth(),
+                    'status' => SubscriptionStatus::SUSPENDED->value,
+                ]);
+                Payment::factory()->create([
+                    'status' => PaymentStatus::REJECTED->name,
+                    'microsite_id' => $microsite->id,
+                    'subscription_id' => $subscription->id,
+                    'user_id' => 3,
+                ]);
+                $selectedPlan = fake()->randomElement([$planBasico, $planEstandar, $planPremium]);
+                $subscription = Subscription::factory()->create([
+                    'microsite_id' => $microsite->id,
+                    'plan_id' => $selectedPlan->id,
+                    'user_id' => 3,
+                    'next_billing_date' => Carbon::now()->addMonth(),
+                    'status' => SubscriptionStatus::EXPIRED->value,
+                ]);
+
+                Payment::factory()->create([
+                    'status' => PaymentStatus::REJECTED->name,
+                    'microsite_id' => $microsite->id,
+                    'subscription_id' => $subscription->id,
+                    'user_id' => 3,
+                    'created_at' => Carbon::now()->subMonths(1),
+                ]);
+
             } elseif ($microsite->site_type === MicrositesTypes::Facturas->name) {
                 for ($i = 0; $i < 20; $i++) {
                     $createdDate = Carbon::now()->subMonths(1);
