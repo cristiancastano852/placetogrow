@@ -81,8 +81,7 @@ const props = defineProps({
 })
 
 const plans = ref(props.plans);
-console.log("plans", plans);
-const microsite_name = ref(page.props.microsite_name || ''); // Obtén el nombre del micrositio
+const microsite_name = ref(page.props.microsite_name || ''); 
 
 const goToCreatePlan = () => {
     router.get(route('plans.create', { microsite: props.microsite.id }));

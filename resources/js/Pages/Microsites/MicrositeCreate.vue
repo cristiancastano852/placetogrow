@@ -111,10 +111,7 @@ const value = ref('Sitios');
 const currentStep = ref(1);
 
 const nextStep = () => {
-  console.log(currentStep.value);
   if (currentStep.value < 3) currentStep.value += 1;
-  console.log("asdasd", currentStep.value);
-  console.log(form.site_type);
 };
 
 const previousStep = () => {

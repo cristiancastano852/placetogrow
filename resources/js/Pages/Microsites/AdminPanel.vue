@@ -26,13 +26,11 @@ const pagination = ref({
     count: microsites.last_page || 0,
 });
 
-console.log(microsites);
 const handlePaginationChange = ({ page, size }) => {
     router.get(route('microsites.index'), { page, size });
 };
 
 const cols = [
-    { id: 'id', header: 'Número' },
     { id: 'name', header: 'Sitio' },
     { id: 'logo', header: 'Logo' },
     { id: 'site_type', header: 'Tipo' },

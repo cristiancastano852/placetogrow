@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PaymentStatus;
+use App\Constants\PolicyName;
 use App\Contracts\PaymentService;
 use App\Factories\PaymentDataProviderFactory;
 use App\Http\Requests\StorePaymentRequest;
@@ -44,15 +44,15 @@ class PaymentController extends Controller
 
     public function show(Payment $payment): \Inertia\Response
     {
+
+        $this->authorize(PolicyName::VIEW, $payment);
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
             'payment' => $payment,
             'gateway' => $payment->gateway,
         ]);
 
-        // if ($payment->status === PaymentStatus::PENDING->value) {
         $payment = $paymentService->query();
-        // }
 
         return Inertia::render('Payments/Show', [
             'payment' => $payment,

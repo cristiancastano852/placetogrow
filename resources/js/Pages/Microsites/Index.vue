@@ -10,8 +10,10 @@ const colorByType = {
 const goToMicrositesPayment = (microsite) => {
     if (microsite.site_type == "Subscripciones") {
         router.visit(`/microsites/${microsite.id}/plans/show`);
-    }else{
+    }else if (microsite.site_type == "Facturas") {
         router.visit(`/microsites/${microsite.id}/invoice`);
+    }else{
+        router.visit(`/microsite/pay/${microsite.slug}_${microsite.id}`);
     }
 };
 

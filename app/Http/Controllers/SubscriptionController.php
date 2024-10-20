@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Subscription\StoreSubscriptionAction;
+use App\Constants\PolicyName;
 use App\Constants\SubscriptionStatus;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Microsites;
@@ -52,6 +53,7 @@ class SubscriptionController extends Controller
 
     public function return(Microsites $microsite, Subscription $subscription)
     {
+        $this->authorize(PolicyName::VIEW, $subscription);
 
         return Inertia::render('Subscription/Show', [
             'subscription' => $subscription,

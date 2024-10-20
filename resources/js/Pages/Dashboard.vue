@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
 import { Head, router, usePage } from '@inertiajs/vue3'
-import { ref, onMounted, computed  } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { SButton, SInputDate, SSelect, SBadge, SDataTable } from '@placetopay/spartan-vue';
 import Chart from 'chart.js/auto';
 
@@ -29,17 +29,16 @@ const handlePaginationChange = ({ page, size }) => {
 
 const dataInvoices = computed(() => ensureArray(invoicesExpirateAndDue.value.data));
 
-console.log(invoicesExpirateAndDue);
 const pagination = ref({
     page: invoicesExpirateAndDue.value.currentPage || 1,
     size: invoicesExpirateAndDue.value.perPage || 10,
     count: invoicesExpirateAndDue.value.last_page || 0,
 });
-
-const statusInvoices = ref(metrics.statusInvoices);
-const NumberInvoicesPending = statusInvoices.value.PENDING;
-const numberInvoicesPaid = statusInvoices.value.PAID;
-const numberInvoicesExpired = statusInvoices.value.EXPIRED;
+const total = ref(invoicesExpirateAndDue.value.total || 0);
+const statusInvoices = ref(metrics.statusInvoices) || {};
+const NumberInvoicesPending = statusInvoices.value.PENDING || 0;
+const numberInvoicesPaid = statusInvoices.value.PAID || 0;
+const numberInvoicesExpired = statusInvoices.value.EXPIRED || 0;
 
 
 const value = ref('Dashboard');
@@ -69,128 +68,131 @@ const showModal = ref(false);
 onMounted(() => {
     let delayed;
     showModal.value = true;
-    const ctxPaid = chartPendingVsPaidRef.value.getContext('2d');
-    new Chart(ctxPaid, {
-        type: 'doughnut',
-        data: {
-            labels: ['Pendientes', 'Pagadas'],
-            datasets: [
-                {
-                    label: 'Facturas',
-                    data: [NumberInvoicesPending, numberInvoicesPaid],
-                    backgroundColor: ['#f9c74f', '#90be6d'],
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Pendientes vs. Pagadas',
-                },
-            },
-            animation: {
-                onComplete: () => {
-                    delayed = true;
-                },
-                delay: (context) => {
-                    let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                        delay = context.dataIndex * 300;
-                    }
-                    return delay;
-                },
-                duration: 2000
-            },
-        },
-    });
-
-    const ctxExpired = chartPendingVsExpiredRef.value.getContext('2d');
-    new Chart(ctxExpired, {
-        type: 'doughnut',
-        data: {
-            labels: ['Pendientes', 'Vencidas'],
-            datasets: [
-                {
-                    label: 'Facturas',
-                    data: [NumberInvoicesPending, numberInvoicesExpired],
-                    backgroundColor: ['#f9c74f', '#f94144'],
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Pendientes vs. Vencidas',
-                },
-            },
-            animation: {
-                onComplete: () => {
-                    delayed = true;
-                },
-                delay: (context) => {
-                    let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                        delay = context.dataIndex * 300;
-                    }
-                    return delay;
-                },
-                duration: 2000
-            },
-        },
-    });
-
-    const ctxStackedBar = chartStackedBarRef.value.getContext('2d');
-    new Chart(ctxStackedBar, {
-        type: 'bar',
-        data: {
-            labels: ['Pendientes', 'Próximas a vencer', 'Vencidas'],
-            datasets: [{
-                label: 'Alerta',
-                data: [NumberInvoicesPending, invoicesExpirateAndDue.value.total, numberInvoicesExpired],
-                backgroundColor: [
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
+    if (chartPendingVsPaidRef.value) {
+        const ctxPaid = chartPendingVsPaidRef.value.getContext('2d');
+        new Chart(ctxPaid, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pendientes', 'Pagadas'],
+                datasets: [
+                    {
+                        label: 'Facturas',
+                        data: [NumberInvoicesPending || 0, numberInvoicesPaid || 0],
+                        backgroundColor: ['#f9c74f', '#90be6d'],
+                    },
                 ],
-                borderColor: [
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(255, 99, 132)',
-                ],
-                borderWidth: 1
-            }],
-
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Estado de Facturas'
-                }
             },
-            scales: {
-                y: {
-                    beginAtZero: true
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Pendientes vs. Pagadas',
+                    },
+                },
+                animation: {
+                    onComplete: () => {
+                        delayed = true;
+                    },
+                    delay: (context) => {
+                        let delay = 0;
+                        if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                            delay = context.dataIndex * 300;
+                        }
+                        return delay;
+                    },
+                    duration: 2000
+                },
+            },
+        });
+    };
+    if (chartPendingVsExpiredRef.value) {
+        const ctxExpired = chartPendingVsExpiredRef.value.getContext('2d');
+        new Chart(ctxExpired, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pendientes', 'Vencidas'],
+                datasets: [
+                    {
+                        label: 'Facturas',
+                        data: [NumberInvoicesPending, numberInvoicesExpired],
+                        backgroundColor: ['#f9c74f', '#f94144'],
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Pendientes vs. Vencidas',
+                    },
+                },
+                animation: {
+                    onComplete: () => {
+                        delayed = true;
+                    },
+                    delay: (context) => {
+                        let delay = 0;
+                        if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                            delay = context.dataIndex * 300;
+                        }
+                        return delay;
+                    },
+                    duration: 2000
+                },
+            },
+        });
+    };
+    if (chartStackedBarRef.value) {
+        const ctxStackedBar = chartStackedBarRef.value.getContext('2d');
+        new Chart(ctxStackedBar, {
+            type: 'bar',
+            data: {
+                labels: ['Pendientes', 'Próximas a vencer', 'Vencidas'],
+                datasets: [{
+                    label: 'Alerta',
+                    data: [NumberInvoicesPending || 0, invoicesExpirateAndDue.value.total || 0, numberInvoicesExpired || 0],
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(255, 99, 132)',
+                    ],
+                    borderWidth: 1
+                }],
+
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Estado de Facturas'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+    };
 });
-
 const applyFilters = () => {
     router.visit(route('dashboard', {
         startDate: startDate.value,
@@ -206,43 +208,55 @@ const applyFilters = () => {
     <AuthenticatedMainLayout v-model="value">
         <div class="">
             <div class="w-full h-full  ">
+
                 <div class="text-gray-900">
-                    <div class="mb-4 flex flex-wrap items-center bg-gray-50 p-4 shadow-md rounded-lg">
-                        <div class="flex-1 px-2">
-                            <p class="text-sm text-gray-600">Micrositio</p>
-                            <SSelect class="w-full" v-model="selectedMicrosite">
-                                <option value="0" selected="True">Todos</option>
-                                <option v-for="microsite in props.microsites" :value="microsite.id">{{ microsite.name }}
-                                </option>
-                            </SSelect>
+                    <header class="m-12" v-if="roles.includes('Guests')">
+                        <h1 class="text-base font-semibold text-gray-900">
+                            Bienvenido a nuestro portal de administración
+                        </h1>
+                        <p class="mt-1 text-sm text-gray-600">
+                            Aquí podrás ver el estado de tus facturas, subscripciones y realizar pagos
+                        </p>
+                    </header>
+                    <div v-else>
+                        <div class="mb-4 flex flex-wrap items-center bg-gray-50 p-4 shadow-md rounded-lg">
+                            <div class="flex-1 px-2">
+                                <p class="text-sm text-gray-600">Micrositio</p>
+                                <SSelect class="w-full" v-model="selectedMicrosite">
+                                    <option value="0" selected="True">Todos</option>
+                                    <option v-for="microsite in props.microsites" :value="microsite.id">{{
+                                        microsite.name }}
+                                    </option>
+                                </SSelect>
+                            </div>
+                            <div class="flex-1 px-2">
+                                <p class="text-sm text-gray-600">Fecha inicial</p>
+                                <SInputDate v-model="startDate" placeholder="Fecha de inicio" class="w-full" />
+                            </div>
+                            <div class="flex-1 px-2">
+                                <p class="text-sm text-gray-600">Fecha final</p>
+                                <SInputDate v-model="endDate" placeholder="Fecha final" class="w-full" />
+                            </div>
+                            <div class="flex-1 px-2">
+                                <SButton @click="applyFilters" class="w-full mt-6">Aplicar Filtros</SButton>
+                            </div>
                         </div>
-                        <div class="flex-1 px-2">
-                            <p class="text-sm text-gray-600">Fecha inicial</p>
-                            <SInputDate v-model="startDate" placeholder="Fecha de inicio" class="w-full" />
-                        </div>
-                        <div class="flex-1 px-2">
-                            <p class="text-sm text-gray-600">Fecha final</p>
-                            <SInputDate v-model="endDate" placeholder="Fecha final" class="w-full" />
-                        </div>
-                        <div class="flex-1 px-2">
-                            <SButton @click="applyFilters" class="w-full mt-6">Aplicar Filtros</SButton>
+
+                        <h2 class="text-lg font-semibold text-gray-900 mx-8 mt-8">Metricás de facturas</h2>
+
+                        <div class="flex justify-between mx-8 mt-8">
+                            <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
+                                style="width: 100%;">
+                                <canvas ref="chartPendingVsPaidRef" style="max-width: 100%; max-height: 100%;"></canvas>
+                            </div>
+                            <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
+                                style="width: 100%;">
+                                <canvas ref="chartPendingVsExpiredRef"
+                                    style="max-width: 100%; max-height: 100%;"></canvas>
+                            </div>
                         </div>
                     </div>
-
-                    <h2 class="text-lg font-semibold text-gray-900 mx-8 mt-8">Metricás de facturas</h2>
-
-                    <div class="flex justify-between mx-8 mt-8">
-                        <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
-                            style="width: 100%;">
-                            <canvas ref="chartPendingVsPaidRef" style="max-width: 100%; max-height: 100%;"></canvas>
-                        </div>
-                        <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
-                            style="width: 100%;">
-                            <canvas ref="chartPendingVsExpiredRef" style="max-width: 100%; max-height: 100%;"></canvas>
-                        </div>
-                    </div>
-                    <h2 class="text-lg font-semibold text-gray-900 mx-12 mt-8">Estado General de Facturas (No afectado
-                        por los filtros)</h2>
+                    <h1 class="text-base font-semibold text-gray-900 ml-12">Estado General de Facturas</h1>
                     <div class="mx-8 mt-2 h-full">
                         <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
                             style="width: 100%;">
@@ -252,15 +266,18 @@ const applyFilters = () => {
 
                     <div class="mx-8 mt-6">
                         <h2 class="text-lg font-semibold text-gray-900">Detalle de Facturas</h2>
-                        <SDataTable :cols="cols"
-                            :data="dataInvoices" numericPaginator
-                            :pagination="pagination"
-                            @paginationChange="handlePaginationChange"
-                        >
-                        <template #col[status]="{ value }">
-                            <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
-                        </template>
+                        <div v-if="total==0">
+                            <p class="text-gray-600">No hay facturas para mostrar</p>
+
+                        </div>
+                        <div v-else>
+                        <SDataTable :cols="cols" :data="dataInvoices" numericPaginator :pagination="pagination"
+                            @paginationChange="handlePaginationChange">
+                            <template #col[status]="{ value }">
+                                <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                            </template>
                         </SDataTable>
+                    </div>
                     </div>
 
                 </div>
