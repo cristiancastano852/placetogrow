@@ -81,7 +81,7 @@ class MicrositesByTypeSeeder extends Seeder
                         'expiration_date' => $expirationDate,
                         'status' => $status,
                         'created_at' => $createdDate,
-                        'email' => 'guest@example.com',
+                        'email' => 'guest@microsites.com',
                     ]);
                     if ($status === InvoiceStatus::PAID->name) {
                         Payment::factory()->create([
