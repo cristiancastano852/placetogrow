@@ -100,7 +100,9 @@ Author:
     ```bash
     npm run dev
     ```
-9. **Access the Application**
+9. Config job
+10. Config schedule task
+11. **Access the Application**
 
    Open your web browser and go to `http://localhost:9005/` (or the port you configured).
 
