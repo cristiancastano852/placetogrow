@@ -12,11 +12,14 @@ Autor:
 ### Stack Tecnológico
 
 - **Separación por Capas**: Se añadieron capas diferentes a MVC, se uso [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
-- **Framework Backend**: Laravel.
+- **Lenguaje**: PHP V8.2
+- **Framework Backend**: Laravel V11.9.
+- **Base de datos**: MySQL V8.0.37.
 - **Framework Frontend**: Inertia.js con Vue.js 3.
-- **Estilos**: Tailwind CSS.
-- **Base de datos**: MySQL Database.
-- **Contenerización**: Docker y Docker Compose.
+- **NodeJs**: node V20.14.1 y npm V10.7.0
+- **Estilos/Librerias**: Spartan y Tailwind CSS.
+- **Graficos**: Chart.js
+- **Contenerización**: Docker V26.1.1 y Docker Compose.
 - **Gestión de Versiones**: Git y GitFlow.
 - **Integración Continua**: GitHub Actions.
 - **Gestiones de roles y permisos**: Spatie
@@ -24,6 +27,7 @@ Autor:
 - **Tipado**: Uso de tipado estricto en la declaración de funciones y métodos.
 - **Cache**: Implementación de caching para mejorar el rendimiento.
 - **Gestión de Logs**: Configuración para registrar y gestionar logs de la aplicación.
+- **Composer** V2.7.6
 
 ### Diagrama entidad-relación
 ![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
@@ -31,7 +35,17 @@ Autor:
 Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
 
 ---
+## Instalación local
+1. **Clonar el repositorio:**
+   
+   Clona este repositorio en tu máquina local.
 
+   ```bash
+   git clone https://github.com/cristiancastano852/placetogrow
+   cd placetogrow
+   ```
+
+---
 ## Instalación en Docker
 
 Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
