@@ -9,7 +9,28 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
-    public function getInvoiceMetrics(?string $startDate = null, ?string $endDate = null, ?string $userId = null, ?int $micrositeId = null): array
+    public function getInvoicesMetrics(?array $data, ?string $userId = null, ?string $email = null): array
+    {
+        $startDate = $data['startDate'];
+        $endDate = $data['endDate'];
+        $micrositeId = $data['micrositeId'] ?? null;
+        $metricsByStatus = $this->getInvoiceMetricsCountByStatus($startDate, $endDate, $userId, $micrositeId);
+        $metricsInvoicesExpiredLast30Days = $this->getInvoicesMetricsByParams($userId, $email, now()->subMonth(), now()->subDay(), InvoiceStatus::EXPIRED->name);
+        $metricInvoicesDueExpirate = $this->getInvoicesMetricsByParams($userId, $email, now(), $data['expirateDateLimit'], InvoiceStatus::PENDING->name);
+        $invoicesExpiredAndDueExpirate = collect($metricInvoicesDueExpirate['invoices'])
+            ->merge($metricsInvoicesExpiredLast30Days['invoices'])
+            ->sortByDesc('expiration_date');
+        $paginatedInvoices = $this->paginateCollection($invoicesExpiredAndDueExpirate, 10);
+        $metricsByStatus['numberInvoicesDueExpire'] = $metricInvoicesDueExpirate['total_count'];
+        $metrics = [
+            'statusInvoices' => $metricsByStatus,
+            'invoicesAlert' => $paginatedInvoices,
+        ];
+
+        return $metrics;
+    }
+
+    private function getInvoiceMetricsCountByStatus(?string $startDate = null, ?string $endDate = null, ?string $userId = null, ?int $micrositeId = null): array
     {
         $startDate = $this->formatDate($startDate, DateFilterTypes::START->value);
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
@@ -30,7 +51,7 @@ class DashboardService
         return $metrics;
     }
 
-    public function getInvoicesMetricsByParams(
+    private function getInvoicesMetricsByParams(
         ?string $userId = null,
         ?string $email = null,
         ?string $startDate = null,
@@ -78,5 +99,15 @@ class DashboardService
         }
 
         return $parsedDate->format('Y-m-d').($type === DateFilterTypes::START->value ? ' 00:00:00' : ' 23:59:59');
+    }
+
+    private function paginateCollection($collection, $perPage)
+    {
+        $currentPage = request()->get('page', 1);
+        $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage);
+        $paginatedItems = new \Illuminate\Pagination\LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
+        $paginatedItems->setPath(request()->url());
+
+        return $paginatedItems;
     }
 }

@@ -39,6 +39,7 @@ const statusInvoices = ref(metrics.statusInvoices) || {};
 const NumberInvoicesPending = statusInvoices.value.PENDING || 0;
 const numberInvoicesPaid = statusInvoices.value.PAID || 0;
 const numberInvoicesExpired = statusInvoices.value.EXPIRED || 0;
+const numberInvoiceDueExpiration = statusInvoices.value.numberInvoicesDueExpire || 0;
 
 
 const value = ref('Dashboard');
@@ -158,7 +159,7 @@ onMounted(() => {
                 labels: ['Pendientes', 'Próximas a vencer', 'Vencidas'],
                 datasets: [{
                     label: 'Alerta',
-                    data: [NumberInvoicesPending || 0, invoicesExpirateAndDue.value.total || 0, numberInvoicesExpired || 0],
+                    data: [NumberInvoicesPending || 0, numberInvoiceDueExpiration || 0, numberInvoicesExpired || 0],
                     backgroundColor: [
                         'rgba(255, 159, 64, 0.2)',
                         'rgba(255, 205, 86, 0.2)',
