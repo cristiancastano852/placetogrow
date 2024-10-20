@@ -173,9 +173,8 @@ Follow these steps to set up and run your Laravel application in Docker.
 9. **Access the Application**
 
    Open your web browser and go to `http://localhost:9005/` (or the port you configured).
-   - **Verificar el estado de los contenedores:**
-   
-   Puedes verificar el estado de los contenedores en cualquier momento usando:
+
+   - **Check containers status:**
 
    ```bash
    docker-compose ps
