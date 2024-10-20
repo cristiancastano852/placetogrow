@@ -33,10 +33,10 @@ Author:
 ![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
 
 ---
-## Instalación local
-1. **Clonar el repositorio:**
+## Local Installation
+1. **Clone the Repository:**
    
-   Clona este repositorio en tu máquina local.
+    Clone this repository to your local machine.
 
    ```bash
    git clone https://github.com/cristiancastano852/placetogrow
@@ -102,77 +102,82 @@ Author:
     ```
 ---
 
-## Instalación en Docker
+## Docker Installation
 
-Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
+Follow these steps to set up and run your Laravel application in Docker.
 
-### Pasos para la instalación
+### Installation Steps
 
-1. **Clonar el repositorio:**
+1. **Clone the Repository:**
    
-   Clona este repositorio en tu máquina local.
+   Clone this repository to your local machine.
 
    ```bash
    git clone https://github.com/cristiancastano852/placetogrow
    cd placetogrow
    ```
 
-2. **Construir y levantar los contenedores:**
+2. **Build and Start the Containers:**
    
-   Desde la carpeta raíz del proyecto, ejecuta:
+   From the project's root folder, run:
 
    ```bash
    docker-compose up -d --build
    ```
 
-3. **Instalar las dependencias de Composer:**
+3. **Install Composer Dependencies:**
    
-   Una vez que los contenedores estén en funcionamiento, instala las dependencias de Composer:
+   Once the containers are running, install the Composer dependencies:
 
    ```bash
    docker-compose exec app composer install
    ```
 
-4. **Instalar las dependencias de node:**
+4. **Install Node.js Dependencies:**
    
-   Instalar las dependencias de node
 
    ```bash
    docker-compose exec app npm install
    ```
-5. **Hacer el build de node:**
+5. **Build Node.js:**
 
    ```bash
    docker-compose exec app npm run build 
    ```
 
-6. **Correr las migraciones y seeders:**
+6. **Run Migrations and Seeders:**
    
-   Ejecuta las migraciones y seeders para configurar la base de datos:
+   Execute the migrations and seeders to set up the database:
 
    ```bash
    docker-compose exec app php artisan migrate:refresh --seed
    ```
-7. **Crear ambiente para los jobs:**
+7. **Create Environment for Jobs:**
    
-   Ejecuta el comando para poder ejecutar los jobs:
-
+   Run the command to execute jobs:
    ```bash
    docker-compose exec app php artisan queue:work
    ```
-8. **Crear ambiente para las tareas programadas:**
+8. **Create Environment for Scheduled Tasks:**
    
-   Ejecuta el comando para poder ejecutar las tareas programadas:
+  Run the command to execute scheduled tasks:
 
    ```bash
    docker-compose exec app php artisan schedule:work
    ```
-9. **Acceder a la aplicación:**
+9. **Access the Application**
+
+   Open your web browser and go to `http://localhost:9005/` (or the port you configured).
+   - **Verificar el estado de los contenedores:**
    
-   Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
+   Puedes verificar el estado de los contenedores en cualquier momento usando:
+
+   ```bash
+   docker-compose ps
+   ```
 ### Configurate Environment Variables
 
-   Asegúrate de que las variables de entorno en tu archivo `.env` estén configuradas correctamente. Aquí tienes un ejemplo de la configuración de la base de datos:
+   Ensure that the environment variables in your .env file are correctly set. Here’s an example of the database configuration:
 
 - Database Enviroments
    ```env
@@ -205,17 +210,6 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
     SUBSCRIPTION_EXPIRY_ALERT_DAYS=  # Number of days before subscription expiry alert is triggered
     SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
    ```
-
-### Notas importantes
-
-- **Verificar el estado de los contenedores:**
-   
-   Puedes verificar el estado de los contenedores en cualquier momento usando:
-
-   ```bash
-   docker-compose ps
-   ```
-
 
 ### Uso
 
