@@ -266,7 +266,7 @@ const applyFilters = () => {
                     </div>
 
                     <div class="mx-8 mt-6">
-                        <h2 class="text-lg font-semibold text-gray-900">Detalle de Facturas</h2>
+                        <h2 class="text-lg font-semibold text-gray-900 mt-8 mb-2">Facturas que vencen en los proximos 7 días y facturas vencidas</h2>
                         <div v-if="total==0">
                             <p class="text-gray-600">No hay facturas para mostrar</p>
 

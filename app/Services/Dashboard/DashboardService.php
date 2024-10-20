@@ -4,17 +4,24 @@ namespace App\Services\Dashboard;
 
 use App\Constants\DateFilterTypes;
 use App\Constants\InvoiceStatus;
+use App\Constants\Roles;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
-    public function getInvoicesMetrics(?array $data, ?string $userId = null, ?string $email = null): array
+    public function getInvoicesMetrics(?array $data, ?User $user): array
     {
+        $userId = $user->hasRole(Roles::ADMIN->value) ? null :  $user->id;
+        $email = $user->hasRole(Roles::GUEST->value) ? $user->email : null;
+        if ($email) {
+            $userId = null;
+        }
         $startDate = $data['startDate'];
         $endDate = $data['endDate'];
         $micrositeId = $data['micrositeId'] ?? null;
-        $metricsByStatus = $this->getInvoiceMetricsCountByStatus($startDate, $endDate, $userId, $micrositeId);
+        $metricsByStatus = $this->getInvoiceMetricsCountByStatus($startDate, $endDate, $userId, $email, $micrositeId);
         $metricsInvoicesExpiredLast30Days = $this->getInvoicesMetricsByParams($userId, $email, now()->subMonth(), now()->subDay(), InvoiceStatus::EXPIRED->name);
         $metricInvoicesDueExpirate = $this->getInvoicesMetricsByParams($userId, $email, now(), $data['expirateDateLimit'], InvoiceStatus::PENDING->name);
         $invoicesExpiredAndDueExpirate = collect($metricInvoicesDueExpirate['invoices'])
@@ -30,24 +37,27 @@ class DashboardService
         return $metrics;
     }
 
-    private function getInvoiceMetricsCountByStatus(?string $startDate = null, ?string $endDate = null, ?string $userId = null, ?int $micrositeId = null): array
+    private function getInvoiceMetricsCountByStatus(
+        ?string $startDate = null, 
+        ?string $endDate = null, 
+        ?string $userId = null, 
+        ?string $email = null,
+        ?int $micrositeId = null): array
     {
         $startDate = $this->formatDate($startDate, DateFilterTypes::START->value);
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
         $cacheKey = 'invoice_status_metrics'.$userId.'_'.($startDate ?? DateFilterTypes::START->value).'_'.($endDate ?? DateFilterTypes::END->value).'_'.($micrositeId ?? 'all');
-        $queryResult = Cache::remember($cacheKey, 3600, function () use ($startDate, $endDate, $userId, $micrositeId) {
-            return DB::select('CALL GetInvoiceMetrics(?, ?, ?, ?)', [$startDate, $endDate, $userId, $micrositeId]);
+        $queryResult = Cache::remember($cacheKey, 3600, function () use ($startDate, $endDate, $userId, $email, $micrositeId) {
+            return DB::select('CALL GetInvoiceMetrics(?, ?, ?, ?, ?)', [$startDate, $endDate, $userId, $email, $micrositeId]);
         });
         $metrics = [
             InvoiceStatus::PENDING->name => 0,
             InvoiceStatus::PAID->name => 0,
             InvoiceStatus::EXPIRED->name => 0,
         ];
-
         foreach ($queryResult as $result) {
             $metrics[$result->status] = $result->total;
         }
-
         return $metrics;
     }
 

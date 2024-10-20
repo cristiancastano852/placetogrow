@@ -43,14 +43,14 @@ BEGIN
         ELSEIF email IS NOT NULL THEN
             SELECT COUNT(*) INTO totalRecords
             FROM invoices
-            WHERE invoices.email = email
+            WHERE (invoices.email COLLATE utf8mb4_unicode_ci = email COLLATE utf8mb4_unicode_ci OR email IS NULL)
             AND (expiration_date >= startDate OR startDate IS NULL)
             AND (expiration_date <= endDate OR endDate IS NULL)
             AND (invoices.status COLLATE utf8mb4_unicode_ci = status COLLATE utf8mb4_unicode_ci OR status IS NULL);
             
             SELECT invoices.*, totalRecords AS total_count
             FROM invoices
-            WHERE invoices.email = email
+            WHERE (invoices.email COLLATE utf8mb4_unicode_ci = email COLLATE utf8mb4_unicode_ci OR email IS NULL)
             AND (expiration_date >= startDate OR startDate IS NULL)
             AND (expiration_date <= endDate OR endDate IS NULL)
             AND (invoices.status COLLATE utf8mb4_unicode_ci = status COLLATE utf8mb4_unicode_ci OR status IS NULL);

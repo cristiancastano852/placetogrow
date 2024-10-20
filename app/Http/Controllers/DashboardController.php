@@ -22,9 +22,7 @@ class DashboardController extends Controller
     {
         $data = $request->validated();
         $user = Auth::user();
-        $userId = $user->hasRole(Roles::ADMIN->value) ? null : Auth::user()->id;
-        $email = $user->hasRole(Roles::GUEST->value) ? Auth::user()->email : null;
-        $metrics = $this->dashboardService->getInvoicesMetrics($data, $userId, $email);
+        $metrics = $this->dashboardService->getInvoicesMetrics($data, $user);
         $microsites = Microsites::MicrositesByUser(Auth::user())->get();
 
         return Inertia::render('Dashboard', [

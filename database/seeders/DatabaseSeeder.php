@@ -26,8 +26,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'guest@example.com',
         ]);
 
-        // $this->call(CategorySeeder::class);
-        $this->call(micrositesSeeder::class);
+        $this->call(MicrositesByTypeSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(PermissionsSeeder::class);
         $this->call(DefaultRolesAndPermissionsSeeder::class);
