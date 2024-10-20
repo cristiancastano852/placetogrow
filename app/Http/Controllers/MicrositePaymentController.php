@@ -11,12 +11,13 @@ class MicrositePaymentController extends Controller
 {
     public function transactionsByMicrosite($microsite_id): \Inertia\Response
     {
-        $user = Auth::user();
         $payments = Payment::where('microsite_id', $microsite_id)
-            ->with('microsite')
+            ->with('microsite:id,name')
+            ->select('id', 'reference', 'description', 'status', 'amount', 'currency', 'microsite_id', 'updated_at', 'subscription_id', 'invoice_id')
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        $microsites = Microsites::all();
+        $microsites = Microsites::MicrositesByUser(Auth::user())->get();
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,

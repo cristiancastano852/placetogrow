@@ -37,10 +37,10 @@ class DashboardService
         ?string $endDate = null,
         ?string $status = InvoiceStatus::PENDING->name
     ): array {
-        $cacheKey = 'invoices_dasssdata_metrics'.$userId.'_'.$email.'_'.($startDate ?? 'no_start_date').'_'.
-            ($endDate ?? 'no_end_date').'_'.$status;
         $startDate = $this->formatDate($startDate, DateFilterTypes::START->value);
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
+        $cacheKey = 'invoices_metric_by_params'.$userId.'_'.$email.'_'.($startDate ?? 'no_start_date').'_'.
+            ($endDate ?? 'no_end_date').'_'.$status;
         $queryResult = Cache::remember($cacheKey, 3600, function () use ($userId, $email, $startDate, $endDate, $status) {
             return DB::select('CALL GetInvoicesDueExpireAlert(?, ?, ?, ?, ?)', [
                 $userId,

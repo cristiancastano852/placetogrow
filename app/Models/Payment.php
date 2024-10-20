@@ -39,7 +39,7 @@ class Payment extends Model
         return $this->belongsTo(Invoice::class);
     }
 
-    public function scopeTransactionsByRole($query, User $user): void
+    public function scopeTransactionsByRole($query, User $user, ?int $micrositeId = null): void
     {
         $userRole = $user->roles->first()->name;
         $query->with('microsite')
@@ -48,6 +48,7 @@ class Payment extends Model
                     ->whereHas('microsite', fn ($query) => $query->where('user_id', $user->id)
                     )
             )->when($userRole === Roles::GUEST->value, fn ($query) => $query->where('user_id', $user->id))
+            ->when($micrositeId, fn ($query) => $query->where('microsite_id', $micrositeId))
             ->orderBy('created_at', 'desc');
     }
 }

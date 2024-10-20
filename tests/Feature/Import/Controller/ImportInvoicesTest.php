@@ -3,8 +3,11 @@
 namespace Tests\Feature\Import\Controller;
 
 use App\Constants\MicrositesTypes;
+use App\Constants\Roles;
 use App\Models\Microsites;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
@@ -13,10 +16,14 @@ use Tests\TestCase;
 
 class ImportInvoicesTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_create_import_invoices_success(): void
     {
 
         $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::ADMIN->value]);
+        $user->assignRole($role);
         $this->actingAs($user);
 
         $microsite = Microsites::factory()->create([

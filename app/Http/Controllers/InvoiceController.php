@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PolicyName;
 use App\Factories\PaymentDataProviderFactory;
 use App\Models\Invoice;
 use App\Models\Microsites;
@@ -24,6 +25,8 @@ class InvoiceController extends Controller
 
     public function invoicesByMicrosite(Microsites $microsite)
     {
+
+        $this->authorize(PolicyName::VIEW_ANY, Invoice::class);
         $invoices = Invoice::where('microsite_id', $microsite->id)->latest()->paginate(10);
 
         return Inertia::render('Invoices/Show', [
@@ -59,9 +62,9 @@ class InvoiceController extends Controller
 
     public function invoicesPayment(Request $request, Microsites $microsite, PaymentDataProviderFactory $factory)
     {
-        $invoice_id = $request->invoice_id;
+        $invoiceId = $request->invoice_id;
         $invoice = Invoice::where('microsite_id', $microsite->id)
-            ->where('id', $invoice_id)
+            ->where('id', $invoiceId)
             ->first();
         if ($invoice->expiration_date < now() && $invoice->late_fee_amount <= 0) {
             $invoice->applyLateFee();

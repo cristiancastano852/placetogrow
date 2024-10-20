@@ -52,7 +52,7 @@ const searchByMicrosite = () => {
   if (selectedMicrosite.value === 0) {
     router.get(route('payments.transactions'));
   } else {
-    router.get(route('payments.transactionsByMicrosite', { microsite: selectedMicrosite.value }));
+    router.get(route('payments.transactions', { microsite_id: selectedMicrosite.value }));
   }
 };
 
