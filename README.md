@@ -70,33 +70,38 @@ Autor:
     ```bash
     php artisan storage:link
     ```
-6. **Run Migrations and Seed the Database**
+6. **Environment Configuration**
+ 
+  Before running the application, make sure to configure the following environment variables in your `.env` file.
+   - Steps in: [Required Variables](#configurate-environment-variables).
+7. **Run Migrations and Seed the Database**
 
     To run the database migrations and seed the database with initial data, use the following command:
     ```bash
     php artisan migrate --seed
     ```
 
-7. **Run the Application**
+8. **Run the Application**
 
     To serve the Laravel application and start the development environment for Vue.js, follow these steps:
    
-    **7.1** Use the following command to start the Laravel development server:
+    **8.1** Use the following command to start the Laravel development server:
    ```bash
    php artisan serve
     ```
 
-   **7.2** Build the Frontend for Production:
+   **8.2** Build the Frontend for Production:
        If you want to compile the frontend assets for production, run:
    ```bash
    npm run build
     ```
-   **7.3** Start the Frontend Development Server:
+   **8.3** Start the Frontend Development Server:
        To start the Vue.js development server with hot-reloading, use:
     ```bash
     npm run dev
     ```
 ---
+
 ## Instalación en Docker
 
 Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
@@ -165,7 +170,9 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
 9. **Acceder a la aplicación:**
    
    Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
-
+### Configurate Environment Variables
+    asdasdasd
+    asdasdasd
 ### Notas importantes
 
 - **Configurar variables de entorno:**
