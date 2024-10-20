@@ -207,7 +207,7 @@ Follow these steps to set up and run your Laravel application in Docker.
   ```env
     PLACETOPAY_LOGIN=your_placetopay_login
     PLACETOPAY_SECRET_KEY=your_placetopay_secret_key
-    PLACETOPAY_URL=https://placetopay.com/re
+    PLACETOPAY_URL=https://api.gatewaypay.dev #Put your URL
    ```
 - Alert Configuration
   ```env
