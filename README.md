@@ -12,7 +12,7 @@ Autor:
 ### Stack Tecnológico
 
 - **Separación por Capas**: Se añadieron capas diferentes a MVC, se uso [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
-- **Lenguaje**: PHP V8.2
+- **Lenguaje**: PHP Version 8.2.12
 - **Framework Backend**: Laravel V11.9.
 - **Base de datos**: MySQL V8.0.37.
 - **Framework Frontend**: Inertia.js con Vue.js 3.
@@ -44,7 +44,29 @@ Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
    git clone https://github.com/cristiancastano852/placetogrow
    cd placetogrow
    ```
+2. **Copy .env**
+    ```bash
+   cp .env.example .env
+   ```
+3. **Install Dependencies**
 
+    To install the necessary dependencies for the project, run the following commands:
+    #### PHP Dependencies
+    ```bash
+    composer install
+    ```
+    #### Node.js Dependencies
+    ```bash
+    npm install
+    ```
+
+4. **Generate API Key**
+    To generate an API key, run the following command:
+   ```bash
+    php artisan key:generate
+   ```
+5. 
+6. 
 ---
 ## Instalación en Docker
 
