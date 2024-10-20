@@ -100,9 +100,16 @@ Author:
     ```bash
     npm run dev
     ```
-9. Config job
-10. Config schedule task
-11. **Access the Application**
+9. **Start the queue worker to process the jobs (In other terminal):**
+     ```bash
+    php artisan queue:work
+    ```
+11. **Running the Scheduler Locally to process task (In other terminal)**
+     ```bash
+    php artisan schedule:work
+    ```
+    
+13. **Access the Application** 😁
 
    Open your web browser and go to `http://localhost:9005/` (or the port you configured).
 
