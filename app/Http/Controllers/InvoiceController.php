@@ -6,7 +6,6 @@ use App\Constants\PolicyName;
 use App\Factories\PaymentDataProviderFactory;
 use App\Models\Invoice;
 use App\Models\Microsites;
-use App\Models\User;
 use App\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,10 +49,11 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function invoicesByUser(): Response
+    public function invoicesByUser(Request $request): Response
     {
-        $user = User::find(Auth::user()->id);
-        $invoices = Invoice::invoicesByRole($user)->latest()->paginate(10);
+        $status = $request->input('status') ?? null;
+        $user = Auth::user();
+        $invoices = Invoice::invoicesByRole($user, $status)->latest()->paginate(30);
 
         return Inertia::render('Invoices/InvoicesUser', [
             'invoices' => $invoices,
@@ -69,7 +69,7 @@ class InvoiceController extends Controller
         if ($invoice->expiration_date < now() && $invoice->late_fee_amount <= 0) {
             $invoice->applyLateFee();
         }
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         $paymentRepository = new PaymentRepository();
         $invoiceData = [
             'description' => $invoice->description,

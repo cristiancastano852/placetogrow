@@ -32,7 +32,7 @@ class InvoiceFactory extends Factory
         }
 
         return [
-            'reference' => $this->faker->word,
+            'reference' => $this->faker->word.$this->faker->randomNumber(5),
             'status' => $status,
             'document_number' => $this->faker->numerify('###########'),
             'document_type' => $this->faker->randomElement(array_column(DocumentTypes::cases(), 'name')),

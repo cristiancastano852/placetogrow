@@ -12,7 +12,6 @@ use App\Http\Requests\StoremicrositesRequest;
 use App\Http\Requests\UpdatemicrositesRequest;
 use App\Models\Category;
 use App\Models\Microsites;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -22,7 +21,7 @@ class MicrositesController extends Controller
     public function index(): \Inertia\Response
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         if ($user->hasRole('Admin')) {
             $microsites = Microsites::orderBy('created_at', 'desc')
                 ->orderBy('created_at', 'desc')

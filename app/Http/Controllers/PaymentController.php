@@ -8,7 +8,6 @@ use App\Factories\PaymentDataProviderFactory;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Microsites;
 use App\Models\Payment;
-use App\Models\User;
 use App\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +18,7 @@ class PaymentController extends Controller
 {
     public function store(StorePaymentRequest $request, PaymentDataProviderFactory $factory)
     {
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         $micrositeId = $request->microsite_id;
         $microsite = Microsites::find($micrositeId);
 
