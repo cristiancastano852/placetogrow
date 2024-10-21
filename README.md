@@ -8,7 +8,7 @@ Author:
   Cristian Alexander Castaño Montoya
   
   [<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin">](https://www.linkedin.com/in/cristiancastano852/)
-  [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=cristiancastano852_placetogrow)
+  [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)]([https://sonarcloud.io/summary/new_code?id=cristiancastano852_placetogrow](https://sonarcloud.io/summary/new_code?id=cristiancastano852_placetogrow&branch=release%2Fv4.0.0))
 
 ### Technology Stack
 
