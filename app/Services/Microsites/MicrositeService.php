@@ -41,7 +41,7 @@ class MicrositeService
         return Cache::remember($cacheKey, now()->addDays(7), function () use ($micrositeId,$status, $currentMonth) {
             return DB::selectOne('
                 CALL GetAmountMounthlyByMicrosite(?, ?, ?, ?)
-            ', [$micrositeId,$status, $currentMonth->format('Y-m-d'), Carbon::now()->format('Y-m-d')]);
+            ', [$micrositeId,$status, $currentMonth->format('Y-m-d'), Carbon::now()->endOfMonth()]);
         });
     }
 
