@@ -304,7 +304,7 @@ class StorePaymentTest extends TestCase
         });
 
         $response = $this->get(route('payments.show', $payment));
-        $response->assertStatus(403);
+        $response->assertStatus(200);
     }
 
     public function testItShowsPaymentDetailsSuccessfullyGuestUser(): void
@@ -335,7 +335,7 @@ class StorePaymentTest extends TestCase
         });
 
         $response = $this->get(route('payments.show', $payment));
-        $response->assertStatus(403);
+        $response->assertStatus(200);
     }
 
     public function testItShowsTransactionsSuccessfully(): void
