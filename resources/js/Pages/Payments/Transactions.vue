@@ -90,7 +90,7 @@ const searchByMicrosite = () => {
                     </template>
 
                     <template #col[status]="{ value }">
-                        <SBadge class="capitalize" :color="colorByStatus[value]">{{ value }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByStatus[value]">{{$t( value) }}</SBadge>
                     </template>
                     <template #col[amount]="{record,  value }">
                         <SBadge class="capitalize">{{record.currency}} {{ value }}</SBadge>

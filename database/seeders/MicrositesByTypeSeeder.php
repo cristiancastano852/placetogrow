@@ -136,8 +136,11 @@ class MicrositesByTypeSeeder extends Seeder
                 for ($i = 0; $i < 30; $i++) {
                     $createdDate = Carbon::now()->subMonths(rand(1, 4))->addDays(rand(0, 30));
                     $expirationDate = $createdDate->copy()->addDays(rand(1, 30));
+                    $amount = rand(100, 20000);
+                    $late_fee_amount = 0;
                     if ($expirationDate->isPast()) {
                         $status = InvoiceStatus::EXPIRED->name;
+                        $late_fee_amount = $amount * ($microsite->late_fee_percentage / 100);
                     } else {
                         $status = InvoiceStatus::PENDING->name;
                     }
@@ -145,6 +148,9 @@ class MicrositesByTypeSeeder extends Seeder
                         'email' => 'guest@microsites.com',
                         'microsite_id' => $microsite->id,
                         'expiration_date' => $expirationDate,
+                        'amount' => $amount,
+                        'late_fee_amount' => $late_fee_amount ?? 0,
+                        'total_amount' => $amount + $late_fee_amount,
                         'status' => $status,
                         'created_at' => $createdDate,
                     ]);

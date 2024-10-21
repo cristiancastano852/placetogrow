@@ -101,7 +101,7 @@ const proceedToPayment = () => {
                     </template>
 
                     <template #col[status]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByType[value]">{{$t( value) }}</SBadge>
                     </template>
                     <template #col[currency]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>

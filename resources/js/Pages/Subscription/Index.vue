@@ -82,7 +82,7 @@ const cancelSubscription = (id) => {
                     </template>
 
                     <template #col[status]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByType[value]">{{$t( value) }}</SBadge>
                     </template>
                     <template #col[price]="{ record, value }">
                         <SBadge class="capitalize w-full text-center flex justify-center items-center whitespace-nowrap">

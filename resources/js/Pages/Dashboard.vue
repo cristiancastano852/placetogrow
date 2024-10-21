@@ -218,7 +218,9 @@ const applyFilters = () => {
                         <p class="mt-1 text-sm text-gray-600">
                             Aquí podrás ver el estado de tus facturas, subscripciones y realizar pagos
                         </p>
+                        <hr style="border: 1px solid gray;" class=" mt-12">
                     </header>
+                    
                     <div v-else>
                         <div class="mb-4 flex flex-wrap items-center bg-gray-50 p-4 shadow-md rounded-lg">
                             <div class="flex-1 px-2">
@@ -277,7 +279,7 @@ const applyFilters = () => {
                         <SDataTable :cols="cols" :data="dataInvoices" numericPaginator :pagination="pagination"
                             @paginationChange="handlePaginationChange">
                             <template #col[status]="{ value }">
-                                <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                                <SBadge class="capitalize" :color="colorByType[value]">{{$t( value) }}</SBadge>
                             </template>
                         </SDataTable>
                     </div>

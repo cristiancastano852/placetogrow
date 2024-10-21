@@ -1,5 +1,12 @@
 {
+    "ACTIVE": "Activo",
+    "APPROVED": "Aprobado",
+    "REJECTED": "Rechazado",
     "welcome": "Bienvenido",
+    "SUSPENDED": "Suspendido",
+    "PENDING": "Pendiente",
+    "EXPIRED": "Expirado",
+    "PAID": "Pagado",
     "hello": "Hola",
     "goodbye": "Adiós",
     "auth": {
