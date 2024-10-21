@@ -117,6 +117,61 @@ Author:
    - **NOTE:** Test de web app with [User Configurated](#user-data-to-test). 🧑‍✈️
 ---
 
+### User data to test
+
+  The following test users have been created to facilitate the exploration of the application's functionality. You can use these credentials to log in and test the system with different roles and permissions
+
+- **Customer**: Can manage microsites they own, access payments, subscriptions, invoices import and metrics.
+  ```env
+    Username: customeradmin@microsites.com
+    Password: password
+   ```
+- **Guest**: Has limited access to viewing public microsites and minimal actions.
+  ```env
+    Username: guest@microsites.com
+    Password: password
+   ```
+- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
+   ```env
+    Username: superadmin@microsites.com
+    Password: password
+   ```
+### Configurate Environment Variables
+
+   Ensure that the environment variables in your .env file are correctly set. Here’s an example of the database configuration:
+
+- Database Enviroments
+   ```env
+    DB_CONNECTION=mysql # Or your database driver
+    DB_HOST=127.0.0.1   # Database host
+    DB_PORT=3306        # Database port
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+   ```
+- Email Configuration
+  ```env
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.mailtrap.io # Example service, replace with your actual email host
+    MAIL_PORT=2525
+    MAIL_USERNAME=your_mail_username
+    MAIL_PASSWORD=your_mail_password
+    MAIL_FROM_ADDRESS="noreply@yourapp.com"
+    MAIL_FROM_NAME="${APP_NAME}"
+   ```
+- Payment Gateway (PlaceToPay) Configuration
+  ```env
+    PLACETOPAY_LOGIN=your_placetopay_login
+    PLACETOPAY_SECRET_KEY=your_placetopay_secret_key
+    PLACETOPAY_URL=https://api.gatewaypay.dev #Put your URL
+   ```
+- Alert Configuration
+  ```env
+    INVOICE_DUE_ALERT_DAYS=  # Number of days before due alert is triggered
+    SUBSCRIPTION_EXPIRY_ALERT_DAYS=  # Number of days before subscription expiry alert is triggered
+    SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
+   ```
+
 ## Docker Installation
 
 Follow these steps to set up and run your Laravel application in Docker.
@@ -189,61 +244,9 @@ Follow these steps to set up and run your Laravel application in Docker.
    ```bash
    docker-compose ps
    ```
-### Configurate Environment Variables
 
-   Ensure that the environment variables in your .env file are correctly set. Here’s an example of the database configuration:
 
-- Database Enviroments
-   ```env
-    DB_CONNECTION=mysql # Or your database driver
-    DB_HOST=127.0.0.1   # Database host
-    DB_PORT=3306        # Database port
-    DB_DATABASE=your_database_name
-    DB_USERNAME=your_database_username
-    DB_PASSWORD=your_database_password
-   ```
-- Email Configuration
-  ```env
-    MAIL_MAILER=smtp
-    MAIL_HOST=smtp.mailtrap.io # Example service, replace with your actual email host
-    MAIL_PORT=2525
-    MAIL_USERNAME=your_mail_username
-    MAIL_PASSWORD=your_mail_password
-    MAIL_FROM_ADDRESS="noreply@yourapp.com"
-    MAIL_FROM_NAME="${APP_NAME}"
-   ```
-- Payment Gateway (PlaceToPay) Configuration
-  ```env
-    PLACETOPAY_LOGIN=your_placetopay_login
-    PLACETOPAY_SECRET_KEY=your_placetopay_secret_key
-    PLACETOPAY_URL=https://api.gatewaypay.dev #Put your URL
-   ```
-- Alert Configuration
-  ```env
-    INVOICE_DUE_ALERT_DAYS=  # Number of days before due alert is triggered
-    SUBSCRIPTION_EXPIRY_ALERT_DAYS=  # Number of days before subscription expiry alert is triggered
-    SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
-   ```
 
-### User data to test
-
-  The following test users have been created to facilitate the exploration of the application's functionality. You can use these credentials to log in and test the system with different roles and permissions
-
-- **Customer**: Can manage microsites they own, access payments, subscriptions, invoices import and metrics.
-  ```env
-    Username: customeradmin@microsites.com
-    Password: password
-   ```
-- **Guest**: Has limited access to viewing public microsites and minimal actions.
-  ```env
-    Username: guest@microsites.com
-    Password: password
-   ```
-- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
-   ```env
-    Username: superadmin@microsites.com
-    Password: password
-   ```
 
 
 
