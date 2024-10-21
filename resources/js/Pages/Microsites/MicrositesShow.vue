@@ -76,13 +76,15 @@ const goBack = () => {
                 </div>
        
             </div>
-            </div>
-            <div class="mt-12 h-1200 w-1200">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Pagos Mensuales</h3>
+        </div>
+        <div class="mt-12 h-1200 w-1200">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Pagos Mensuales</h3>
+            <p>Monto total en pagos exitosos por mes (Últimos 4 meses)</p>
                 <div class="h-1200 w-1200">
                     <PaymentsChart :paymentsByMonth="props.paymentsByMonth" />
                 </div>
             </div>
+        <div class="mb-12"></div>
         </div>
     </AuthenticatedMainLayout>
 </template>

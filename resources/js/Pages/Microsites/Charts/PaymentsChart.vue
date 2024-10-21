@@ -45,7 +45,7 @@ onMounted(() => {
                     },
                     title: {
                         display: true,
-                        text: 'Pagos Mensuales',
+                        text: 'Monto pagos Mensuales',
                     },
                 },
             },
