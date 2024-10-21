@@ -8,6 +8,7 @@ Author:
   Cristian Alexander Castaño Montoya
   
   [<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin">](https://www.linkedin.com/in/cristiancastano852/)
+  [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=cristiancastano852_placetogrow)
 
 ### Technology Stack
 
@@ -30,7 +31,7 @@ Author:
 - **Composer** V2.7.6
 
 ### Entity-Relationship Diagram
-![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
+![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/user-attachments/assets/30340e8e-b71d-4778-aaa9-12641574c154)
 
 ---
 ## Local Installation
