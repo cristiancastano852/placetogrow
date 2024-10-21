@@ -244,7 +244,7 @@ const applyFilters = () => {
                         </div>
 
                         <h2 class="text-lg font-semibold text-gray-900 mx-8 mt-8">Metricás de facturas</h2>
-
+                        <p class="mx-12 mt-2 text-gray-400">Por defecto veras las metricas del mes anterior.</p>
                         <div class="flex justify-between mx-8 mt-8">
                             <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
                                 style="width: 100%;">
@@ -256,8 +256,10 @@ const applyFilters = () => {
                                     style="max-width: 100%; max-height: 100%;"></canvas>
                             </div>
                         </div>
+                        <hr style="border: 1px solid gray;" class="mx-8 mt-12">
                     </div>
-                    <h1 class="text-base font-semibold text-gray-900 ml-12">Estado General de Facturas</h1>
+
+                    <h1 class="text-base font-semibold text-gray-900 ml-12 mt-12">Estado General de Facturas</h1>
                     <div class="mx-8 mt-2 h-full">
                         <div class="flex justify-center items-center mx-4 bg-white p-4 rounded-lg shadow-lg"
                             style="width: 100%;">
@@ -265,7 +267,7 @@ const applyFilters = () => {
                         </div>
                     </div>
 
-                    <div class="mx-8 mt-6">
+                    <div class="mx-12 mt-6">
                         <h2 class="text-lg font-semibold text-gray-900 mt-8 mb-2">Facturas que vencen en los proximos 7 días y facturas vencidas</h2>
                         <div v-if="total==0">
                             <p class="text-gray-600">No hay facturas para mostrar</p>

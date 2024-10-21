@@ -161,6 +161,16 @@ class MicrositesByTypeSeeder extends Seeder
                     ]);
                 }
             }
+
+            for ($i = 0; $i < 30; $i++) {
+                $createdDate = Carbon::now()->subMonths(4)->addDays(rand(15, 100));
+                Payment::factory()->create([
+                    'microsite_id' => $microsite->id,
+                    'created_at' => $createdDate,
+                    'user_id' => 4,
+                    'status' => PaymentStatus::APPROVED->name,
+                ]);
+            }
         }
     }
 }

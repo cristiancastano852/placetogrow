@@ -12,12 +12,20 @@ use App\Http\Requests\StoremicrositesRequest;
 use App\Http\Requests\UpdatemicrositesRequest;
 use App\Models\Category;
 use App\Models\Microsites;
+use App\Services\Microsites\MicrositeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MicrositesController extends Controller
 {
+    protected $micrositesService;
+
+    public function __construct(MicrositeService $micrositesService)
+    {
+        $this->micrositesService = $micrositesService;
+    }
+
     public function index(): \Inertia\Response
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
@@ -76,9 +84,11 @@ class MicrositesController extends Controller
     public function show(Microsites $microsite)
     {
         $this->authorize(PolicyName::VIEW, $microsite);
+        $paymentsByMonth = $this->micrositesService->getLast4MonthsPayments($microsite->id);
 
         return Inertia::render('Microsites/MicrositesShow', [
             'microsite' => $microsite,
+            'paymentsByMonth' => $paymentsByMonth,
         ]);
     }
 

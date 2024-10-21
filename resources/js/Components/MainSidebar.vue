@@ -34,14 +34,10 @@ const navigate = (path: string) => {
         <SSidebarItem v-if="permissions.includes('transactions.view_any')" @click="navigate('/invoices')" path="invoices" :icon="DocumentCopyIcon">Facturas</SSidebarItem>
 
         <SSidebarItemGroup v-if="roles.includes('Admin')" :icon="ClipboardTickIcon">
-            <template #title>Administration</template>
+            <template #title>Administración</template>
             <SSidebarItem v-if="roles.includes('Admin')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
             <SSidebarItem v-if="roles.includes('Admin')" @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
 
-        <SSidebarItemGroup :icon="ShieldSecurityIcon">
-            <template #title>Security</template>
-            <SSidebarItem path="metrics">Logs</SSidebarItem>
-        </SSidebarItemGroup>
     </SSidebar>
 </template>
