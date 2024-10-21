@@ -229,11 +229,6 @@ Follow these steps to set up and run your Laravel application in Docker.
 
   The following test users have been created to facilitate the exploration of the application's functionality. You can use these credentials to log in and test the system with different roles and permissions
 
-- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
-   ```env
-    Username: superadmin@microsites.com
-    Password: password
-   ```
 - **Customer**: Can manage microsites they own, access payments, subscriptions, invoices import and metrics.
   ```env
     Username: customeradmin@microsites.com
@@ -242,6 +237,11 @@ Follow these steps to set up and run your Laravel application in Docker.
 - **Guest**: Has limited access to viewing public microsites and minimal actions.
   ```env
     Username: guest@microsites.com
+    Password: password
+   ```
+- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
+   ```env
+    Username: superadmin@microsites.com
     Password: password
    ```
 
