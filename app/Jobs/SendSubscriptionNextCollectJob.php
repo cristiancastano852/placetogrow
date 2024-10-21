@@ -22,7 +22,7 @@ class SendSubscriptionNextCollectJob implements ShouldQueue
     {
         Log::info('Sending subscription expiry alert mail');
         $today = Carbon::now();
-        $daysBeforeNextBilling = config('subscriptions.next_billing_alert_days', 2);
+        $daysBeforeNextBilling = (int) config('subscriptions.next_billing_alert_days', 2);
         $next_billing_date = $today->copy()->addDays($daysBeforeNextBilling)->format('Y-m-d');
         Log::info("Subscriptions with next billing date: {$next_billing_date}");
         $subscriptions = Subscription::where('next_billing_date', $next_billing_date)

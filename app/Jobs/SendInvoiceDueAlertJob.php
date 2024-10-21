@@ -22,7 +22,7 @@ class SendInvoiceDueAlertJob implements ShouldQueue
     {
         Log::info('Sending invoice due alert mail');
         $today = Carbon::now();
-        $daysBeforeExpiration = config('invoices.due_alert_days', 7);
+        $daysBeforeExpiration = (int) config('invoices.due_alert_days', 7);
         $expiryDate = $today->copy()->addDays($daysBeforeExpiration)->format('Y-m-d');
         $invoices = Invoice::where('expiration_date', $expiryDate)
             ->where('status', InvoiceStatus::PENDING->name)
