@@ -34,6 +34,7 @@ class InvoiceMetricsStatusTest extends TestCase
         Invoice::factory()->create([
             'status' => InvoiceStatus::PENDING->name,
             'microsite_id' => $microsite->id,
+            'expiration_date' => now()->addDays(3)->format('Y-m-d'),
         ]);
         $this->actingAs($user);
         $response = $this->get(route('dashboard'));
@@ -83,6 +84,7 @@ class InvoiceMetricsStatusTest extends TestCase
         Invoice::factory()->create([
             'status' => InvoiceStatus::PENDING->name,
             'microsite_id' => $microsite->id,
+            'expiration_date' => now()->addDays(4)->format('Y-m-d'),
         ]);
         $this->actingAs($user);
         $startDate = now()->subDays(7)->format('Y-m-d');

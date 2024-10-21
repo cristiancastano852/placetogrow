@@ -47,7 +47,7 @@ class DashboardService
         $startDate = $this->formatDate($startDate, DateFilterTypes::START->value);
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
         $cacheKey = 'invoice_status_metrics'.$userId.'_'.($startDate ?? DateFilterTypes::START->value).'_'.($endDate ?? DateFilterTypes::END->value).'_'.($micrositeId ?? 'all');
-        $queryResult = Cache::remember($cacheKey, 3600, function () use ($startDate, $endDate, $userId, $email, $micrositeId) {
+        $queryResult = Cache::remember($cacheKey, 3600 * 24, function () use ($startDate, $endDate, $userId, $email, $micrositeId) {
             return DB::select('CALL GetInvoiceMetrics(?, ?, ?, ?, ?)', [$startDate, $endDate, $userId, $email, $micrositeId]);
         });
         $metrics = [
@@ -73,7 +73,7 @@ class DashboardService
         $endDate = $this->formatDate($endDate, DateFilterTypes::END->value);
         $cacheKey = 'invoices_metric_by_params'.$userId.'_'.$email.'_'.($startDate ?? 'no_start_date').'_'.
             ($endDate ?? 'no_end_date').'_'.$status;
-        $queryResult = Cache::remember($cacheKey, 3600, function () use ($userId, $email, $startDate, $endDate, $status) {
+        $queryResult = Cache::remember($cacheKey, 3600 * 24, function () use ($userId, $email, $startDate, $endDate, $status) {
             return DB::select('CALL GetInvoicesDueExpireAlert(?, ?, ?, ?, ?)', [
                 $userId,
                 $email,

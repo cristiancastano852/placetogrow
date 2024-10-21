@@ -276,6 +276,68 @@ class StorePaymentTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testItShowsPaymentDetailsSuccessfullyCustomerUser(): void
+    {
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::CUSTOMER->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for($user)
+            ->create();
+
+        $payment = Payment::factory()->create([
+            'user_id' => $user->id,
+            'microsite_id' => $microsite->id,
+            'status' => PaymentStatus::PENDING->value,
+        ]);
+
+        $paymentService = $this->createMock(PaymentService::class);
+        $placetopay = $this->createMock(PlacetoPayGateway::class);
+        $placetopay->method('process')
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', 'success'));
+
+        $this->app->instance(PaymentService::class, $paymentService);
+        $this->mock(PaymentService::class, function ($mock) use ($payment) {
+            $mock->shouldReceive('query')->andReturn($payment);
+        });
+
+        $response = $this->get(route('payments.show', $payment));
+        $response->assertStatus(403);
+    }
+
+    public function testItShowsPaymentDetailsSuccessfullyGuestUser(): void
+    {
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::GUEST->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()
+            ->for(Category::factory()->create())
+            ->for($user)
+            ->create();
+
+        $payment = Payment::factory()->create([
+            'user_id' => $user->id,
+            'microsite_id' => $microsite->id,
+            'status' => PaymentStatus::PENDING->value,
+        ]);
+
+        $paymentService = $this->createMock(PaymentService::class);
+        $placetopay = $this->createMock(PlacetoPayGateway::class);
+        $placetopay->method('process')
+            ->willReturn(new PaymentResponse(1, 'https://placetopay.com', 'success'));
+
+        $this->app->instance(PaymentService::class, $paymentService);
+        $this->mock(PaymentService::class, function ($mock) use ($payment) {
+            $mock->shouldReceive('query')->andReturn($payment);
+        });
+
+        $response = $this->get(route('payments.show', $payment));
+        $response->assertStatus(403);
+    }
+
     public function testItShowsTransactionsSuccessfully(): void
     {
 

@@ -41,6 +41,58 @@ class SubscriptionReturnTest extends TestCase
 
     }
 
+    public function test_return_subcription_and_save_token_user_customer(): void
+    {
+
+        Http::fake([
+            'https://checkout-co.placetopay.dev/api/session/1' => Http::response(
+                $this->getFakeResponseSession(),
+            ),
+        ]);
+
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::CUSTOMER->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()->create();
+        $suscription = Subscription::factory()->create([
+            'request_id' => '1',
+        ]);
+        $response = $this->actingAs($user)
+            ->get(route('subscriptions.return', [
+                'subscription' => $suscription->id,
+                'microsite' => $microsite->id,
+            ]));
+        $response->assertStatus(403);
+
+    }
+
+    public function test_return_subcription_and_save_token_user_guest(): void
+    {
+
+        Http::fake([
+            'https://checkout-co.placetopay.dev/api/session/1' => Http::response(
+                $this->getFakeResponseSession(),
+            ),
+        ]);
+
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::GUEST->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()->create();
+        $suscription = Subscription::factory()->create([
+            'request_id' => '1',
+        ]);
+        $response = $this->actingAs($user)
+            ->get(route('subscriptions.return', [
+                'subscription' => $suscription->id,
+                'microsite' => $microsite->id,
+            ]));
+        $response->assertStatus(403);
+
+    }
+
     private function getFakeResponseSession(): array
     {
         return [
