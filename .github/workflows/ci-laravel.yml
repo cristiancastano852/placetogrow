@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - develop
-      - feat/user-role-management
+      - release/*
       - feature/*
       - refactor/*
   pull_request:
