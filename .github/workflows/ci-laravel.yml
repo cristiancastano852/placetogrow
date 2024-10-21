@@ -5,9 +5,10 @@ on:
     branches:
       - main
       - develop
-      - feat/user-role-management
+      - release/*
       - feature/*
       - refactor/*
+      - hotfix/*
   pull_request:
     branches:
       - main

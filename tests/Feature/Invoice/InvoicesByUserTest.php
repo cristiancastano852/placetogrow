@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Invoice;
 
+use App\Constants\Roles;
 use App\Models\Invoice;
 use App\Models\Microsites;
 use App\Models\Role;
@@ -16,9 +17,10 @@ class InvoicesByUserTest extends TestCase
     public function test_get_invoices_by_user_success(): void
     {
         $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::ADMIN->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
         $microsite = Microsites::factory()->create();
-        $role = Role::factory()->create(['name' => 'admin']);
-        $user->roles()->attach($role);
         $invoice = Invoice::factory()->create(['microsite_id' => $microsite->id, 'email' => $user->email]);
         $response = $this->actingAs($user)
             ->get(route('invoice.invoicesByUser'));

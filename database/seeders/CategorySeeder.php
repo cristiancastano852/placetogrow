@@ -9,8 +9,10 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        Category::factory()
-            ->count(5)
-            ->create();
+        $categories = ['Entretenimiento', 'Cine', 'Deportes', 'Hogar', 'Tecnología', 'Moda', 'Humanitario'];
+
+        foreach ($categories as $categoryName) {
+            Category::firstOrCreate(['name' => $categoryName]);
+        }
     }
 }

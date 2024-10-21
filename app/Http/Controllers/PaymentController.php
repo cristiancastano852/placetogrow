@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PaymentStatus;
+use App\Constants\PolicyName;
 use App\Contracts\PaymentService;
 use App\Factories\PaymentDataProviderFactory;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Microsites;
 use App\Models\Payment;
-use App\Models\User;
 use App\Repositories\PaymentRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -18,9 +18,9 @@ class PaymentController extends Controller
 {
     public function store(StorePaymentRequest $request, PaymentDataProviderFactory $factory)
     {
-        $user = User::find(Auth::user()->id);
-        $microsite_id = $request->microsite_id;
-        $microsite = Microsites::find($microsite_id);
+        $user = Auth::user();
+        $micrositeId = $request->microsite_id;
+        $microsite = Microsites::find($micrositeId);
 
         $paymentRepository = new PaymentRepository();
         $payment = $paymentRepository->create($request->all(), $user, $microsite);
@@ -44,28 +44,27 @@ class PaymentController extends Controller
 
     public function show(Payment $payment): \Inertia\Response
     {
+
+        $this->authorize(PolicyName::VIEW, $payment);
         /** @var PaymentService $paymentService */
         $paymentService = app(PaymentService::class, [
             'payment' => $payment,
             'gateway' => $payment->gateway,
         ]);
 
-        if ($payment->status === PaymentStatus::PENDING->value) {
-            $payment = $paymentService->query();
-        }
+        $payment = $paymentService->query();
 
         return Inertia::render('Payments/Show', [
             'payment' => $payment,
         ]);
     }
 
-    public function transactions(): \Inertia\Response
+    public function transactions(Request $request): \Inertia\Response
     {
         $user = Auth::user();
-        $payments = [];
-        $microsites = Microsites::all();
-
-        $payments = Payment::transactionsByRole($user)->get();
+        $micrositeId = $request->input('microsite_id');
+        $microsites = Microsites::MicrositesByUser($user)->get();
+        $payments = Payment::transactionsByRole($user, $micrositeId)->get();
 
         return Inertia::render('Payments/Transactions', [
             'payments' => $payments,

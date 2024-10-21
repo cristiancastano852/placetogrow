@@ -6,11 +6,6 @@ namespace App\Constants;
 
 enum PermissionSlug: string
 {
-    case CATEGORIES_VIEW_ANY = 'categories.view_any';
-    case CATEGORIES_VIEW = 'categories.view';
-    case CATEGORIES_CREATE = 'categories.create';
-    case CATEGORIES_UPDATE = 'categories.update';
-    case CATEGORIES_DELETE = 'categories.delete';
     case MICROSITES_VIEW_ANY = 'microsites.view_any';
     case MICROSITES_VIEW = 'microsites.view';
     case MICROSITES_CREATE = 'microsites.create';
@@ -28,6 +23,8 @@ enum PermissionSlug: string
     case ROLE_PERMISSION_UPDATE = 'role_permission.update';
     case TRANSACTIONS_VIEW_ANY = 'transactions.view_any';
     case TRANSACTIONS_VIEW = 'transactions.view';
+    case IMPORT_INVOICES = 'import.invoices';
+    case INVOICES_VIEW_ANY = 'invoices.view_any';
 
     public static function toArray(): array
     {

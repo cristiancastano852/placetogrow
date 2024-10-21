@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Subscription\StoreSubscriptionAction;
+use App\Constants\PolicyName;
 use App\Constants\SubscriptionStatus;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Models\Microsites;
 use App\Models\Plan;
 use App\Models\Subscription;
-use App\Models\User;
 use App\Services\Payments\SubscriptionService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +34,7 @@ class SubscriptionController extends Controller
     {
 
         $data = $request->validated();
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         $plan = Plan::findOrFail($request->plan_id);
         $subscription = $storeAction->execute($user, $microsite, $plan);
         $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
@@ -42,7 +42,6 @@ class SubscriptionController extends Controller
         if ($response['status']['status'] !== 'OK') {
             Log::error('Error creating session', ['response' => $response]);
         }
-
         $subscription->update([
             'request_id' => $response['requestId'],
             'status_message' => $response['status']['message'],
@@ -53,8 +52,7 @@ class SubscriptionController extends Controller
 
     public function return(Microsites $microsite, Subscription $subscription)
     {
-        $subscriptionService = new SubscriptionService($microsite->payment_expiration, $subscription);
-        $subscription = $subscriptionService->query();
+        $this->authorize(PolicyName::VIEW, $subscription);
 
         return Inertia::render('Subscription/Show', [
             'subscription' => $subscription,

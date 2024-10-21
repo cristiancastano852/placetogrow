@@ -35,7 +35,9 @@ const cols = [
     { id: 'name', header: 'Nombre' },
     { id: 'email', header: 'Email' },
     { id: 'currency', header: 'Moneda' },
-    { id: 'amount', header: 'Valor' },
+    { id: 'amount', header: 'Monto' },
+    { id: 'late_fee_amount', header: 'Recargo' },
+    { id: 'total_amount', header: 'Total a pagar' },
     { id: 'expiration_date', header: 'Fecha de expiración' },
     { id: 'created_at', header: 'Fecha de creación' },
 ];
@@ -69,7 +71,7 @@ const returnPage = () => {
                     <div class="flex w-full justify-center m-8">
                         <div class="w-full flex justify-between mx-8">
                             <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                                Facturas de {{ props.microsite.name }}
+                                Facturas del micrositio: {{ props.microsite.name }}
                             </h1>
                             <div>
                                 <SButton class="mr-4" :leftIcon="DocumentUploadIcon" size="sm" rounded="full"
@@ -89,6 +91,15 @@ const returnPage = () => {
                             </template>
                             <template #col[created_at]="{ value }">
                                 <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
+                            </template>
+                            <template #col[amount]="{ record, value }">
+                                <span>{{ value }} {{ record.currency }}</span>
+                            </template>
+                            <template #col[late_fee_amount]="{ record, value }">
+                                <span>{{ value }} {{ record.currency }}</span>
+                            </template>
+                            <template #col[total_amount]="{ record, value }">
+                                <SBadge color="indigo"> {{ value }} {{ record.currency }} </SBadge>
                             </template>
                         </SDataTable>
                     </div>

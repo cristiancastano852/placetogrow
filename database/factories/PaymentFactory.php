@@ -32,6 +32,8 @@ class PaymentFactory extends Factory
             'status' => PaymentStatus::PENDING->value,
             'user_id' => User::factory(),
             'expiration' => now()->addMinutes(20),
+            'invoice_id' => null,
+            'subscription_id' => null,
         ];
     }
 }

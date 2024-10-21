@@ -12,23 +12,33 @@ use App\Http\Requests\StoremicrositesRequest;
 use App\Http\Requests\UpdatemicrositesRequest;
 use App\Models\Category;
 use App\Models\Microsites;
-use App\Models\User;
+use App\Services\Microsites\MicrositeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MicrositesController extends Controller
 {
-    public function index()
+    protected $micrositesService;
+
+    public function __construct(MicrositeService $micrositesService)
+    {
+        $this->micrositesService = $micrositesService;
+    }
+
+    public function index(): \Inertia\Response
     {
         $this->authorize(PolicyName::VIEW_ANY, Microsites::class);
-
-        $user = User::find(Auth::user()->id);
-
+        $user = Auth::user();
         if ($user->hasRole('Admin')) {
-            $microsites = Microsites::all();
+            $microsites = Microsites::orderBy('created_at', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
         } else {
-            $microsites = Microsites::where('user_id', $user->id)->get();
+            $microsites = Microsites::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
         }
 
         return Inertia::render('Microsites/AdminPanel', [
@@ -38,7 +48,9 @@ class MicrositesController extends Controller
 
     public function showAll(): \Inertia\Response
     {
-        $microsites = Microsites::with('category')->get();
+        $microsites = Microsites::with('category')
+            ->select('id', 'name', 'slug', 'logo', 'site_type', 'category_id')
+            ->paginate(30);
 
         return Inertia::render('Microsites/Index', compact('microsites'));
     }
@@ -73,9 +85,11 @@ class MicrositesController extends Controller
     public function show(Microsites $microsite)
     {
         $this->authorize(PolicyName::VIEW, $microsite);
+        $paymentsByMonth = $this->micrositesService->getLast4MonthsPayments($microsite->id);
 
         return Inertia::render('Microsites/MicrositesShow', [
             'microsite' => $microsite,
+            'paymentsByMonth' => $paymentsByMonth,
         ]);
     }
 

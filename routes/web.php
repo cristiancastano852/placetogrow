@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MicrositePaymentController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [MicrositesController::class, 'showAll'])->name('micrositesall');
 
@@ -24,7 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('payments', [PaymentController::class, 'transactions'])
         ->name('payments.transactions');
 
-    //transactions by microsite
     Route::get('payments/microsite/{microsite}', [MicrositePaymentController::class, 'transactionsByMicrosite'])
         ->name('payments.transactionsByMicrosite');
 
@@ -36,10 +35,9 @@ Route::get('/micrositesall', [MicrositesController::class, 'showAll'])->name('mi
 Route::middleware('auth')->group(function () {
     Route::get('/microsite/pay/{slug}_{id}', [MicrositesController::class, 'showMicrosite'])->name('microsite.showMicrosite');
 });
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

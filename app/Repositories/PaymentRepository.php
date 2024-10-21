@@ -26,6 +26,7 @@ class PaymentRepository
         $payment->user()->associate($user);
         $payment->microsite()->associate($microsite);
         $payment->fields_data = $data['fields_data'] ?? null;
+        $payment->subscription_id = $data['subscription_id'] ?? null;
         $payment->invoice_id = $data['invoice_id'] ?? null;
         $payment->save();
 

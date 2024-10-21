@@ -22,6 +22,8 @@ class Invoice extends Model
         'description',
         'currency',
         'amount',
+        'late_fee_amount',
+        'total_amount',
         'expiration_date',
         'microsite_id',
     ];
@@ -37,7 +39,7 @@ class Invoice extends Model
         return $this->belongsTo(Microsites::class);
     }
 
-    public function scopeInvoicesByRole($query, User $user): void
+    public function scopeInvoicesByRole($query, User $user, ?string $status = null)
     {
         $userRole = $user->roles->first()->name;
         if ($userRole === 'Admin') {
@@ -55,5 +57,27 @@ class Invoice extends Model
             $query->where('email', $user->email)
                 ->with('microsite');
         }
+        $query->when($status, fn ($query) => $query->where('status', $status))
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function applyLateFee(): self
+    {
+        $microsite = $this->microsite;
+        $lateFee = $microsite->late_fee_percentage;
+        $amount = $this->amount;
+        $lateFeeAmount = $amount * ($lateFee / 100);
+        $this->amount = $amount + $lateFeeAmount;
+        $this->save();
+
+        return $this;
+    }
+
+    public function updateStatusToInProcess(): self
+    {
+        $this->status = InvoiceStatus::IN_PROCESS;
+        $this->save();
+
+        return $this;
     }
 }

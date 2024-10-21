@@ -21,6 +21,9 @@ class Microsites extends Model
         'currency',
         'site_type',
         'payment_expiration',
+        'payment_retries',
+        'retry_duration',
+        'late_fee_percentage',
         'payment_fields',
         'user_id',
     ];
@@ -40,5 +43,19 @@ class Microsites extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeMicrositesByUser($query, User $user)
+    {
+        $userRole = $user->roles->first()->name;
+        if ($userRole === 'Admin') {
+            $query->select('id', 'name');
+        }
+
+        if ($userRole === 'Customer') {
+            $query->select('id', 'name')->where('user_id', $user->id);
+        }
+
+        return $query;
     }
 }

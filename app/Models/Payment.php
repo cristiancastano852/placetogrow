@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Roles;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,24 +39,16 @@ class Payment extends Model
         return $this->belongsTo(Invoice::class);
     }
 
-    public function scopeTransactionsByRole($query, User $user): void
+    public function scopeTransactionsByRole($query, User $user, ?int $micrositeId = null): void
     {
         $userRole = $user->roles->first()->name;
-
-        if ($userRole === 'Admin') {
-            $query->with('microsite');
-        }
-
-        if ($userRole === 'Customer') {
-            $query->with('microsite')
-                ->whereHas('microsite', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                });
-        }
-
-        if ($userRole === 'Guests') {
-            $query->where('user_id', $user->id)
-                ->with('microsite');
-        }
+        $query->with('microsite')
+            ->when($userRole === Roles::CUSTOMER->value,
+                fn ($query) => $query
+                    ->whereHas('microsite', fn ($query) => $query->where('user_id', $user->id)
+                    )
+            )->when($userRole === Roles::GUEST->value, fn ($query) => $query->where('user_id', $user->id))
+            ->when($micrositeId, fn ($query) => $query->where('microsite_id', $micrositeId))
+            ->orderBy('created_at', 'desc');
     }
 }

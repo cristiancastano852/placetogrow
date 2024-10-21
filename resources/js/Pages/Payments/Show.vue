@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage} from '@inertiajs/vue3';
 import { SLabel, SButton, SCard, SSectionTitle, SSectionDescription, SDefinitionTerm, SLink } from '@placetopay/spartan-vue';
 import { TickCircleIcon, DangerIcon, CardTick1Icon } from '@placetopay/iconsax-vue/linear';
 import GuestMicrositesLayout from '@/Layouts/GuestMicrositesLayout.vue';
@@ -11,7 +11,7 @@ const props = defineProps({
         required: true,
     },
 });
-
+const { props: { auth: { permissions, roles, user }, payment } } = usePage();
 const goMicrosite = () => {
     router.visit('/');
 };
@@ -69,13 +69,6 @@ const goMicrosite = () => {
                         Description
                         <template #description>
                             {{ props.payment.description }}
-                        </template>
-                    </SDefinitionTerm>
-                    <SDefinitionTerm class="sm:col-span-1">
-                        Correo
-                        <template #description>
-                            testing@mail.com
-                            <!-- {{ props.payment.email }} -->
                         </template>
                     </SDefinitionTerm>
                     

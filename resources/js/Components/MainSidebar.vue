@@ -2,7 +2,7 @@
 import { SSidebar, SSidebarItemGroup, SSidebarItem } from '@placetopay/spartan-vue';
 import { HomeIcon, ReceiptTextIcon, DocumentCodeIcon, ClipboardTickIcon, ShieldSecurityIcon, Profile2UserIcon, Star1Icon, DocumentCopyIcon   } from '@placetopay/iconsax-vue/linear';
 import { computed } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 
 const props = defineProps<{
     modelValue: string;
@@ -10,6 +10,7 @@ const props = defineProps<{
     roles : string[];
 }>();
 
+const { props: { auth: { permissions, roles }}} = usePage();
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void
 }>();
@@ -27,20 +28,16 @@ const navigate = (path: string) => {
 <template>
     <SSidebar class="w-60 pb-8" placetopayHeader v-model="value">
         <SSidebarItem @click="navigate('/dashboard')" path="Dashboard" :icon="HomeIcon">{{$t('home.title')}}</SSidebarItem>
-        <SSidebarItem v-if="is('Admin') || can('microsites.view_any')" @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">{{$t('microsite.title')}}</SSidebarItem>
-        <SSidebarItem v-if="is('Admin') || can('transactions.view_any')" @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
-        <SSidebarItem v-if="is('Admin') || can('transactions.view_any')" @click="navigate('/subscriptions')" path="subscriptions" :icon="Star1Icon">Subscripciones</SSidebarItem>
-        <SSidebarItem v-if="is('Admin') || can('transactions.view_any')" @click="navigate('/invoices')" path="invoices" :icon="DocumentCopyIcon">Facturas</SSidebarItem>
+        <SSidebarItem v-if="permissions.includes('microsites.view_any')" @click="navigate('/microsites')" path="Sitios" :icon="DocumentCodeIcon">{{$t('microsite.title')}}</SSidebarItem>
+        <SSidebarItem v-if="permissions.includes('transactions.view_any')" @click="navigate('/payments')" path="payments" :icon="ReceiptTextIcon">Transacciones</SSidebarItem>
+        <SSidebarItem v-if="permissions.includes('transactions.view_any')" @click="navigate('/subscriptions')" path="subscriptions" :icon="Star1Icon">Subscripciones</SSidebarItem>
+        <SSidebarItem v-if="permissions.includes('transactions.view_any')" @click="navigate('/invoices')" path="invoices" :icon="DocumentCopyIcon">Facturas</SSidebarItem>
 
-        <SSidebarItemGroup v-if="is('Admin')" :icon="ClipboardTickIcon">
-            <template #title>Administration</template>
-            <SSidebarItem v-if="is('Admin')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
-            <SSidebarItem v-if="is('Admin')" @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
+        <SSidebarItemGroup v-if="roles.includes('Admin')" :icon="ClipboardTickIcon">
+            <template #title>Administración</template>
+            <SSidebarItem v-if="roles.includes('Admin')" @click="navigate('/users')" path="users" :icon="Profile2UserIcon">Usuarios</SSidebarItem>
+            <SSidebarItem v-if="roles.includes('Admin')" @click="navigate('/role-permission')" path="roles" :icon="ShieldSecurityIcon">Roles y permisos</SSidebarItem>
         </SSidebarItemGroup>
 
-        <SSidebarItemGroup :icon="ShieldSecurityIcon">
-            <template #title>Security</template>
-            <SSidebarItem path="metrics">Logs</SSidebarItem>
-        </SSidebarItemGroup>
     </SSidebar>
 </template>

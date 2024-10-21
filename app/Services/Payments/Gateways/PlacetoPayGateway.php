@@ -9,6 +9,7 @@ use App\Services\Payments\PaymentResponse;
 use App\Services\Payments\QueryPaymentResponse;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -85,6 +86,7 @@ class PlacetoPayGateway implements PaymentGateway
                 'currency' => $payment->currency,
                 'total' => $payment->amount,
             ],
+            'subscription' => 'true',
         ];
 
         $this->data['returnUrl'] = route('payments.show', $payment);
@@ -109,7 +111,10 @@ class PlacetoPayGateway implements PaymentGateway
     public function createSubscription()
     {
         $url = $this->config['url'].'/api/session/';
+        Log::info('Init Creating subscription with PlaceToPay', $this->data);
         $response = Http::post($url, $this->data);
+        $data = $response->json();
+        Log::info('Creating subscription with PlaceToPay', $data);
 
         return $response;
     }
@@ -118,6 +123,7 @@ class PlacetoPayGateway implements PaymentGateway
     {
         $url = $this->config['url'].'/api/session/'.$process_identifier;
         $response = Http::post($url, $this->data);
+        $data = $response->json();
         Log::info('Result subscription with PlaceToPay '.json_encode($response));
 
         return $response;
@@ -136,7 +142,7 @@ class PlacetoPayGateway implements PaymentGateway
 
         $this->data['instrument'] = [
             'token' => [
-                'token' => $subscription->token,
+                'token' => Crypt::decryptString($subscription->token),
             ],
         ];
 
@@ -187,10 +193,10 @@ class PlacetoPayGateway implements PaymentGateway
         $url = $this->config['url'].'/api/instrument/invalidate';
         $this->data['instrument'] = [
             'token' => [
-                'token' => $token,
+                'token' => Crypt::decryptString($token),
             ],
             'subtoken' => [
-                'subtoken' => $subtoken,
+                'subtoken' => Crypt::decryptString($subtoken),
             ],
         ];
         $response = Http::post($url, $this->data);

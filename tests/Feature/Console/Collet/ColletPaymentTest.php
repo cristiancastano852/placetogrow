@@ -48,8 +48,9 @@ class ColletPaymentTest extends TestCase
                 'microsite_id' => $microsite->id,
                 'plan_id' => $plan->id,
                 'status' => SubscriptionStatus::ACTIVE->value,
-                'next_billing_date' => Carbon::now()->addDay(),
+                'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
+
             ]
         );
         $this->artisan('app:collect')
@@ -82,6 +83,78 @@ class ColletPaymentTest extends TestCase
                 'status' => SubscriptionStatus::ACTIVE->value,
                 'next_billing_date' => Carbon::now(),
                 'expiration_date' => Carbon::now()->addMonths(12),
+            ]
+        );
+        $this->artisan('app:collect')
+            ->assertExitCode(0);
+    }
+
+    public function test_collent_payment_failed_and_retry_attempts_are_max(): void
+    {
+        $microsite = Microsites::factory(
+            [
+                'payment_retries' => 1,
+            ]
+        )
+            ->for(Category::factory()->create())
+            ->create();
+        $user = User::factory()->create();
+        $plan = Plan::factory()->create(
+            [
+                'microsite_id' => $microsite->id,
+            ]
+        );
+        $config = config('gateways.placetopay');
+        Http::fake(
+            [
+                $config['url'].'/api/collect/' => Http::response($this->collectPaymentResponse('REJECTED')),
+            ]
+        );
+
+        Subscription::factory()->create(
+            [
+                'user_id' => $user->id,
+                'microsite_id' => $microsite->id,
+                'plan_id' => $plan->id,
+                'status' => SubscriptionStatus::ACTIVE->value,
+                'next_billing_date' => Carbon::now(),
+                'expiration_date' => Carbon::now()->addMonths(12),
+            ]
+        );
+        $this->artisan('app:collect')
+            ->assertExitCode(0);
+    }
+
+    public function test_collent_payment_failed_and_retry(): void
+    {
+        $microsite = Microsites::factory(
+            [
+                'payment_retries' => 1,
+            ]
+        )
+            ->for(Category::factory()->create())
+            ->create();
+        $user = User::factory()->create();
+        $plan = Plan::factory()->create(
+            [
+                'microsite_id' => $microsite->id,
+            ]
+        );
+        $config = config('gateways.placetopay');
+        Http::fake(
+            [
+                $config['url'].'/api/collect/' => Http::response($this->collectPaymentResponse('REJECTED')),
+            ]
+        );
+
+        Subscription::factory()->create(
+            [
+                'user_id' => $user->id,
+                'microsite_id' => $microsite->id,
+                'plan_id' => $plan->id,
+                'status' => SubscriptionStatus::ACTIVE->value,
+                'next_billing_date' => Carbon::now()->addDay(),
+                'expiration_date' => Carbon::now(),
             ]
         );
         $this->artisan('app:collect')

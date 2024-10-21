@@ -8,16 +8,16 @@ import { SInput, SSelect, SButton, SLabel, SInputBlock, SSteps, SStepsItem } fro
 import EditPlans from '@/Components/Plans/EditPlans.vue';
 
 const props = defineProps({
-    microsite_id: {
-        type: Number,
+    microsite:{
+        type: Object,
         required: true
     },
     plan: {
         type: Object,
         required: true
     },
-    microsite_name: {
-        type: Object,
+    duration_units: {
+        type: Array,
         required: true
     },
     errors: {
@@ -25,6 +25,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const value = ref('Sitios');
 
 
 </script>
@@ -35,9 +37,10 @@ const props = defineProps({
     <AuthenticatedMainLayout v-model="value">
         <div class="container mx-auto p-4">
             <div>
-                <EditPlans :microsite_id="microsite_id"
-                :microsite_name="microsite_name"
+                <EditPlans 
+                :microsite="microsite"
                 :plan="plan"
+                :duration_units="duration_units"
                 :errors="errors"
                 
                 />

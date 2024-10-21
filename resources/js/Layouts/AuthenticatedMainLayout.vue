@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { SAccordion, SModalLeft, SAvatar, SDropdown, SDropdownItem, SDataTable, SBadge } from '@placetopay/spartan-vue';
-import { MenuIcon, LogoutIcon, UserEditIcon , ReceiptTextIcon, DocumentCodeIcon } from '@placetopay/iconsax-vue/linear';
+import { MenuIcon, LogoutIcon, UserEditIcon, ReceiptTextIcon, DocumentCodeIcon } from '@placetopay/iconsax-vue/linear';
 import { router } from '@inertiajs/vue3'
 import MainSidebar from '../Components/MainSidebar.vue';
 import { computed } from 'vue';
-import {usePage} from "@inertiajs/vue3";
+import { usePage, Link } from "@inertiajs/vue3";
 const page = usePage();
 const permissions = page.props.auth?.permissions;
 const roles = page.props.auth?.user.roles;
-("----------", page.props);
 const open = ref(true);
 
 const goBack = () => {
@@ -17,7 +16,7 @@ const goBack = () => {
 };
 
 const goLogout = () => {
-    router.post('/logout');
+    router.post(route('logout'));
 };
 
 const goEditProfile = () => {
@@ -41,17 +40,17 @@ const emit = defineEmits({
 </script>
 
 <template>
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <SAccordion :open="open" class="hidden lg:block">
-            <MainSidebar v-model="value" :permissions="permissions" :roles="roles"/>
+            <MainSidebar v-model="value" :permissions="permissions" :roles="roles" />
         </SAccordion>
 
         <SModalLeft breakpoint="lg" :open="open" @close="() => (open = false)">
             <MainSidebar v-model="value" />
         </SModalLeft>
-        
 
-        <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600">
+
+        <div class="flex flex-1 flex-col items-start bg-gray-100 font-bold text-gray-600 overflow-hidden">
             <nav class="flex w-full justify-between items-center border-b border-gray-200 px-5 py-2">
                 <button @click="open = !open">
                     <MenuIcon class="relative h-6 w-6 text-gray-400" />
@@ -62,21 +61,26 @@ const emit = defineEmits({
                         <SAvatar name="John Doe" />
                     </template>
 
-                    <SDropdownItem :icon="UserEditIcon" @click="goEditProfile"> Profile </SDropdownItem>
-                    <SDropdownItem :icon="LogoutIcon" @click="goLogout"> Logout </SDropdownItem>
+                    <SDropdownItem :icon="UserEditIcon" @click="goEditProfile"> Ver perfil </SDropdownItem>
+                    <SDropdownItem :icon="LogoutIcon">
+                        <Link :href="route('logout')" method="post" as="button"
+                            class="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Cerrar sesión
+                        </Link>
+                    </SDropdownItem>
                 </SDropdown>
+
             </nav>
-            
+
             <header class="bg-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
 
-            <main class="h-full w-full py-10 overflow-hidden">
+            <main class="h-full w-full overflow-y-auto">
                 <slot />
             </main>
         </div>
     </div>
 </template>
-

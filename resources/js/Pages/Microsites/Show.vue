@@ -47,7 +47,6 @@ const submitForm = () => {
 
     router.post(route('payments.store'), formData, {
         onError: (errorResponse) => {
-            console.log("-----------------",errorResponse);
             errors.value.push("Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo o contacta al soporte.");
         },
         onSuccess: (page) => {

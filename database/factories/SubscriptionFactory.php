@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subscription>
@@ -30,24 +31,22 @@ class SubscriptionFactory extends Factory
             'document' => $this->faker->numerify('###########'),
         ];
 
-        $plan = Plan::factory()->create();
-
         return [
             'user_id' => User::factory(),
             'microsite_id' => Microsites::factory(),
-            'plan_id' => $plan->id,
-            'reference' => $this->faker->unique()->word,
+            'plan_id' => Plan::factory(),
+            'reference' => $this->faker->unique()->word.$this->faker->unique()->word,
             'description' => $this->faker->word,
             'status' => SubscriptionStatus::ACTIVE->value,
             'status_message' => $this->faker->sentence,
             'request_id' => $this->faker->word,
             'name' => $this->faker->word,
-            'token' => $this->faker->optional()->word,
-            'subtoken' => $this->faker->optional()->word,
+            'token' => Crypt::encryptString($this->faker->word),
+            'subtoken' => Crypt::encryptString($this->faker->word),
             'price' => $this->faker->numberBetween(1000, 10000),
             'expiration_date' => Carbon::now()->addMonths(12),
-            'billing_frequency' => $plan->billing_frequency,
-            'next_billing_date' => Carbon::now()->addMonth($plan->billing_frequency),
+            'billing_frequency' => 1,
+            'next_billing_date' => Carbon::now()->addMonths(1),
             'payer' => $payer,
         ];
     }

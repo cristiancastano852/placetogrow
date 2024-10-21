@@ -4,135 +4,256 @@
 </p>
 
 ## Microsites | PlaceToGrow
-Autor:
+Author:
   Cristian Alexander Castaño Montoya
   
   [<img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin">](https://www.linkedin.com/in/cristiancastano852/)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/new_code?id=cristiancastano852_placetogrow&branch=release%2Fv4.0.0)
 
-### Stack Tecnológico
+### Technology Stack
 
-- **Separación por Capas**: Se añadieron capas diferentes a MVC, se uso [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
-- **Lenguaje**: PHP V8.2
-- **Framework Backend**: Laravel V11.9.
-- **Base de datos**: MySQL V8.0.37.
-- **Framework Frontend**: Inertia.js con Vue.js 3.
-- **NodeJs**: node V20.14.1 y npm V10.7.0
-- **Estilos/Librerias**: Spartan y Tailwind CSS.
-- **Graficos**: Chart.js
-- **Contenerización**: Docker V26.1.1 y Docker Compose.
-- **Gestión de Versiones**: Git y GitFlow.
-- **Integración Continua**: GitHub Actions.
-- **Gestiones de roles y permisos**: Spatie
-- **Calidad de Código**: Utilización de PSR para el formato de código y herramientas de análisis estático (Sonar Cloud).
-- **Tipado**: Uso de tipado estricto en la declaración de funciones y métodos.
-- **Cache**: Implementación de caching para mejorar el rendimiento.
-- **Gestión de Logs**: Configuración para registrar y gestionar logs de la aplicación.
+- **Separación por Capas**: Added layers beyond MVC, using [single action classes](https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d).
+- **Language**: PHP Version 8.2.12
+- **Backend Framework**: Laravel V11.9.
+- **Database**: MySQL V8.0.37.
+- **Frontend Framework**: Inertia.js con Vue.js 3.
+- **NodeJs**: node V20.14.1 and npm V10.7.0
+- **Styles/Libraries**: Spartan and Tailwind CSS.
+- **Charts**: Chart.js
+- **Containerization**: Docker V26.1.1 and Docker Compose.
+- **Version Control**: Git and GitFlow.
+- **Continuous Integration**: GitHub Actions.
+- **Role and Permission Managemen**: Spatie
+- **Code Quality**: Use of PSR standards for code formatting and static analysis tools (Sonar Cloud)
+- **Typing**: Strict typing in function and method declarations
+- **Cache**: Implemented caching for performance improvement
+- **Log Management**: Configured to log and manage application logs
 - **Composer** V2.7.6
 
-### Diagrama entidad-relación
-![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/cristiancastano852/placetogrow/assets/44209773/dac31313-51cf-4834-b008-58e380f58f08)
-
-Claro, aquí tienes una versión estructurada y clara para incluir en tu README:
+### Entity-Relationship Diagram
+![DIAGRAM ER MICROSITES EVERTEC - Diagrama ER de base de datos (pata de gallo)](https://github.com/user-attachments/assets/30340e8e-b71d-4778-aaa9-12641574c154)
 
 ---
-## Instalación local
-1. **Clonar el repositorio:**
+## Local Installation
+1. **Clone the Repository:**
    
-   Clona este repositorio en tu máquina local.
+    Clone this repository to your local machine.
 
    ```bash
    git clone https://github.com/cristiancastano852/placetogrow
    cd placetogrow
    ```
+2. **Copy .env**
+    ```bash
+   cp .env.example .env
+   ```
+3. **Install Dependencies**
 
----
-## Instalación en Docker
+    To install the necessary dependencies for the project, run the following commands:
+    #### PHP Dependencies
+    ```bash
+    composer install
+    ```
+    #### Node.js Dependencies
+    ```bash
+    npm install
+    ```
 
-Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
+4. **Generate API Key**
 
-### Pasos para la instalación
+   To generate an API key, run the following command:
+   ```bash
+    php artisan key:generate
+   ```
+5. **Link Storage Directory**
 
-1. **Clonar el repositorio:**
+   To create a symbolic link from `public/storage` to `storage/app/public`, run the following command:
+    ```bash
+    php artisan storage:link
+    ```
+6. **Environment Configuration**
+ 
+  Before running the application, make sure to configure the following environment variables in your `.env` file.
+   - Steps in: [Required Variables](#configurate-environment-variables).
+7. **Run Migrations and Seed the Database**
+
+    To run the database migrations and seed the database with initial data, use the following command:
+    ```bash
+    php artisan migrate --seed
+    ```
+
+8. **Run the Application**
+
+    To serve the Laravel application and start the development environment for Vue.js, follow these steps:
    
-   Clona este repositorio en tu máquina local.
+    **8.1** Use the following command to start the Laravel development server:
+   ```bash
+   php artisan serve
+    ```
+
+   **8.2** Build the Frontend for Production:
+       If you want to compile the frontend assets for production, run:
+   ```bash
+   npm run build
+    ```
+   **8.3** Start the Frontend Development Server:
+       To start the Vue.js development server with hot-reloading, use:
+    ```bash
+    npm run dev
+    ```
+9. **Start the queue worker to process the jobs (In other terminal):**
+     ```bash
+    php artisan queue:work
+    ```
+11. **Running the Scheduler Locally to process task (In other terminal)**
+     ```bash
+    php artisan schedule:work
+    ```
+    
+13. **Access the Application** 😁
+
+   Open your web browser and go to `http://localhost:9005/` (or the port you configured).
+
+   - **NOTE:** Test de web app with [User Configurated](#user-data-to-test). 🧑‍✈️
+---
+
+### User data to test
+
+  The following test users have been created to facilitate the exploration of the application's functionality. You can use these credentials to log in and test the system with different roles and permissions
+
+- **Customer**: Can manage microsites they own, access payments, subscriptions, invoices import and metrics.
+  ```env
+    Username: customeradmin@microsites.com
+    Password: password
+   ```
+- **Guest**: Has limited access to viewing public microsites and minimal actions.
+  ```env
+    Username: guest@microsites.com
+    Password: password
+   ```
+- **Super Admin**: Has full access to all functionalities, including user management, microsites, roles/permissions, etc.
+   ```env
+    Username: superadmin@microsites.com
+    Password: password
+   ```
+### Configurate Environment Variables
+
+   Ensure that the environment variables in your .env file are correctly set. Here’s an example of the database configuration:
+
+- Database Enviroments
+   ```env
+    DB_CONNECTION=mysql # Or your database driver
+    DB_HOST=127.0.0.1   # Database host
+    DB_PORT=3306        # Database port
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+   ```
+- Email Configuration
+  ```env
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.mailtrap.io # Example service, replace with your actual email host
+    MAIL_PORT=2525
+    MAIL_USERNAME=your_mail_username
+    MAIL_PASSWORD=your_mail_password
+    MAIL_FROM_ADDRESS="noreply@yourapp.com"
+    MAIL_FROM_NAME="${APP_NAME}"
+   ```
+- Payment Gateway (PlaceToPay) Configuration
+  ```env
+    PLACETOPAY_LOGIN=your_placetopay_login
+    PLACETOPAY_SECRET_KEY=your_placetopay_secret_key
+    PLACETOPAY_URL=https://api.gatewaypay.dev #Put your URL
+   ```
+- Alert Configuration
+  ```env
+    INVOICE_DUE_ALERT_DAYS=  # Number of days before due alert is triggered
+    SUBSCRIPTION_EXPIRY_ALERT_DAYS=  # Number of days before subscription expiry alert is triggered
+    SUBSCRIPTION_NEXT_BILLING_ALERT_DAYS=  # Number of days before next billing (collect) alert is triggered
+   ```
+
+## Docker Installation
+
+Follow these steps to set up and run your Laravel application in Docker.
+
+### Installation Steps
+
+1. **Clone the Repository:**
+   
+   Clone this repository to your local machine.
 
    ```bash
    git clone https://github.com/cristiancastano852/placetogrow
    cd placetogrow
    ```
+2. **Copy .env**
+    ```bash
+   cp .env.example .env
+   ```
 
-2. **Construir y levantar los contenedores:**
+3. **Build and Start the Containers:**
    
-   Desde la carpeta raíz del proyecto, ejecuta:
+   From the project's root folder, run:
 
    ```bash
    docker-compose up -d --build
    ```
+4. **Generate API Key**
 
-3. **Instalar las dependencias de Composer:**
+   To generate an API key, run the following command:
+   ```bash
+     docker-compose exec php artisan key:generate
+   ```
+5. **Install Composer Dependencies:**
    
-   Una vez que los contenedores estén en funcionamiento, instala las dependencias de Composer:
+   Once the containers are running, install the Composer dependencies:
 
    ```bash
    docker-compose exec app composer install
    ```
 
-4. **Instalar las dependencias de node:**
+6. **Install Node.js Dependencies:**
    
-   Instalar las dependencias de node
 
    ```bash
    docker-compose exec app npm install
    ```
-5. **Hacer el build de node:**
+7. **Build Node.js:**
+
+   ```bash
+   docker-compose exec app npm run build 
+   ```
+8. **Build Node.js:**
 
    ```bash
    docker-compose exec app npm run build 
    ```
 
-6. **Correr las migraciones y seeders:**
+9. **Run Migrations and Seeders:**
    
-   Ejecuta las migraciones y seeders para configurar la base de datos:
+   Execute the migrations and seeders to set up the database:
 
    ```bash
    docker-compose exec app php artisan migrate:refresh --seed
    ```
-7. **Crear ambiente para los jobs:**
+10. **Create Environment for Jobs:**
    
-   Ejecuta el comando para poder ejecutar los jobs:
-
+   Run the command to execute jobs:
    ```bash
    docker-compose exec app php artisan queue:work
    ```
-8. **Crear ambiente para las tareas programadas:**
+11. **Create Environment for Scheduled Tasks:**
    
-   Ejecuta el comando para poder ejecutar las tareas programadas:
+  Run the command to execute scheduled tasks:
 
    ```bash
    docker-compose exec app php artisan schedule:work
    ```
-9. **Acceder a la aplicación:**
-   
-   Abre tu navegador web y accede a `http://localhost:9005/` (o el puerto que hayas configurado).
+12. **Access the Application**
 
-### Notas importantes
+   Open your web browser and go to `http://localhost:9005/` (or the port you configured).
 
-- **Configurar variables de entorno:**
-   
-   Asegúrate de que las variables de entorno en tu archivo `.env` estén configuradas correctamente. Aquí tienes un ejemplo de la configuración de la base de datos:
-
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=mysql
-   DB_PORT=3306
-   DB_DATABASE=laravel
-   DB_USERNAME=root
-   DB_PASSWORD=root
-   ```
-
-- **Verificar el estado de los contenedores:**
-   
-   Puedes verificar el estado de los contenedores en cualquier momento usando:
+   - **Check containers status:**
 
    ```bash
    docker-compose ps
@@ -140,38 +261,6 @@ Sigue estos pasos para configurar y ejecutar tu aplicación Laravel en Docker.
 
 
 
-### Uso
-
-- **Autenticación**:
-  - Accede a `/login` para iniciar sesión como administrador.
-  - Registra nuevos usuarios desde la interzar en `/users` .
-
-- **Gestión de Micrositios**:
-  
-  Administrador y Cliente
-  - Accede a las funcionalidades CRUD para gestionar micrositios en `/microsites`.
-  - Configura detalles como nombre, logo, categoría, configuración de pagos y tipos de sitios.
-  
-  Invitado:
-  - Ver todos los micrositios en`/micrositesall`
-  - Ver el formulario de un sitio en especifico.
-    
-- **Gestión de usuarios**:
-
-  Administrador
-  - Acceder a las funcionalidades para gestionar usuarios en `/users`.
-  - Crea nuevos usuarios
-  - Ver todos los usuarios
-  - Añadir roles a los usuarios
-  - Cambiar roles a los usuarios
-  - Eliminar usuarios.
- 
-- **Gestión de roles y permisos**:
-
-  Administrador
-  - Acceder a las funcionalidades para gestionar los roles y permisos en `/role-permission`.
-  - Ver todos los roles
-  - Cambiar los permisos de los roles
 
 
 

@@ -22,7 +22,7 @@ class MicrositesFactory extends Factory
      */
     public function definition(): array
     {
-        $companyName = $this->faker->company();
+        $companyName = $this->faker->company().' '.$this->faker->randomFloat(2, 0, 100);
         $slug = Str::slug($companyName, '-');
         $paymentFields = [
             ['name' => 'description', 'type' => 'input', 'label' => 'Dame un notica :)', 'optional' => true, 'validation' => null, 'placeholder' => 'Los amo <3'],
@@ -44,6 +44,9 @@ class MicrositesFactory extends Factory
             'user_id' => User::factory(),
             'site_type' => $this->faker->randomElement(array_column(MicrositesTypes::cases(), 'name')),
             'payment_fields' => $paymentFields,
+            'payment_retries' => $this->faker->numberBetween(1, 3),
+            'retry_duration' => $this->faker->numberBetween(1, 3),
+            'late_fee_percentage' => $this->faker->randomFloat(2, 0, 100),
 
         ];
     }

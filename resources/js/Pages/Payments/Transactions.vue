@@ -5,10 +5,16 @@ import { ref } from 'vue';
 import { SDataTable, SBadge, SSelect, SLabel, SButton } from '@placetopay/spartan-vue';
 import { format } from 'date-fns';
 
-const colorByType = {
+const colorByStatus = {
     APPROVED: 'green',
     REJECTED: 'red',
     PENDING: 'yellow',
+};
+
+const colorByType = {
+    SUBCRIPTION: 'green',
+    INVOICE: 'blue',
+    DONATION: 'yellow',
 };
 
 const props = defineProps({
@@ -29,12 +35,11 @@ function formatDate(dateString: string): string {
 }
 
 const cols = [
-    { id: 'id', header: 'ID' },
+    { id: 'type', header: 'Pago de' },
     { id: 'reference', header: 'Referencia' },
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
-    { id: 'currency', header: 'Moneda' },
-    { id: 'amount', header: 'Monto' },
+    { id: 'amount', header: 'Monto total' },
     { id: 'microsite.name', header: 'Sitio de pago' },
     { id: 'updated_at', header: 'Fecha de pago' },
 ];
@@ -47,7 +52,7 @@ const searchByMicrosite = () => {
   if (selectedMicrosite.value === 0) {
     router.get(route('payments.transactions'));
   } else {
-    router.get(route('payments.transactionsByMicrosite', { microsite: selectedMicrosite.value }));
+    router.get(route('payments.transactions', { microsite_id: selectedMicrosite.value }));
   }
 };
 
@@ -76,15 +81,22 @@ const searchByMicrosite = () => {
                             <span class="ml-2">{{ value }}</span>
                         </div>
                     </template>
+                    <template #col[type]="{ record }">
+                        <div class="flex items-center">
+                            <SBadge v-if="record.subscription_id" class="capitalize" :color="colorByType['SUBCRIPTION']" dot>Subcripción</SBadge>
+                            <SBadge v-else-if="record.invoice_id" class="capitalize" :color="colorByType['INVOICE']" dot>Factura</SBadge>
+                            <SBadge v-else class="capitalize" :color="colorByType['DONATION']" dot>Donación</SBadge>
+                        </div>
+                    </template>
 
                     <template #col[status]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByStatus[value]">{{$t( value) }}</SBadge>
                     </template>
-                    <template #col[currency]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                    <template #col[amount]="{record,  value }">
+                        <SBadge class="capitalize">{{record.currency}} {{ value }}</SBadge>
                     </template>
                     <template #col[updated_at]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByStatus[value]">{{ formatDate(value) }}</SBadge>
                     </template>
                 </SDataTable>
             </div>

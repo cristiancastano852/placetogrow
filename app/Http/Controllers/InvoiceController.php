@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PolicyName;
 use App\Factories\PaymentDataProviderFactory;
 use App\Models\Invoice;
 use App\Models\Microsites;
-use App\Models\User;
 use App\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +24,8 @@ class InvoiceController extends Controller
 
     public function invoicesByMicrosite(Microsites $microsite)
     {
+
+        $this->authorize(PolicyName::VIEW_ANY, Invoice::class);
         $invoices = Invoice::where('microsite_id', $microsite->id)->latest()->paginate(10);
 
         return Inertia::render('Invoices/Show', [
@@ -47,10 +49,11 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function invoicesByUser(): Response
+    public function invoicesByUser(Request $request): Response
     {
-        $user = User::find(Auth::user()->id);
-        $invoices = Invoice::invoicesByRole($user)->latest()->paginate(10);
+        $status = $request->input('status') ?? null;
+        $user = Auth::user();
+        $invoices = Invoice::invoicesByRole($user, $status)->latest()->paginate(30);
 
         return Inertia::render('Invoices/InvoicesUser', [
             'invoices' => $invoices,
@@ -59,15 +62,18 @@ class InvoiceController extends Controller
 
     public function invoicesPayment(Request $request, Microsites $microsite, PaymentDataProviderFactory $factory)
     {
-        $invoice_id = $request->invoice_id;
+        $invoiceId = $request->invoice_id;
         $invoice = Invoice::where('microsite_id', $microsite->id)
-            ->where('id', $invoice_id)
+            ->where('id', $invoiceId)
             ->first();
-        $user = User::find(Auth::user()->id);
+        if ($invoice->expiration_date < now() && $invoice->late_fee_amount <= 0) {
+            $invoice->applyLateFee();
+        }
+        $user = Auth::user();
         $paymentRepository = new PaymentRepository();
         $invoiceData = [
             'description' => $invoice->description,
-            'amount' => $invoice->amount,
+            'amount' => $invoice->total_amount,
             'reference' => $invoice->reference,
             'invoice_id' => $invoice->id,
 
@@ -93,6 +99,7 @@ class InvoiceController extends Controller
 
             return back()->withErrors(['message' => $response->message]);
         }
+        $invoice->updateStatusToInProcess();
 
         return Inertia::location($response->url);
     }

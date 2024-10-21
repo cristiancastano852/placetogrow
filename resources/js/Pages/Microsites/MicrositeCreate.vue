@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedMainLayout from '@/Layouts/AuthenticatedMainLayout.vue';
-import { ClipboardTickIcon } from '@placetopay/iconsax-vue/linear';
 
 import { SInput, SSelect, SButton, SLabel, SInputBlock, SSteps, SStepsItem } from '@placetopay/spartan-vue';
 
@@ -24,6 +23,9 @@ const form = useForm({
   currency: '',
   site_type: '',
   payment_expiration: '',
+  payment_retries: 1,
+  retry_duration: 3,
+  late_fee_percentage: '',
   payment_fields: []
 });
 
@@ -109,12 +111,16 @@ const value = ref('Sitios');
 const currentStep = ref(1);
 
 const nextStep = () => {
-  if (currentStep.value < 2) currentStep.value += 1;
+  if (currentStep.value < 3) currentStep.value += 1;
 };
 
 const previousStep = () => {
   if (currentStep.value > 1) currentStep.value -= 1;
 };
+
+const showSubscriptionFields = computed(() => form.site_type === 'Subscripciones');
+const showInvoicesFields = computed(() => form.site_type === 'Facturas');
+const showDonationsFields = computed(() => form.site_type === 'Donaciones');
 
 </script>
 
@@ -132,17 +138,22 @@ const previousStep = () => {
               Paso 1
               <template #description>Configuración básica</template>
             </SStepsItem>
-            <SStepsItem last :status="currentStep === 2 ? 'current' : currentStep > 2 ? 'complete' : 'upcoming'"
+            <SStepsItem :status="currentStep === 2 ? 'current' : currentStep > 2 ? 'complete' : 'upcoming'"
               @click="currentStep = 2" class="flex-1 text-center">
               paso 2
               <template #description>Configurar campos</template>
+            </SStepsItem>
+
+            <SStepsItem last :status="currentStep === 3 ? 'current' : currentStep > 3 ? 'complete' : 'upcoming'"
+              @click="currentStep = 3" class="flex-1 text-center">
+              Paso 3
+              <template #description>Configuración específica</template>
             </SStepsItem>
           </SSteps>
         </div>
 
         <form @submit.prevent="submitForm"
-          class="border border-gray-300 w-full mx-auto space-y-4 bg-black/5 p-4 rounded-lg shadow "
-        >
+          class="border border-gray-300 w-full mx-auto space-y-4 bg-black/5 p-4 rounded-lg shadow ">
           <div v-if="currentStep === 1">
             <SLabel class="bg-black/5 -mx-4 -mt-4 rounded-t-lg p-2 !font-bold text-center !text-lg shadow">Configuración
               básica</SLabel>
@@ -171,7 +182,7 @@ const previousStep = () => {
                 <SInput v-model="form.logo" id="logo" placeholder="URL del logo" />
               </div>
               <div class="w-full">
-                <SLabel for="currency"  class="block text-gray-700">Moneda</SLabel>
+                <SLabel for="currency" class="block text-gray-700">Moneda</SLabel>
                 <SSelect v-model="form.currency" id="currency" class="w-full">
                   <option v-for="currency in props.currencies" :key="currency" :value="currency">
                     {{ currency }}
@@ -242,12 +253,50 @@ const previousStep = () => {
               </table>
             </div>
           </div>
-          <div v-if="currentStep === 2" class="mt-4 flex justify-between">
-            <SButton @click="previousStep" class="bg-gray-500 text-white">Anterior</SButton>
-            <SButton  type="submit" class="bg-blue-500 text-white">Enviar</SButton>
+          <div v-if="currentStep === 3">
+            <SLabel class="bg-black/5 -mx-4 -mt-4 rounded-t-lg p-2 !font-bold text-center !text-lg shadow">
+              Configuración específica del micrositio
+            </SLabel>
+            <div v-if="showSubscriptionFields">
+              <div class="flex gap-4 my-4">
+                
+                <div class="w-full">
+                  <SLabel for="retry_duration" class="block text-gray-700">Intervalo entre intentos de cobro</SLabel>
+                  <SSelect v-model="form.retry_duration" id="retry_duration" class="w-full">
+                    <option value="6" >Cada 6 horas</option>
+                    <option value="12">Cada 12 horas</option>
+                    <option value="24">Cada 24 horas</option>
+                  </SSelect>
+                </div>
+                <div class="w-full">
+                  <SLabel for="payment_retries" class="block text-gray-700">Número de reintentos del pago</SLabel>
+                  <SInput v-model="form.payment_retries" id="payment_retries" placeholder="Número de reintentos"/>
+                </div>
+              </div>
+              <p>Se reinterara de nuevo el cobro cada {{ form.retry_duration }} horas, maximo {{ form.payment_retries }} veces</p>
+            </div>
+
+            <div v-if="showInvoicesFields">
+              <div class="flex gap-4 mb-4">
+                <div class="w-full">
+                  <SLabel for="late_fee_percentage " class="block text-gray-700">Porcentaje de penalización por retraso
+                  </SLabel>
+                  <SInput v-model="form.payment_retries" id="late_fee_percentage " placeholder="Ej: 5%" />
+                </div>
+              </div>
+            </div>
+            <div v-if="showDonationsFields">
+              <p class="text-center text-gray-700">¡Todo listo!</p>
+            </div>
+
           </div>
-          <div class="mt-4 flex justify-end">
-            <SButton v-if="currentStep === 1" @click="nextStep" class="mt-4 ">Siguiente</SButton>
+
+
+
+          <div class="mt-4 flex justify-between">
+            <SButton v-if="currentStep > 1" @click="previousStep" class="bg-gray-500 text-white">Anterior</SButton>
+            <SButton v-if="currentStep < 3" @click="nextStep" class="bg-blue-500 text-white">Siguiente</SButton>
+            <SButton v-if="currentStep === 3" type="submit" class="bg-blue-500 text-white">Enviar</SButton>
           </div>
         </form>
       </div>

@@ -69,5 +69,6 @@ class Subscription extends Model
             $query->where('user_id', $user->id)
                 ->with('microsite');
         }
+        $query->orderBy('created_at', 'desc');
     }
 }

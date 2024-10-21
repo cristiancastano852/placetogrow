@@ -1,5 +1,12 @@
 {
+    "ACTIVE": "Activo",
+    "APPROVED": "Aprobado",
+    "REJECTED": "Rechazado",
     "welcome": "Bienvenido",
+    "SUSPENDED": "Suspendido",
+    "PENDING": "Pendiente",
+    "EXPIRED": "Expirado",
+    "PAID": "Pagado",
     "hello": "Hola",
     "goodbye": "Adiós",
     "auth": {
@@ -78,6 +85,16 @@
         "view_any": "Ver cualquier transacción",
         "view": "Ver transacción",
         "create": "Crear transacción"
+    },
+    "invoices":{
+        "view_any": "Ver cualquier factura",
+        "view": "Ver factura",
+        "create": "Crear factura",
+        "update": "Actualizar factura",
+        "delete": "Eliminar factura"
+    },
+    "import":{
+        "invoices": "Importar"
     },
     "Admin":"Administrador",
     "Customer":"Cliente",

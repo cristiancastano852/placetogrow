@@ -2,17 +2,19 @@
 
 namespace Tests\Feature\Subscriptions;
 
+use App\Constants\Roles;
 use App\Models\Microsites;
+use App\Models\Role;
 use App\Models\Subscription;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class SubscriptionReturnTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
+    use RefreshDatabase;
+
     public function test_return_subcription_and_save_token(): void
     {
 
@@ -23,6 +25,9 @@ class SubscriptionReturnTest extends TestCase
         ]);
 
         $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::ADMIN->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
         $microsite = Microsites::factory()->create();
         $suscription = Subscription::factory()->create([
             'request_id' => '1',
@@ -33,6 +38,58 @@ class SubscriptionReturnTest extends TestCase
                 'microsite' => $microsite->id,
             ]));
         $response->assertStatus(200);
+
+    }
+
+    public function test_return_subcription_and_save_token_user_customer(): void
+    {
+
+        Http::fake([
+            'https://checkout-co.placetopay.dev/api/session/1' => Http::response(
+                $this->getFakeResponseSession(),
+            ),
+        ]);
+
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::CUSTOMER->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()->create();
+        $suscription = Subscription::factory()->create([
+            'request_id' => '1',
+        ]);
+        $response = $this->actingAs($user)
+            ->get(route('subscriptions.return', [
+                'subscription' => $suscription->id,
+                'microsite' => $microsite->id,
+            ]));
+        $response->assertStatus(403);
+
+    }
+
+    public function test_return_subcription_and_save_token_user_guest(): void
+    {
+
+        Http::fake([
+            'https://checkout-co.placetopay.dev/api/session/1' => Http::response(
+                $this->getFakeResponseSession(),
+            ),
+        ]);
+
+        $user = User::factory()->create();
+        $role = Role::factory()->create(['name' => Roles::GUEST->value]);
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $microsite = Microsites::factory()->create();
+        $suscription = Subscription::factory()->create([
+            'request_id' => '1',
+        ]);
+        $response = $this->actingAs($user)
+            ->get(route('subscriptions.return', [
+                'subscription' => $suscription->id,
+                'microsite' => $microsite->id,
+            ]));
+        $response->assertStatus(403);
 
     }
 

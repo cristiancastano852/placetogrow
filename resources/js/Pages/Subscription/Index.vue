@@ -9,7 +9,8 @@ const colorByType = {
     ACTIVE: 'green',
     INACTIVE: 'blue',
     SUSPENDED: 'yellow',
-    CANCELED: 'red',
+    CANCELED: 'primary',
+    EXPIRED: 'red',
 };
 
 const props = defineProps({
@@ -32,8 +33,7 @@ function formatDate(dateString: string): string {
 const cols = [
     { id: 'description', header: 'Description' },
     { id: 'status', header: 'Estado' },
-    { id: 'microsite.currency', header: 'Moneda' },
-    { id: 'price', header: 'Precio' },
+    { id: 'price', header: 'Precio por periodo' },
     { id: 'microsite.name', header: 'Sitio de pago' },
     { id: 'created_at', header: 'Fecha de pago' },
     { id: 'actions', header: 'Acciones' },
@@ -72,7 +72,7 @@ const cancelSubscription = (id) => {
                     <SButton color="primary" rounded="right" @click="searchByMicrosite">Buscar</SButton>
                 </div>
             </div>
-            <h1>Transacciones</h1>
+            <h1>Subscripciones</h1>
             <div  v-if="props.subscriptions.length > 0">
                 <SDataTable :cols="cols" :data="props.subscriptions">
                     <template #col[description]="{ value }">
@@ -82,10 +82,12 @@ const cancelSubscription = (id) => {
                     </template>
 
                     <template #col[status]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                        <SBadge class="capitalize" :color="colorByType[value]">{{$t( value) }}</SBadge>
                     </template>
-                    <template #col[currency]="{ value }">
-                        <SBadge class="capitalize" :color="colorByType[value]">{{ value }}</SBadge>
+                    <template #col[price]="{ record, value }">
+                        <SBadge class="capitalize w-full text-center flex justify-center items-center whitespace-nowrap">
+                            {{ record.microsite.currency }} {{ value }}
+                        </SBadge>
                     </template>
                     <template #col[created_at]="{ value }">
                         <SBadge class="capitalize" :color="colorByType[value]">{{ formatDate(value) }}</SBadge>
