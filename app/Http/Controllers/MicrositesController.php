@@ -84,7 +84,8 @@ class MicrositesController extends Controller
     public function show(Microsites $microsite)
     {
         $this->authorize(PolicyName::VIEW, $microsite);
-        $paymentsByMonth = $this->micrositesService->getLast4MonthsPayments( $microsite->id);
+        $paymentsByMonth = $this->micrositesService->getLast4MonthsPayments($microsite->id);
+
         return Inertia::render('Microsites/MicrositesShow', [
             'microsite' => $microsite,
             'paymentsByMonth' => $paymentsByMonth,

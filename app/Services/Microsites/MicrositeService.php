@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\DB;
 
 class MicrositeService
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
+
     public function getLast4MonthsPayments(int $micrositeId): array
     {
         $paymentsByMonth = [];
 
-        $currentMonth = Carbon::now()->startOfMonth();
+        $currentMonth = Carbon::now()->endOfMonth();
         $threeMonthsAgo = $currentMonth->copy()->subMonths(3);
-        $previousMonths = $this->getCachedPaymentsForPreviousMonths($micrositeId, $threeMonthsAgo, $currentMonth->subMonth()->endOfMonth() );
+        $previousMonths = $this->getCachedPaymentsForPreviousMonths($micrositeId, $threeMonthsAgo, $currentMonth->subMonth()->endOfMonth());
         $currentMonthPayments = $this->getCachedPaymentsForCurrentMonth($micrositeId, $currentMonth);
         $paymentsByMonth = array_merge($previousMonths, [$currentMonthPayments]);
+
         return $paymentsByMonth;
     }
 
@@ -27,6 +27,7 @@ class MicrositeService
     {
         $cacheKey = "microsite_{$micrositeId}_previous_months";
         $status = null;
+
         return Cache::remember($cacheKey, $this->getEndOfMonthExpiration(), function () use ($micrositeId, $status, $startDate, $endDate) {
             return DB::select('
                 CALL GetAmountMounthlyByMicrosite(?, ?, ?, ?)
@@ -34,14 +35,15 @@ class MicrositeService
         });
     }
 
-    private function getCachedPaymentsForCurrentMonth(int $micrositeId, Carbon $currentMonth): object | null
+    private function getCachedPaymentsForCurrentMonth(int $micrositeId, Carbon $currentMonth): ?object
     {
         $cacheKey = "microsite_{$micrositeId}_current_month";
         $status = null;
-        return Cache::remember($cacheKey, now()->addDays(7), function () use ($micrositeId,$status, $currentMonth) {
+
+        return Cache::remember($cacheKey, now()->addDays(7), function () use ($micrositeId, $status, $currentMonth) {
             return DB::selectOne('
                 CALL GetAmountMounthlyByMicrosite(?, ?, ?, ?)
-            ', [$micrositeId,$status, $currentMonth->format('Y-m-d'), Carbon::now()->format('Y-m-d')]);
+            ', [$micrositeId, $status, $currentMonth->format('Y-m-d'), Carbon::now()->endOfMonth()]);
         });
     }
 
