@@ -186,16 +186,25 @@ Follow these steps to set up and run your Laravel application in Docker.
    git clone https://github.com/cristiancastano852/placetogrow
    cd placetogrow
    ```
+2. **Copy .env**
+    ```bash
+   cp .env.example .env
+   ```
 
-2. **Build and Start the Containers:**
+3. **Build and Start the Containers:**
    
    From the project's root folder, run:
 
    ```bash
    docker-compose up -d --build
    ```
+4. **Generate API Key**
 
-3. **Install Composer Dependencies:**
+   To generate an API key, run the following command:
+   ```bash
+     docker-compose exec php artisan key:generate
+   ```
+5. **Install Composer Dependencies:**
    
    Once the containers are running, install the Composer dependencies:
 
@@ -203,39 +212,44 @@ Follow these steps to set up and run your Laravel application in Docker.
    docker-compose exec app composer install
    ```
 
-4. **Install Node.js Dependencies:**
+6. **Install Node.js Dependencies:**
    
 
    ```bash
    docker-compose exec app npm install
    ```
-5. **Build Node.js:**
+7. **Build Node.js:**
+
+   ```bash
+   docker-compose exec app npm run build 
+   ```
+8. **Build Node.js:**
 
    ```bash
    docker-compose exec app npm run build 
    ```
 
-6. **Run Migrations and Seeders:**
+9. **Run Migrations and Seeders:**
    
    Execute the migrations and seeders to set up the database:
 
    ```bash
    docker-compose exec app php artisan migrate:refresh --seed
    ```
-7. **Create Environment for Jobs:**
+10. **Create Environment for Jobs:**
    
    Run the command to execute jobs:
    ```bash
    docker-compose exec app php artisan queue:work
    ```
-8. **Create Environment for Scheduled Tasks:**
+11. **Create Environment for Scheduled Tasks:**
    
   Run the command to execute scheduled tasks:
 
    ```bash
    docker-compose exec app php artisan schedule:work
    ```
-9. **Access the Application**
+12. **Access the Application**
 
    Open your web browser and go to `http://localhost:9005/` (or the port you configured).
 
