@@ -16,13 +16,13 @@ class MicrositeService
         $status = implode(',', [PaymentStatus::APPROVED->name, PaymentStatus::APPROVED_PARTIAL->name]);
         $currentMonth = Carbon::now()->endOfMonth();
         $threeMonthsAgo = $currentMonth->copy()->subMonths(3);
-        $previousMonths = $this->getCachedPaymentsForPreviousMonths($micrositeId, $status,  $threeMonthsAgo, $currentMonth->subMonth()->endOfMonth());
+        $previousMonths = $this->getCachedPaymentsForPreviousMonths($micrositeId, $status, $threeMonthsAgo, $currentMonth->subMonth()->endOfMonth());
         $currentMonthPayments = $this->getCachedPaymentsForCurrentMonth($micrositeId, $status, $currentMonth);
 
         return $this->formatPaymentsByMonth($threeMonthsAgo, $previousMonths, $currentMonthPayments);
     }
 
-    private function getCachedPaymentsForPreviousMonths(int $micrositeId, ?string $status =null, Carbon $startDate, Carbon $endDate): array
+    private function getCachedPaymentsForPreviousMonths(int $micrositeId, ?string $status, Carbon $startDate, Carbon $endDate): array
     {
         $cacheKey = "microsite_{$micrositeId}_previous_months";
 
@@ -33,7 +33,7 @@ class MicrositeService
         });
     }
 
-    private function getCachedPaymentsForCurrentMonth(int $micrositeId, ?string $status=null, Carbon $currentMonth): ?object
+    private function getCachedPaymentsForCurrentMonth(int $micrositeId, ?string $status, Carbon $currentMonth): ?object
     {
         $cacheKey = "microsite_{$micrositeId}_current_month";
 
@@ -55,7 +55,7 @@ class MicrositeService
             'threeMonthAgo' => $threeMonthsAgo->format('Y-m'),
             'twoMonthAgo' => $threeMonthsAgo->addMonth()->format('Y-m'),
             'oneMonthAgo' => $threeMonthsAgo->addMonth()->format('Y-m'),
-            'currentMonth' => $threeMonthsAgo->addMonth()->format('Y-m')
+            'currentMonth' => $threeMonthsAgo->addMonth()->format('Y-m'),
         ];
 
         return [
