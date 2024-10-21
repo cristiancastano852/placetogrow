@@ -31,12 +31,10 @@ class SubscriptionFactory extends Factory
             'document' => $this->faker->numerify('###########'),
         ];
 
-        $plan = Plan::factory()->create();
-
         return [
             'user_id' => User::factory(),
             'microsite_id' => Microsites::factory(),
-            'plan_id' => $plan->id,
+            'plan_id' => Plan::factory(),
             'reference' => $this->faker->unique()->word.$this->faker->unique()->word,
             'description' => $this->faker->word,
             'status' => SubscriptionStatus::ACTIVE->value,
@@ -47,8 +45,8 @@ class SubscriptionFactory extends Factory
             'subtoken' => Crypt::encryptString($this->faker->word),
             'price' => $this->faker->numberBetween(1000, 10000),
             'expiration_date' => Carbon::now()->addMonths(12),
-            'billing_frequency' => $plan->billing_frequency,
-            'next_billing_date' => Carbon::now()->addMonth($plan->billing_frequency),
+            'billing_frequency' => 1,
+            'next_billing_date' => Carbon::now()->addMonths(1),
             'payer' => $payer,
         ];
     }

@@ -11,7 +11,7 @@ class MicrositesSeeder extends Seeder
     public function run(): void
     {
         Microsites::factory()
-            ->count(5)
+            ->count(1)
             ->for(Category::factory()->create())
             ->create();
     }

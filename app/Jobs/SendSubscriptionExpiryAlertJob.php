@@ -30,7 +30,7 @@ class SendSubscriptionExpiryAlertJob implements ShouldQueue
             ->with([
                 'microsite:id,late_fee_percentage',
                 'user:id,name,email',
-                'plan:id,name'
+                'plan:id,name',
             ])
             ->get();
 
