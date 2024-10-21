@@ -240,7 +240,7 @@ Follow these steps to set up and run your Laravel application in Docker.
    ```
 - **Guest**: Has limited access to viewing public microsites and minimal actions.
   ```env
-    Username: customeradmin@microsites.com
+    Username: guest@microsites.com
     Password: password
    ```
 
