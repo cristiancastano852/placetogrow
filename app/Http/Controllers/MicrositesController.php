@@ -49,6 +49,7 @@ class MicrositesController extends Controller
     public function showAll(): \Inertia\Response
     {
         $microsites = Microsites::with('category')
+            ->select('id', 'name', 'slug', 'logo', 'site_type', 'category_id')
             ->paginate(30);
 
         return Inertia::render('Microsites/Index', compact('microsites'));

@@ -27,7 +27,11 @@ class SendSubscriptionExpiryAlertJob implements ShouldQueue
         Log::info("Subscriptions with expiry date: {$expiryDate}");
         $subscriptions = Subscription::where('expiration_date', $expiryDate)
             ->where('status', SubscriptionStatus::ACTIVE->value)
-            ->with(['user', 'microsite', 'plan'])
+            ->with([
+                'microsite:id,late_fee_percentage',
+                'user:id,name,email',
+                'plan:id,name'
+            ])
             ->get();
 
         if ($subscriptions->isEmpty()) {

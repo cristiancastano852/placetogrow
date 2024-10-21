@@ -24,9 +24,10 @@ class SendInvoiceDueAlertJob implements ShouldQueue
         $today = Carbon::now();
         $daysBeforeExpiration = (int) config('invoices.due_alert_days', 7);
         $expiryDate = $today->copy()->addDays($daysBeforeExpiration)->format('Y-m-d');
-        $invoices = Invoice::where('expiration_date', $expiryDate)
+        $invoices = Invoice::select('id', 'email', 'expiration_date', 'microsite_id')
+            ->where('expiration_date', $expiryDate)
             ->where('status', InvoiceStatus::PENDING->name)
-            ->with(['microsite'])
+            ->with(['microsite:id,name'])
             ->get();
         if ($invoices->isEmpty()) {
             Log::info("No invoices found for due alert mail: {$expiryDate}");

@@ -25,9 +25,14 @@ class SendSubscriptionNextCollectJob implements ShouldQueue
         $daysBeforeNextBilling = (int) config('subscriptions.next_billing_alert_days', 2);
         $next_billing_date = $today->copy()->addDays($daysBeforeNextBilling)->format('Y-m-d');
         Log::info("Subscriptions with next billing date: {$next_billing_date}");
-        $subscriptions = Subscription::where('next_billing_date', $next_billing_date)
+        $subscriptions = Subscription::select('id', 'user_id', 'microsite_id', 'plan_id', 'next_billing_date')
+            ->where('next_billing_date', $next_billing_date)
             ->where('status', SubscriptionStatus::ACTIVE->value)
-            ->with(['user', 'microsite', 'plan'])
+            ->with([
+                'user:id,name,email',
+                'microsite:id,name',
+                'plan:id,name',
+            ])
             ->get();
 
         if ($subscriptions->isEmpty()) {

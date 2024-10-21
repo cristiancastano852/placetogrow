@@ -24,9 +24,6 @@ class UpdatePaymentStatus extends Command
      */
     protected $description = 'Update payment status';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         Log::info('---- Updating payment status   ----');
