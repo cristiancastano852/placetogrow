@@ -128,7 +128,7 @@ class MicrositesByTypeSeeder extends Seeder
                             'status' => PaymentStatus::APPROVED->name,
                             'microsite_id' => $microsite->id,
                             'invoice_id' => $invoice->id,
-                            'created_at' => $expirationDate,
+                            'created_at' => $createdDate,
                             'user_id' => 3,
                         ]);
                     }

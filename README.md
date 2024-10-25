@@ -202,7 +202,7 @@ Follow these steps to set up and run your Laravel application in Docker.
 
    To generate an API key, run the following command:
    ```bash
-     docker-compose exec php artisan key:generate
+     docker-compose exec app php artisan key:generate
    ```
 5. **Install Composer Dependencies:**
    
@@ -244,7 +244,7 @@ Follow these steps to set up and run your Laravel application in Docker.
    ```
 11. **Create Environment for Scheduled Tasks:**
    
-  Run the command to execute scheduled tasks:
+  Run the command to execute scheduled tasks in other bash:
 
    ```bash
    docker-compose exec app php artisan schedule:work

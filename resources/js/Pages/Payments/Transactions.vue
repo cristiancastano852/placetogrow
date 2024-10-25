@@ -41,7 +41,7 @@ const cols = [
     { id: 'status', header: 'Estado' },
     { id: 'amount', header: 'Monto total' },
     { id: 'microsite.name', header: 'Sitio de pago' },
-    { id: 'updated_at', header: 'Fecha de pago' },
+    { id: 'created_at', header: 'Fecha de pago' },
 ];
 
 const value = ref('payments');
