@@ -24,6 +24,9 @@ RUN apt-get update && apt-get install -y libzip-dev zip \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip
 
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
